@@ -86,6 +86,12 @@ const BackgroundCircles = ({ parallaxRef }) => {
 
 const Hero = () => {
   const parallaxRef = useRef(null);
+  const [mounted, setMounted] = useState(false);
+
+  // Mount effect to ensure stable initial rendering
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   return (
     <Section
@@ -110,16 +116,19 @@ const Hero = () => {
               />
             </span>
           </h1>
-          <p className="body-1 max-w-3xl mx-auto mb-6 text-n-2 lg:mb-8">
-            Faça mais vendas no piloto automático e converta mais leads para o
-            seu negócio com um super funcionário digital que nunca dorme, não
-            tira férias e não reclama!
-          </p>
+          {/* Fixed height text block with overflow handling */}
+          <div className="h-[6rem] flex items-center justify-center overflow-visible">
+            <p className="body-1 max-w-3xl mx-auto mb-6 text-n-2 lg:mb-8">
+              Faça mais vendas no piloto automático e converta mais leads para o
+              seu negócio com um super funcionário digital que nunca dorme, não
+              tira férias e não reclama!
+            </p>
+          </div>
           <Button href="#pricing" white>
             Saber Mais
           </Button>
         </div>
-        <div className="relative max-w-[23rem] mx-auto md:max-w-5xl xl:mb-24">
+        <div className={`relative max-w-[23rem] mx-auto md:max-w-5xl xl:mb-24 transition-opacity duration-500 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
           <div className="relative z-1 p-0.5 rounded-2xl bg-conic-gradient">
             <div className="relative bg-n-8 rounded-[1rem]">
               <div className="h-[1.4rem] bg-[#43435C] rounded-t-[0.9rem]" />
@@ -177,7 +186,7 @@ const Hero = () => {
             />
           </div>
 
-          <BackgroundCircles />
+          <BackgroundCircles parallaxRef={parallaxRef} />
         </div>
 
         <div className="hidden relative z-10 mt-20 lg:block">
