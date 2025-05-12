@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="./src/assets/arts_and_logos/ebenai.png" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Eben AI</title>
+    </head>
+    <body>
+        <div id="root"></div>
+        <script type="module" src="/src/main.jsx"></script>
+
+
+
+        
+    <!-- Widget Configuration -->
+    <script>
+      window.ChatWidgetConfig = {
+        webhook: {
+          url: "https://n8n.ebenaisolutions.pt/webhook/9486e0da-8c5f-4b12-b05b-e89751e9b3ea/chat",
+          route: "general",
+        },
+        branding: {
+          logo: "./src/assets/arts_and_logos/Zari-eben-ai.png",
+          name: "Zari - Eben AI Solutions",
+          welcomeText: "Respostas instantâneas às suas perguntas!",
+          responseTimeText: "Clique no botão abaixo para começar a conversar",
+          initialBotMessage:
+            "Olá, eu sou a Zari, a assistente virtual da Eben AI.\nComo lhe posso ajudar?", // Add this line
+        },
+        style: {
+          primaryColor: "#0284C7",
+          secondaryColor: "#0284C7",
+          position: "right",
+          backgroundColor: "#181829",
+          fontColor: "#F3F4F6",
+        },
+        // Add suggested questions that users can click
+        suggestedQuestions: [
+          "Que serviços oferecem?",
+          "Como posso contactar o suporte?",
+        ],
+      };
+    </script>
+    <!-- <script src="https://cdn.jsdelivr.net/gh/funtastic418/chat-widget@main/chat-widget.js"></script> -->
+
+    <script src="src/n8n-chat-widget/chat-widget.js"></script>
+
+
+
+
+    </body>
+</html>
