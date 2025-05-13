@@ -7,7 +7,10 @@ import {
   plusSquare,
   robot,
   searchMd,
-  yourlogo,
+  biblein,
+  ericeiraproperty,
+  grupo_das_casas,
+  htailors,
 } from "../assets";
 
 import Button from "../components/Button";
@@ -128,7 +131,11 @@ const Hero = () => {
             Saber Mais
           </Button>
         </div>
-        <div className={`relative max-w-[23rem] mx-auto md:max-w-5xl xl:mb-24 transition-opacity duration-500 ${mounted ? 'opacity-100' : 'opacity-0'}`}>
+        <div
+          className={`relative max-w-[23rem] mx-auto md:max-w-5xl xl:mb-24 transition-opacity duration-500 ${
+            mounted ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <div className="relative z-1 p-0.5 rounded-2xl bg-conic-gradient">
             <div className="relative bg-n-8 rounded-[1rem]">
               <div className="h-[1.4rem] bg-[#43435C] rounded-t-[0.9rem]" />
@@ -195,16 +202,16 @@ const Hero = () => {
           </h5>
           <ul className="flex">
             <li className="flex items-center justify-center flex-1 h-[8.5rem]">
-              <img src={yourlogo} width={134} height={28} alt="" />
+              <img src={biblein} width={134} height={28} alt="" />
             </li>
             <li className="flex items-center justify-center flex-1 h-[8.5rem]">
-              <img src={yourlogo} width={134} height={28} alt="" />
+              <img src={ericeiraproperty} width={134} height={28} alt="" />
             </li>
             <li className="flex items-center justify-center flex-1 h-[8.5rem]">
-              <img src={yourlogo} width={134} height={28} alt="" />
+              <img src={grupo_das_casas} width={134} height={28} alt="" />
             </li>
             <li className="flex items-center justify-center flex-1 h-[8.5rem]">
-              <img src={yourlogo} width={134} height={28} alt="" />
+              <img src={htailors} width={134} height={28} alt="" />
             </li>
           </ul>
         </div>

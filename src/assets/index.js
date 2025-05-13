@@ -2,6 +2,13 @@
 export { default as ebenai } from './arts_and_logos/ebenai.png';
 
 
+// Clients
+
+export { default as ericeiraproperty } from './clients/logo-ericeiraproperty.svg';
+export { default as grupo_das_casas } from './clients/Logo-grupo-das-casas.png';
+export { default as htailors } from './clients/htailors.png';
+export { default as biblein } from './clients/bible-in-logo-white.png';
+
 // Hero Section
 export { default as curve } from './hero/curve.png';
 export { default as robot } from './hero/robot.jpg';
