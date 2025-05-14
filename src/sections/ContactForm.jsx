@@ -345,7 +345,7 @@ const ContactForm = () => {
               >
                 Concordo com o processamento dos meus dados pessoais de acordo
                 com a{" "}
-                <a href="#privacidade" className="text-color-1 hover:underline">
+                <a href="#privacidade" className="text-color-1 hover:underline" >
                   Política de Privacidade
                 </a>
                 <span className="text-red-500 ml-1">*</span>
@@ -357,9 +357,11 @@ const ContactForm = () => {
               </p>
             )}
 
+
+
             <Button
               type="submit"
-              className={`w-full ${
+              className={`hidden lg:flex w-full ${
                 isSubmitting ? "opacity-75 cursor-not-allowed" : ""
               }`}
               white

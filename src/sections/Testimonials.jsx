@@ -64,7 +64,7 @@ const Testimonials = () => { // Component name can be changed later if needed, e
                     </div>
                 </div>
 
-                <Heading tag="Testemunhos" title="O que os nossos clientes dizem sobre a Eben AI Solutions" />
+                <Heading tag="" title="O que os nossos clientes dizem sobre a Eben AI Solutions" />
 
                 <div className="relative">
                     {/* Using a grid for testimonials for better responsiveness */}
@@ -73,7 +73,7 @@ const Testimonials = () => { // Component name can be changed later if needed, e
                             <div key={i} className="flex flex-col p-6 bg-n-8 border border-n-6 rounded-[2rem] min-h-[18rem] justify-between"> {/* Adjusted min-h and padding */}
                                 <div>
                                     <h4 className="h5 mb-2">{item.name} {item.country}</h4>
-                                    <p className="body-2 mb-4 text-color-3">{item.rating}</p>
+                                    <p className="body-2 mb-4 text-color-3" >{item.rating}</p>
                                     <p className="body-2 text-white/70">"{item.quote}"</p>
                                 </div>
                                 {/* Removed Button and features list */}

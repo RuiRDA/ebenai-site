@@ -118,7 +118,7 @@ const Header = () => {
         {/* <a href="#signup" className="button hidden mr-8 text-white/50 transition-colors hover:text-white lg:block">
                     New account
                 </a> */}
-        <Button className="hidden lg:flex" href="#login">
+        <Button className="hidden lg:flex" href="#services">
           Saber Mais
         </Button>
 

@@ -1,5 +1,6 @@
 //arts and logos
 export { default as ebenai } from './arts_and_logos/ebenai.png';
+export { default as zari } from './arts_and_logos/Zari-eben-ai.png';
 
 
 // Clients
@@ -12,7 +13,8 @@ export { default as biblein } from './clients/bible-in-logo-white.png';
 // Hero Section
 export { default as curve } from './hero/curve.png';
 export { default as robot } from './hero/robot.jpg';
-export { default as heroBackground } from './hero/hero-background.jpg';
+// export { default as heroBackground } from './hero/hero-background.jpg';
+export { default as heroBackground } from './hero/hero-back-2.png';
 
 // Collaboration Section
 export { default as curve1 } from './collaboration/curve-1.svg';
@@ -25,6 +27,15 @@ export { default as photoshop } from './collaboration/photoshop.png';
 export { default as protopie } from './collaboration/protopie.png';
 export { default as raindrop } from './collaboration/raindrop.png';
 export { default as slack } from './collaboration/slack.png';
+
+export { default as chatGPT } from './collaboration/ChatGPT_logo.svg';
+export { default as gmail } from './collaboration/Gmail.svg';
+export { default as google_drive } from './collaboration/Google_Drive.svg';
+export { default as instagram_logo } from './collaboration/Instagram.svg';
+export { default as PDF_file_icon } from './collaboration/PDF_file_icon.svg';
+export { default as whatsApp } from './collaboration/WhatsApp.svg';
+export { default as airtable } from './collaboration/airtable.svg';
+
 
 // Services Section
 export { default as service1 } from './services/service-1.png';
@@ -79,7 +90,7 @@ export { default as loading1 } from './loading-01.svg';
 export { default as openaiWhiteSymbol } from './openai-symbol-white.svg';
 export { default as play } from './play.svg';
 export { default as gradient } from './gradient.png';
-export { default as smallSphere } from './4-small.png';
+export { default as smallSphere } from './4-small-blue.png';
 export { default as grid } from './grid.png';
 export { default as yourlogo } from './yourlogo.svg';
 export { default as homeSmile } from './home-smile.svg';

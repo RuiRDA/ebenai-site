@@ -11,6 +11,12 @@ import {
   protopie,
   raindrop,
   slack,
+  chatGPT,
+  gmail,
+  google_drive,
+  instagram_logo,
+  airtable,
+  whatsApp,
 } from "../assets";
 
 import Button from "../components/Button";
@@ -31,16 +37,18 @@ const collabContent = [
   },
 ];
 
+
+
 const collabApps = [
   {
-    title: "Figma",
-    icon: figma,
-    width: 26,
+    title: "ChatGPT",
+    icon: chatGPT,
+    width: 32,
     height: 36,
   },
   {
-    title: "Notion",
-    icon: notion,
+    title: "Gmail",
+    icon: gmail,
     width: 34,
     height: 36,
   },
@@ -57,27 +65,27 @@ const collabApps = [
     height: 35,
   },
   {
-    title: "Photoshop",
-    icon: photoshop,
+    title: "Google Drive",
+    icon: google_drive,
     width: 34,
     height: 34,
   },
   {
-    title: "Protopie",
-    icon: protopie,
+    title: "Airtable file icon",
+    icon: airtable,
+    width: 36,
+    height: 36,
+  },
+  {
+    title: "WhatsApp",
+    icon: whatsApp,
     width: 34,
     height: 34,
   },
   {
-    title: "Framer",
-    icon: framer,
-    width: 26,
-    height: 34,
-  },
-  {
-    title: "Raindrop",
-    icon: raindrop,
-    width: 38,
+    title: "Instagram",
+    icon: instagram_logo,
+    width: 34,
     height: 32,
   },
 ];

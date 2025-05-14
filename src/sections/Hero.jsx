@@ -140,13 +140,16 @@ const Hero = () => {
             <div className="relative bg-n-8 rounded-[1rem]">
               <div className="h-[1.4rem] bg-[#43435C] rounded-t-[0.9rem]" />
 
-              <div className="aspect-[33/40] rounded-b-[0.9rem] overflow-hidden md:aspect-[688/490] lg:aspect-[1024/490]">
+              <div className="aspect-[23/14] rounded-b-[0.9rem] overflow-hidden md:aspect-[688/390] lg:aspect-[1024/390]">
+                {/* Original mobile: aspect-[33/40] -> New: aspect-[33/32] (or any value less than 40) */}
+                {/* Original md: aspect-[688/490] -> New: md:aspect-[688/390] (or any value less than 490) */}
+                {/* Original lg: aspect-[1024/490] -> New: lg:aspect-[1024/390] (or any value less than 490) */}
                 <img
-                  src={robot}
+                  src={robot} // Assuming 'robot' is your image source
                   className="w-full scale-[1.7] translate-y-[8%] md:scale-[1] md:-translate-y-[10%] lg:-translate-y-[23%]"
                   width={1024}
                   height={490}
-                  alt=""
+                  alt="Robot" // Added alt text for accessibility
                 />
 
                 <div className="flex items-center h-[3.5rem] px-6 bg-n-8/80 rounded-[1.7rem] absolute left-4 right-4 bottom-5 md:left-1/2 md:right-auto md:bottom-8 md:w-[31rem] md:-translate-x-1/2 text-base">
@@ -174,7 +177,7 @@ const Hero = () => {
                 <ScrollParallax isAbsolutelyPositioned>
                   <Notification
                     className="hidden absolute -right-[5.5rem] bottom-[11rem] w-[18rem] xl:flex"
-                    title="Code generation"
+                    title="Clientes atendidos"
                   />
                 </ScrollParallax>
               </div>
