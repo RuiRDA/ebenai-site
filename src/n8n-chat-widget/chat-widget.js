@@ -51,6 +51,51 @@
             transform: translateY(20px) scale(0.95);
         }
 
+        /* Responsive styles for mobile */
+        @media (max-width: 600px) {
+            .chat-assist-widget .chat-window {
+                width: 98vw;
+                max-width: 98vw;
+                min-width: 0;
+                left: 1vw !important;
+                right: 1vw !important;
+                height: 90vh;
+                max-height: 95vh;
+                border-radius: 16px;
+            }
+            .chat-assist-widget .chat-header-logo {
+                width: 44px;
+                height: 44px;
+            }
+            .chat-assist-widget .chat-header-title {
+                font-size: 14px;
+            }
+            .chat-assist-widget .chat-launcher {
+                right: 16px !important;
+                left: 16px !important;
+                bottom: 16px !important;
+                max-width: 95vw;
+                width: auto;
+                font-size: 14px;
+            }
+            .chat-assist-widget .chat-body,
+            .chat-assist-widget .chat-messages {
+                padding: 10px !important;
+            }
+        }
+
+        /* Extra small device scaling */
+        @media (max-width: 400px), (max-height: 600px) {
+            .chat-assist-widget .chat-window {
+                transform: scale(0.85) !important;
+                transform-origin: bottom right !important;
+            }
+            .chat-assist-widget .chat-launcher {
+                transform: scale(0.85) !important;
+                transform-origin: bottom right !important;
+            }
+        }
+
         .chat-assist-widget .chat-window.right-side {
             right: 20px;
         }
@@ -617,7 +662,7 @@
         <div class="chat-body">
             <div class="chat-messages"></div>
             <div class="chat-controls">
-                <textarea class="chat-textarea" placeholder="Introduza aqui a sua mensagem..." rows="1"></textarea>
+                <textarea class="chat-textarea" placeholder="Introduza a sua mensagem..." rows="1"></textarea>
                 <button class="chat-submit">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M22 2L11 13"></path>
@@ -677,7 +722,7 @@
     // Function to convert URLs in text to clickable links
     function linkifyText(text) {
         // URL pattern that matches http, https, ftp links
-        const urlPattern = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;
+        const urlPattern = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gim;
         
         // Convert URLs to HTML links
         return text.replace(urlPattern, function(url) {
