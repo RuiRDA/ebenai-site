@@ -8,7 +8,7 @@ import Roadmap from "./sections/Roadmap";
 // import Features from "./sections/Features";
 import Testimonials from "./sections/Testimonials";
 import FAQ from "./sections/FAQ";
-import ContactForm from "./sections/ContactForm";
+import CallForm from "./sections/CallForm";
 
 const App = () => {
   return (
@@ -21,8 +21,8 @@ const App = () => {
         {/* <Features /> */}
         {/* <Pricing /> */}
         <Testimonials />
-        <Roadmap />
-        <ContactForm />
+        {/* <Roadmap /> */}
+        <CallForm />
         <FAQ />
         <Footer />
       </div>
