@@ -148,6 +148,18 @@ Available fill gap methods: `).concat(L,"."))}},fe=function(g){if(g){var L=o(g);
             }
         }
 
+        /* Extra small device scaling */
+        @media (max-width: 400px), (max-height: 600px) {
+            .chat-assist-widget .chat-window {
+                transform: scale(0.85) !important;
+                transform-origin: bottom right !important;
+            }
+            .chat-assist-widget .chat-launcher {
+                transform: scale(0.85) !important;
+                transform-origin: bottom right !important;
+            }
+        }
+
         .chat-assist-widget .chat-window.right-side {
             right: 20px;
         }
