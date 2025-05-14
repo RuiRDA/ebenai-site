@@ -5,26 +5,16 @@ import { ebenai, background } from "../assets"; // Removed yourlogo import
 import Button from "./Button";
 import MenuSvg from "../assets/svg/MenuSvg";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const navigation = [
-  {
-    id: "0",
-    title: "Serviços",
-    url: "#services",
-  },
-  {
-    id: "1",
-    title: "Sobre",
-    url: "#sobre",
-  },
-  {
-    id: "2",
-    title: "Contato",
-    url: "#contato",
-  },
+  { id: "0", key: "navigation.services", url: "#services" },
+  { id: "1", key: "navigation.about", url: "#sobre" },
+  { id: "2", key: "navigation.contact", url: "#contato" },
 ];
 
 const Header = () => {
+  const { t, i18n } = useTranslation();
   const pathname = useLocation();
   const [openNavigation, setOpenNavigation] = useState(false);
 
@@ -85,7 +75,7 @@ const Header = () => {
                     : "lg:text-white/50"
                 } lg:leading-5 lg:hover:text-white xl:px-12`}
               >
-                {item.title}
+                {t(item.key)}
               </a>
             ))}
           </div>
@@ -114,6 +104,31 @@ const Header = () => {
             <div className="absolute top-[26.8rem] left-12 w-6 h-6 bg-gradient-to-b from-[#88E5BE] to-[#1A1A32] rounded-full"></div>
           </div>
         </nav>
+        <div className="ml-auto relative mr-4 lg:mr-6">
+          <select
+            onChange={(e) => i18n.changeLanguage(e.target.value)}
+            value={i18n.language}
+            className="appearance-none bg-n-8/90 text-white py-2 px-4 pr-8 rounded-lg border border-n-6 hover:bg-n-7 focus:outline-none focus:ring-2 focus:ring-color-1 transition-colors"
+          >
+            <option value="pt-PT">🇵🇹 Português</option>
+            <option value="en">🇬🇧 English</option>
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 flex items-center pl-2 right-2 lg:right-0 lg:pl-0 lg:pr-3">
+            <svg
+              className="w-4 h-4 text-white"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M19 9l-7 7-7-7"
+              />
+            </svg>
+          </div>
+        </div>
 
         {/* <a href="#signup" className="button hidden mr-8 text-white/50 transition-colors hover:text-white lg:block">
                     New account

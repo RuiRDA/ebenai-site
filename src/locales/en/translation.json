@@ -1,0 +1,10 @@
+{
+  "navigation": {
+    "services": "Services",
+    "about": "About",
+    "contact": "Contact"
+  },
+  "button": {
+    "learnMore": "Learn More"
+  }
+}
