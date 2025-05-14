@@ -115,6 +115,39 @@ Available fill gap methods: `).concat(L,"."))}},fe=function(g){if(g){var L=o(g);
             transform: translateY(20px) scale(0.95);
         }
 
+        /* Responsive styles for mobile */
+        @media (max-width: 600px) {
+            .chat-assist-widget .chat-window {
+                width: 98vw;
+                max-width: 98vw;
+                min-width: 0;
+                left: 1vw !important;
+                right: 1vw !important;
+                height: 90vh;
+                max-height: 95vh;
+                border-radius: 16px;
+            }
+            .chat-assist-widget .chat-header-logo {
+                width: 44px;
+                height: 44px;
+            }
+            .chat-assist-widget .chat-header-title {
+                font-size: 14px;
+            }
+            .chat-assist-widget .chat-launcher {
+                right: 16px !important;
+                left: 16px !important;
+                bottom: 16px !important;
+                max-width: 95vw;
+                width: auto;
+                font-size: 14px;
+            }
+            .chat-assist-widget .chat-body,
+            .chat-assist-widget .chat-messages {
+                padding: 10px !important;
+            }
+        }
+
         .chat-assist-widget .chat-window.right-side {
             right: 20px;
         }
@@ -627,4 +660,4 @@ Available fill gap methods: `).concat(L,"."))}},fe=function(g){if(g){var L=o(g);
             <div class="typing-dot"></div>
             <div class="typing-dot"></div>
             <div class="typing-dot"></div>
-        `,H}function m(H){const J=/(\b(https?|ftp):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gim;return H.replace(J,function(G){return`<a href="${G}" target="_blank" rel="noopener noreferrer" class="chat-link">${G}</a>`})}async function h(){if(p.classList.add("active"),i=x(),r.branding.initialBotMessage){const V=document.createElement("div");V.className="chat-bubble bot-bubble",V.innerHTML=m(r.branding.initialBotMessage),f.appendChild(V)}if(r.suggestedQuestions&&Array.isArray(r.suggestedQuestions)&&r.suggestedQuestions.length>0){const V=document.createElement("div");V.className="suggested-questions",r.suggestedQuestions.forEach(Y=>{const k=document.createElement("button");k.className="suggested-question-btn",k.textContent=Y,k.addEventListener("click",()=>{v(Y),V.parentNode&&V.parentNode.removeChild(V)}),V.appendChild(k)}),f.appendChild(V)}f.scrollTop=f.scrollHeight;const H="guest-"+i+"@example.com",G=[{action:"loadPreviousSession",sessionId:i,route:r.webhook.route,metadata:{userId:H,userName:"Guest"}}];try{await fetch(r.webhook.url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(G)})}catch(V){console.error("Chat session initialization with webhook failed:",V)}}async function v(H){if(o)return;o=!0;const J="guest-"+i+"@example.com",V={action:"sendMessage",sessionId:i,route:r.webhook.route,chatInput:H,metadata:{userId:J,userName:"Guest"}},Y=document.createElement("div");Y.className="chat-bubble user-bubble",Y.textContent=H,f.appendChild(Y);const k=E();f.appendChild(k),f.scrollTop=f.scrollHeight;try{const F=await(await fetch(r.webhook.url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(V)})).json();f.removeChild(k);const O=document.createElement("div");O.className="chat-bubble bot-bubble";const _=Array.isArray(F)?F[0].output:F.output;O.innerHTML=m(_),f.appendChild(O),f.scrollTop=f.scrollHeight}catch(D){console.error("Message submission error:",D),f.removeChild(k);const F=document.createElement("div");F.className="chat-bubble bot-bubble",F.textContent="Sorry, I couldn't send your message. Please try again.",f.appendChild(F),f.scrollTop=f.scrollHeight}finally{o=!1}}function S(){y.style.height="auto",y.style.height=(y.scrollHeight>120?120:y.scrollHeight)+"px"}w.addEventListener("click",()=>{const H=y.value.trim();H&&!o&&(v(H),y.value="",y.style.height="auto")}),y.addEventListener("input",S),y.addEventListener("keypress",H=>{if(H.key==="Enter"&&!H.shiftKey){H.preventDefault();const J=y.value.trim();J&&!o&&(v(J),y.value="",y.style.height="auto")}}),d.addEventListener("click",()=>{const H=!l.classList.contains("visible");l.classList.toggle("visible"),H&&!i&&h()}),l.querySelectorAll(".chat-close-btn").forEach(H=>{H.addEventListener("click",()=>{l.classList.remove("visible")})})})();
+        `,H}function m(H){const J=/(\b(https?|ftp):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gim;return H.replace(J,function(G){return`<a href="${G}" target="_blank" rel="noopener noreferrer" class="chat-link">${G}</a>`})}async function h(){if(p.classList.add("active"),i=x(),r.branding.initialBotMessage){const V=document.createElement("div");V.className="chat-bubble bot-bubble",V.innerHTML=m(r.branding.initialBotMessage),f.appendChild(V)}if(r.suggestedQuestions&&Array.isArray(r.suggestedQuestions)&&r.suggestedQuestions.length>0){const V=document.createElement("div");V.className="suggested-questions",r.suggestedQuestions.forEach(Y=>{const k=document.createElement("button");k.className="suggested-question-btn",k.textContent=Y,k.addEventListener("click",()=>{v(Y),V.parentNode&&V.parentNode.removeChild(V)}),V.appendChild(k)}),f.appendChild(V)}f.scrollTop=f.scrollHeight;const H="guest-"+i+"@example.com",G=[{action:"loadPreviousSession",sessionId:i,route:r.webhook.route,metadata:{userId:H,userName:"Guest"}}];try{await fetch(r.webhook.url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(G)})}catch(V){console.error("Chat session initialization with webhook failed:",V)}}async function v(H){if(o)return;o=!0;const J="guest-"+i+"@example.com",V={action:"sendMessage",sessionId:i,route:r.webhook.route,chatInput:H,metadata:{userId:J,userName:"Guest"}},Y=document.createElement("div");Y.className="chat-bubble user-bubble",Y.textContent=H,f.appendChild(Y);const k=E();f.appendChild(k),f.scrollTop=f.scrollHeight;try{const F=await(await fetch(r.webhook.url,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(V)})).json();f.removeChild(k);const O=document.createElement("div");O.className="chat-bubble bot-bubble";const _=Array.isArray(F)?F[0].output:F.output;O.innerHTML=m(_),f.appendChild(O),f.scrollTop=f.scrollHeight}catch(D){console.error("Message submission error:",D),f.removeChild(k);const F=document.createElement("div");F.className="chat-bubble bot-bubble",F.textContent="Sorry, I couldn't send your message. Please try again.",f.appendChild(F),f.scrollTop=f.scrollHeight}finally{o=!1}}function S(){y.style.height="auto",y.style.height=(y.scrollHeight>120?120:y.scrollHeight)+"px"}w.addEventListener("click",()=>{const H=y.value.trim();H&&!o&&(v(H),y.value="",y.style.height="auto")}),y.addEventListener("input",S),y.addEventListener("keypress",H=>{if(H.key==="Enter"&&!H.shiftKey){H.preventDefault();const J=y.value.trim();J&&!o&&(v(J),y.value="",y.style.height="auto")}}),d.addEventListener("click",()=>{const H=!l.classList.contains("visible");l.classList.toggle("visible"),H&&!i&&h()}),l.querySelectorAll(".chat-close-btn").forEach(H=>{H.addEventListener("click",()=>{l.classList.remove("visible")})})})();
