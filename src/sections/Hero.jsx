@@ -146,11 +146,11 @@ const Hero = () => {
                 {/* Original md: aspect-[688/490] -> New: md:aspect-[688/390] (or any value less than 490) */}
                 {/* Original lg: aspect-[1024/490] -> New: lg:aspect-[1024/390] (or any value less than 490) */}
                 <img
-                  src={robot} // Assuming 'robot' is your image source
-                  className="w-full scale-[1.7] translate-y-[8%] md:scale-[1] md:-translate-y-[10%] lg:-translate-y-[23%]"
+                  src={robot}
+                  className="w-full h-full object-cover object-top"
                   width={1024}
                   height={490}
-                  alt="Robot" // Added alt text for accessibility
+                  alt="Robot"
                 />
 
                 <div className="flex items-center h-[3.5rem] px-6 bg-n-8/80 rounded-[1.7rem] absolute left-4 right-4 bottom-5 md:left-1/2 md:right-auto md:bottom-8 md:w-[31rem] md:-translate-x-1/2 text-base">
@@ -201,7 +201,7 @@ const Hero = () => {
           <BackgroundCircles parallaxRef={parallaxRef} />
         </div>
 
-        <div className="hidden relative z-10 mt-20 lg:block">
+        {/* <div className="hidden relative z-10 mt-20 lg:block">
           <h5 className="tagline mb-6 text-center text-white/50">
             {t("hero.companiesUsing")}
           </h5>
@@ -219,7 +219,7 @@ const Hero = () => {
               <img src={htailors} width={134} height={28} alt="" />
             </li>
           </ul>
-        </div>
+        </div> */}
       </div>
 
       <div className="hidden absolute top-[55.25rem] left-10 right-10 h-0.25 bg-n-6 pointer-events-none xl:block" />
