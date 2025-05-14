@@ -7,6 +7,7 @@ import {
   twitter,
   ebenai,
 } from "../assets";
+import { useTranslation } from "react-i18next";
 
 const socials = [
   {
@@ -36,15 +37,18 @@ const socials = [
   },
 ];
 
+// Navigation keys for i18n
 const footerNavLinks = [
-  { title: "Início", url: "#hero" },
-  { title: "Serviços", url: "#services" },
-  { title: "Sobre", url: "#sobre" },
-  { title: "Contato", url: "#contato" },
-  { title: "Termos", url: "#termos" },
+  { key: "navigation.home", url: "#hero" },
+  { key: "navigation.services", url: "#services" },
+  { key: "navigation.about", url: "#sobre" },
+  { key: "navigation.contact", url: "#contato" },
+  { key: "navigation.terms", url: "#termos" },
 ];
 
 const Footer = () => {
+  const { t } = useTranslation();
+
   return (
     <Section crosses id="eben-ai-footer" className="!px-0 !py-16">
       <div className="container flex flex-col gap-12">
@@ -68,7 +72,7 @@ const Footer = () => {
               </span>
             </a>
             <p className="caption text-n-4 mb-2">
-              Envie-nos um e-mail:{" "}
+              {t("footer.emailUs")}:{" "}
               <a
                 href="mailto:geral@ebenaisolutions.pt"
                 className="hover:text-color-1"
@@ -77,7 +81,7 @@ const Footer = () => {
               </a>
             </p>
             <p className="caption text-n-4 mb-2">
-              Telefone:{" "}
+              {t("footer.phone")}:{" "}
               <a href="tel:+351915796429" className="hover:text-color-1">
                 +351 915 796 429
               </a>
@@ -95,7 +99,7 @@ const Footer = () => {
                   href={item.url}
                   className="caption text-n-4 hover:text-white transition-colors"
                 >
-                  {item.title}
+                  {t(item.key)}
                 </a>
               </li>
             ))}
@@ -133,7 +137,7 @@ const Footer = () => {
               className="w-full px-4 py-2 rounded-lg bg-[#15131D] text-n-4 border border-n-6 focus:outline-none focus:border-color-1"
             />
 
- 
+   
             <button className="px-6 py-2 bg-gradient-to-r from-sky-500 to-sky-500 text-white rounded-lg hover:bg-[#437dfc] transition-colors">
               Inscrever
             </button>
@@ -143,8 +147,8 @@ const Footer = () => {
         {/* Copyright */}
         <div className="text-center">
           <p className="caption text-n-4">
-            © {new Date().getFullYear()}. Todos Os Direitos Reservados Por EBEN
-            IA SOLUTIONS
+            {t("footer.copyright", { year: new Date().getFullYear() })} IA
+            SOLUTIONS
           </p>
         </div>
       </div>

@@ -1,10 +1,102 @@
 {
   "navigation": {
+    "home": "Início",
     "services": "Serviços",
     "about": "Sobre",
-    "contact": "Contato"
+    "contact": "Contato",
+    "terms": "Termos"
   },
   "button": {
     "learnMore": "Saber Mais"
+  },
+  "footer": {
+    "emailUs": "Envie-nos um e-mail",
+    "phone": "Telefone",
+    "copyright": "© {{year}}. Todos Os Direitos Reservados Por EBEN"
+  },
+  "services": {
+    "heading": "Os Nossos Serviços",
+    "benefits": {
+      "title_1": "Processos Internos Automatizados",
+      "text_1": "Criamos um agente de IA que utiliza as aplicações utilizadas na sua empresa para agir como um funcionário real, economizando tempo na gestão de documentos e de processos internos.",
+
+      "title_2": "Conversas com Agentes IA",
+      "text_2": "Criamos funcionários digitais realistas para conversar e converter os seus leads 24/7 por texto ou áudio, 365 dias por ano, sem tirar férias e sem reclamar.",
+
+      "title_3": "Redes Sociais em Piloto Automático",
+      "text_3": "Criamos um agente de IA que cria conteúdos personalizados e faz a gestão automática das suas redes sociais, para uma presença digital cada vez melhor."
+    }
+  },
+  "hero": {
+    "title": "Otimize os resultados do seu negócio com a ",
+    "description": "Faça mais vendas no piloto automático e converta mais leads para o seu negócio com um super funcionário digital que nunca dorme, não tira férias e não reclama!",
+    "processing": "AI em Processamento...",
+    "clientsServed": "Clientes atendidos",
+    "companiesUsing": "Negócios que já usam os sistemas da Eben AI Solutions",
+    "time": "há 1 min"
+  },
+  "collaboration": {
+    "heading": "Como funciona",
+    "steps": {
+      "1": {
+        "title": "1 Consultoria gratuita",
+        "text": "Converse com um engenheiro de sistemas real (normalmente +100€/hora) e discuta as necessidades e objetivos do seu projeto. Vamos ouvir atentamente para servir as suas necessidades o melhor possível."
+      },
+      "2": {
+        "title": "2 Análise e Proposta",
+        "text": "Com base na sua consulta, iremos fornecer uma análise detalhada, incluindo etapas, propostas, orçamento e algumas possíveis modificações ou extensões ao seu sistema."
+      },
+      "3": {
+        "title": "3 Início do projeto",
+        "text": "Com a proposta alinhada e acertada, agendaremos uma reunião inicial para dar início à implementação."
+      }
+    },
+    "button": "Vamos Conversar?",
+    "intro": {
+      "line1": "A automação é complicada - mas nós podemos implementá-la por si!",
+      "line2": "Descubra como a IA pode transformar o seu negócio em 3 etapas simples."
+    }
+  },
+  "faq": {
+    "heading": "Perguntas frequentes",
+    "q1_question": "Como a Eben AI pode ajudar o meu negócio?",
+    "q1_answer": "Podemos economizar centenas de horas de trabalho manual para os seus funcionários, automatizando tarefas repetitivas e entediantes, como prospecção outbound, atendimento ao cliente, agendamentos, criação de conteúdo, entre outros. Ao implementar estas soluções, não apenas aumentamos a eficiência, mas também fazemos com que a sua equipa tenha mais tempo disponível para se concentrar em atividades mais estratégicas e criativas, gerando resultados ainda mais impactantes para o seu negócio.",
+    "q2_question": "Quanto tempo demora a criar o meu projeto?",
+    "q2_answer": "Normalmente, as nossas soluções são totalmente implementadas entre 1 a 2 semanas, englobando todo o processo de desenvolvimento e integração. Com uma abordagem ágil e eficiente, garantimos que a sua equipa possa começar a beneficiar dos nossos serviços rapidamente, sem comprometer a qualidade ou a precisão das entregas.",
+    "q3_question": "Qual é a minha garantia?",
+    "q3_answer": "Oferecemos 30 dias de garantia após a implementação da sua solução de IA, com reembolso total caso não fique totalmente satisfeito com os resultados obtidos. Queremos garantir que a sua experiência seja positiva e que os benefícios da nossa solução atendam plenamente às suas necessidades.",
+    "q4_question": "Como é que as Soluções de IA são criadas?",
+    "q4_answer": "Nós passamos pelo processo de planeamento e arquitetura do projeto com a nossa equipa e levamos o projeto para plataformas de integração de sistemas e IA, como o make.com, n8n, flowise, entre outros.",
+    "q5_question": "Como será a nossa comunicação?",
+    "q5_answer": "Para a maioria das empresas, a nossa comunicação será feita diretamente pelo WhatsApp. Além disso, durante o desenvolvimento do projeto e fase de testes, oferecemos suporte contínuo para acompanhar atualizações, resolver possíveis erros de sistema e garantir que o progresso esteja sempre alinhado com os objetivos estabelecidos.",
+    "q6_question": "E se der algum erro na automação?",
+    "q6_answer": "Seremos notificados imediatamente sempre que ocorrer algum problema no sistema e resolveremos rapidamente, garantindo que a operação continue a funcionar sem interrupções.",
+    "q7_question": "Preciso de conhecimentos técnicos para usar os sistemas automatizados?",
+    "q7_answer": "Nós temos um processo de entrega simples e transparente que instrui a sua equipa a utilizar os sistemas que entregamos, sem precisar de saber programar ou investir dezenas de horas para aprender novas ferramentas."
+  },
+  "testimonials": {
+    "heading": "O que os nossos clientes dizem sobre a Eben AI Solutions",
+    "quote_keith": "Fico feliz em recomendar fortemente! Recebi exatamente o que pedi e mais. Comunicação extremamente clara e estou muito satisfeito com tudo. Com certeza voltarei a contratar!",
+    "quote_rui_c_santos": "Recomendo fortemente para qualquer projeto que exija habilidades técnicas e forte colaboração.",
+    "quote_christophers": "Demos a eles um desafio difícil e eles foram além para fazer o projeto funcionar. Tivemos que extrair dados de vários sites para uma folha de cálculo com milhares de linhas — e funcionou perfeitamente! Com certeza voltarei a contratar para futuros projetos. Se você precisa de scraping web, são os melhores!",
+    "quote_omar": "A Eben AI entregou trabalho de alta qualidade rapidamente e superou minhas expectativas. Comunicação e profissionalismo excelentes do início ao fim. Altamente recomendado — obrigado!",
+    "quote_ayoub": "Melhor qualidade de serviço e comunicação! Muito profissional e prestativo, obrigado pelo tempo e esforço.",
+    "quote_rodrigo_damas": "Excelente serviço! Sempre super rápido a responder e pronto a ajudar. Recomendo e muito!",
+    "quote_dinis_assis": "Muito bom, rápido e sempre disponível.",
+    "quote_jim": "Trabalho excepcional. Demorou menos tempo do que o esperado para criar a automação de produção de vídeo."
+  },
+  "callForm": {
+    "heading": "Vamos Conversar?",
+    "description": "Investimos fortemente no início de cada projeto, assumindo 100% do risco para que você não precise (esses projetos podem levar semanas ou até meses). Por causa disso, trabalhamos com apenas um número reduzido de empresas em cada mês, para entregar resultados incomparáveis e com a máxima qualidade. Dê o primeiro passo agora! Agende uma call para começarmos a construir algo incrível juntos."
+  }
+,
+  "chat": {
+    "welcomeText": "Respostas instantâneas às suas perguntas!",
+    "responseTimeText": "Clique no botão abaixo para começar a conversar",
+    "initialBotMessage": "Olá, eu sou a Zari, a assistente virtual da Eben AI.\nComo lhe posso ajudar?",
+    "suggestedQuestions": [
+      "Que serviços oferecem?",
+      "Como posso contactar o suporte?"
+    ]
   }
 }

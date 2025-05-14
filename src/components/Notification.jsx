@@ -6,7 +6,7 @@ import {
   notification4,
 } from "../assets";
 
-const Notification = ({ className, title }) => {
+const Notification = ({ className, title, time,}) => {
   return (
     <div
       className={`${
@@ -48,7 +48,7 @@ const Notification = ({ className, title }) => {
               />
             </li>
           </ul>
-          <div className="body-2 text-[#6C7275]">há 1 min</div>
+          <div className="body-2 text-[#6C7275]">{time}</div>
         </div>
       </div>
     </div>

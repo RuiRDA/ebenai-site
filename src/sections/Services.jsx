@@ -2,6 +2,9 @@ import Heading from "../components/Heading";
 import Section from "../components/Section";
 import Arrow from "../assets/svg/Arrow";
 import ClipPath from "../assets/svg/ClipPath";
+
+import { useTranslation } from "react-i18next";
+
 import {
   benefitIcon1,
   benefitIcon2,
@@ -11,58 +14,38 @@ import {
 
 const benefits = [
   {
-    title: "Processos Internos Automatizados",
-    text: "Criamos um agente de IA que utiliza as aplicações utilizadas na sua empresa para agir como um funcionário real, economizando tempo na gestão de documentos e de processos internos.",
+    title: "services.benefits.title_1",
+    text: "services.benefits.text_1",
     backgroundUrl: "./src/assets/benefits/card-1.svg",
     iconUrl: benefitIcon3,
     imageUrl: benefitImage2,
   },
   {
-    title: "Conversas com Agentes IA",
-    text: "Criamos funcionários digitais realistas para conversar e converter os seus leads 24/7 por texto ou áudio, 365 dias por ano, sem tirar férias e sem reclamar.",
+    title: "services.benefits.title_2",
+    text: "services.benefits.text_2",
     backgroundUrl: "./src/assets/benefits/card-2.svg",
     iconUrl: benefitIcon1,
     imageUrl: benefitImage2,
     light: true,
   },
   {
-    title: "Redes Sociais em Piloto Automático",
-    text: "Criamos um agente de IA que cria conteúdos personalizados e faz a gestão automática das suas redes sociais, para uma presença digital cada vez melhor.",
+    title: "services.benefits.title_3",
+    text: "services.benefits.text_3",
     backgroundUrl: "./src/assets/benefits/card-3.svg",
     iconUrl: benefitIcon2,
     imageUrl: benefitImage2,
   },
-  // {
-  //     title: "Fast responding",
-  //     text: "Lets users quickly find answers to their questions without having to search through multiple sources.",
-  //     backgroundUrl: "./src/assets/benefits/card-4.svg",
-  //     iconUrl: benefitIcon4,
-  //     imageUrl: benefitImage2,
-  //     light: true,
-  // },
-  // {
-  //     title: "Ask anything",
-  //     text: "Lets users quickly find answers to their questions without having to search through multiple sources.",
-  //     backgroundUrl: "./src/assets/benefits/card-5.svg",
-  //     iconUrl: benefitIcon1,
-  //     imageUrl: benefitImage2,
-  // },
-  // {
-  //     title: "Improve everyday",
-  //     text: "The app uses natural language processing to understand user queries and provide accurate and relevant responses.",
-  //     backgroundUrl: "./src/assets/benefits/card-6.svg",
-  //     iconUrl: benefitIcon2,
-  //     imageUrl: benefitImage2,
-  // },
 ];
 
 const Services = () => {
+  const { t } = useTranslation();
+
   return (
     <Section id="services">
       <div className="container relative z-2">
         <Heading
           className="md:max-w-md lg:max-w-2xl"
-          title="Os Nossos Serviços"
+          title={t("services.heading")}
         />
 
         <div className="flex flex-wrap gap-10 mb-10">
@@ -75,14 +58,14 @@ const Services = () => {
               key={i}
             >
               <div className="relative z-2 flex flex-col min-h-[22rem] p-[2.4rem]">
-                <h5 className="h5 mb-5">{item.title}</h5>
-                <p className="body-2 mb-6 text-n-3">{item.text}</p>
+                <h5 className="h5 mb-5">{t(item.title)}</h5>
+                <p className="body-2 mb-6 text-n-3">{t(item.text)}</p>
                 <div className="flex items-center mt-auto">
                   <img
                     src={item.iconUrl}
                     width={48}
                     height={48}
-                    alt={item.title}
+                    alt={t(item.title)}
                   />
                   <p className="ml-auto font-code text-xs font-bold text-white uppercase tracking-wider"></p>
                   <Arrow />
@@ -103,7 +86,7 @@ const Services = () => {
                       src={item.imageUrl}
                       width={380}
                       height={362}
-                      alt={item.title}
+                      alt={t(item.title)}
                       className="w-full h-full object-cover"
                     />
                   )}

@@ -134,7 +134,7 @@ const Header = () => {
                     New account
                 </a> */}
         <Button className="hidden lg:flex" href="#services">
-          Saber Mais
+            {t("button.learnMore")}
         </Button>
 
         <Button className="ml-auto lg:hidden" onClick={toggleNavigation}>

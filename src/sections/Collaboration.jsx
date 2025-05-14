@@ -4,12 +4,6 @@ import {
   curve1,
   curve2,
   discord,
-  figma,
-  framer,
-  notion,
-  photoshop,
-  protopie,
-  raindrop,
   slack,
   chatGPT,
   gmail,
@@ -21,21 +15,7 @@ import {
 
 import Button from "../components/Button";
 import Section from "../components/Section";
-
-const collabContent = [
-  {
-    title: "1 Consultoria gratuita",
-    text: "Converse com um engenheiro de sistemas real (normalmente +100€/hora) e discuta as necessidades e objetivos do seu projeto. Vamos ouvir atentamente para servir as suas necessidades o melhor possível.",
-  },
-  {
-    title: "2 Análise e Proposta",
-    text: "Com base na sua consulta, iremos fornecer uma análise detalhada, incluindo etapas, propostas, orçamento e algumas possíveis modificações ou extensões ao seu sistema.",
-  },
-  {
-    title: "3 Início do projeto",
-    text: "Com a proposta alinhada e acertada, agendaremos uma reunião inicial para dar início à implementação.",
-  },
-];
+import { useTranslation } from "react-i18next";
 
 
 
@@ -91,11 +71,28 @@ const collabApps = [
 ];
 
 const Collaboration = () => {
+  const { t } = useTranslation();
+
+  const collabContent = [
+    {
+      title: t("collaboration.steps.1.title"),
+      text: t("collaboration.steps.1.text"),
+    },
+    {
+      title: t("collaboration.steps.2.title"),
+      text: t("collaboration.steps.2.text"),
+    },
+    {
+      title: t("collaboration.steps.3.title"),
+      text: t("collaboration.steps.3.text"),
+    },
+  ];
+
   return (
     <Section crosses id="sobre">
       <div className="container lg:flex">
         <div className="max-w-[25rem]">
-          <h2 className="h2 mb-4 md:mb-8">Como funciona</h2>
+          <h2 className="h2 mb-4 md:mb-8">{t("collaboration.heading")}</h2>
 
           <ul className="max-w-[22rem] mb-10 md:mb-14">
             {collabContent.map((item, i) => (
@@ -111,14 +108,14 @@ const Collaboration = () => {
             ))}
           </ul>
 
-          <Button>Vamos Conversar?</Button>
+          <Button>{t("collaboration.button")}</Button>
         </div>
 
         <div className="lg:ml-auto xl:w-[38rem] mt-4">
           <p className="body-2 mb-8 text-n-4 md:mb-16 lg:mb-32 lg:w-[22rem] lg:mx-auto">
-            A automação é complicada - mas nós podemos implementá-la por si!
-            Descubra como a IA pode transformar o seu negócio em 3 etapas
-            simples.
+            {t("collaboration.intro.line1")}
+            <br />
+            {t("collaboration.intro.line2")}
           </p>
 
           <div className="relative left-1/2 flex w-[22rem] aspect-square border border-n-6 rounded-full -translate-x-1/2 scale:75 md:scale-100">

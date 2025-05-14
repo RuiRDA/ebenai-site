@@ -20,6 +20,8 @@ import { useEffect, useRef, useState } from "react";
 import Notification from "../components/Notification";
 import PlusSvg from "../assets/svg/PlusSvg";
 
+import { useTranslation } from "react-i18next";
+
 const BackgroundCircles = ({ parallaxRef }) => {
   const [mounted, setMounted] = useState(false);
 
@@ -91,6 +93,7 @@ const Hero = () => {
   const parallaxRef = useRef(null);
   const [mounted, setMounted] = useState(false);
 
+  const { t } = useTranslation();
   // Mount effect to ensure stable initial rendering
   useEffect(() => {
     setMounted(true);
@@ -107,7 +110,7 @@ const Hero = () => {
       <div className="container relative" ref={parallaxRef}>
         <div className="relative z-1 max-w-[62rem] mx-auto text-center mb-[3.875rem] md:mb-20 lg:mb-[6.25rem]">
           <h1 className="h1 mb-6">
-            Otimize os resultados do seu negócio com a {` `}
+            {t("hero.title")} {` `}
             <span className="inline-block relative">
               Eben AI{" "}
               <img
@@ -122,13 +125,11 @@ const Hero = () => {
           {/* Fixed height text block with overflow handling */}
           <div className="h-[6rem] flex items-center justify-center overflow-visible">
             <p className="body-1 max-w-3xl mx-auto mb-6 text-n-2 lg:mb-8">
-              Faça mais vendas no piloto automático e converta mais leads para o
-              seu negócio com um super funcionário digital que nunca dorme, não
-              tira férias e não reclama!
+              {t("hero.description")}
             </p>
           </div>
           <Button href="#pricing" white>
-            Saber Mais
+            {t("button.learnMore")}
           </Button>
         </div>
         <div
@@ -154,7 +155,7 @@ const Hero = () => {
 
                 <div className="flex items-center h-[3.5rem] px-6 bg-n-8/80 rounded-[1.7rem] absolute left-4 right-4 bottom-5 md:left-1/2 md:right-auto md:bottom-8 md:w-[31rem] md:-translate-x-1/2 text-base">
                   <img className="w-5 h-5 mr-4" src={loading} alt="" />
-                  AI em Processamento...
+                  {t("hero.processing")}
                 </div>
 
                 <ScrollParallax isAbsolutelyPositioned>
@@ -177,7 +178,8 @@ const Hero = () => {
                 <ScrollParallax isAbsolutelyPositioned>
                   <Notification
                     className="hidden absolute -right-[5.5rem] bottom-[11rem] w-[18rem] xl:flex"
-                    title="Clientes atendidos"
+                    title={t("hero.clientsServed")}
+                    time={t("hero.time")}
                   />
                 </ScrollParallax>
               </div>
@@ -201,7 +203,7 @@ const Hero = () => {
 
         <div className="hidden relative z-10 mt-20 lg:block">
           <h5 className="tagline mb-6 text-center text-white/50">
-            Negócios que já usam os sistemas da Eben AI Solutions
+            {t("hero.companiesUsing")}
           </h5>
           <ul className="flex">
             <li className="flex items-center justify-center flex-1 h-[8.5rem]">

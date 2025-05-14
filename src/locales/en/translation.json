@@ -1,10 +1,102 @@
 {
   "navigation": {
+    "home": "Home",
     "services": "Services",
     "about": "About",
-    "contact": "Contact"
+    "contact": "Contact",
+    "terms": "Terms"
   },
   "button": {
     "learnMore": "Learn More"
+  },
+  "footer": {
+    "emailUs": "Email us",
+    "phone": "Phone",
+    "copyright": "© {{year}}. All Rights Reserved By EBEN"
+  },
+  "services": {
+    "heading": "Our Services",
+    "benefits": {
+      "title_1": "Automated Internal Processes",
+      "text_1": "We create an AI agent that uses your company's applications to act as a real employee, saving time on document management and internal processes.",
+
+      "title_2": "Conversations with AI Agents",
+      "text_2": "We create realistic digital employees to chat and convert your leads 24/7 by text or audio, 365 days a year, with no vacations and no complaints.",
+
+      "title_3": "Social Media on Autopilot",
+      "text_3": "We create an AI agent that produces personalized content and automatically manages your social networks for an ever-improving digital presence."
+    }
+  },
+  "hero": {
+    "title": "Optimize your business results with ",
+    "description": "Make more sales on autopilot and convert more leads for your business with a super digital employee who never sleeps, never takes vacations, and never complains!",
+    "processing": "AI Processing...",
+    "clientsServed": "Clients served",
+    "companiesUsing": "Businesses already using Eben AI Solutions systems",
+    "time": "1m ago"
+  },
+  "collaboration": {
+    "heading": "How it works",
+    "steps": {
+      "1": {
+        "title": "1 Free Consultation",
+        "text": "Talk to a real systems engineer (normally +100€/hour) and discuss your project's needs and goals. We will listen carefully to serve your needs as best as possible."
+      },
+      "2": {
+        "title": "2 Analysis and Proposal",
+        "text": "Based on your consultation, we will provide a detailed analysis, including steps, proposals, budget, and some possible modifications or extensions to your system."
+      },
+      "3": {
+        "title": "3 Project Start",
+        "text": "With the proposal aligned and agreed upon, we will schedule a kickoff meeting to start the implementation."
+      }
+    },
+    "button": "Shall we talk?",
+    "intro": {
+      "line1": "Automation is complicated - but we can implement it for you!",
+      "line2": "Discover how AI can transform your business in 3 simple steps."
+    }
+  },
+  "faq": {
+    "heading": "Frequently Asked Questions",
+    "q1_question": "How can Eben AI help my business?",
+    "q1_answer": "We can save your employees hundreds of hours of manual work by automating repetitive and tedious tasks such as outbound prospecting, customer service, scheduling, content creation, and more. By implementing these solutions, we not only increase efficiency but also give your team more time to focus on more strategic and creative activities, generating even more impactful results for your business.",
+    "q2_question": "How long does it take to build my project?",
+    "q2_answer": "Typically, our solutions are fully implemented within 1 to 2 weeks, covering the entire development and integration process. With an agile and efficient approach, we ensure your team can start benefiting from our services quickly, without compromising on quality or delivery accuracy.",
+    "q3_question": "What is my guarantee?",
+    "q3_answer": "We offer a 30-day guarantee after the implementation of your AI solution, with a full refund if you are not completely satisfied with the results. We want to ensure your experience is positive and that the benefits of our solution fully meet your needs.",
+    "q4_question": "How are AI Solutions created?",
+    "q4_answer": "We go through the planning and project architecture process with our team and take the project to system and AI integration platforms such as make.com, n8n, flowise, among others.",
+    "q5_question": "How will our communication be?",
+    "q5_answer": "For most companies, our communication will be done directly via WhatsApp. In addition, during the project development and testing phase, we offer continuous support to follow up on updates, resolve possible system errors, and ensure that progress is always aligned with the established objectives.",
+    "q6_question": "What if there is an error in the automation?",
+    "q6_answer": "We will be notified immediately whenever a problem occurs in the system and will resolve it quickly, ensuring that operations continue to run without interruption.",
+    "q7_question": "Do I need technical knowledge to use the automated systems?",
+    "q7_answer": "We have a simple and transparent delivery process that instructs your team to use the systems we deliver, without needing to know how to program or invest dozens of hours learning new tools."
+  },
+  "testimonials": {
+    "heading": "What our clients say about Eben AI Solutions",
+    "quote_rui_c_santos": "I highly recommend for any project that requires technical skills and strong collaboration.",
+    "quote_rodrigo_damas": "Excellent service! Always super quick to respond and ready to help. Highly recommended!",
+    "quote_dinis_assis": "Very good, fast and always available.",
+    "quote_keith": "Happy to highly recommend! Got exactly what I was asking for and more. Extremely clear communications and I'm just very happy with this altogether. I will use again for sure!",
+    "quote_christophers": "We gave them a tough challenge and they went above and beyond to make the project work. We had to pull data from multiple websites into a spreadsheet with thousands of rows and it worked flawlessly! Will definitely hire for future projects. If you need any web scraping, these are your guys!",
+    "quote_omar": "Eben AI delivered high-quality work fast, and exceeded my expectations. Excellent communication and professionalism throughout. Highly recommended—thank you!",
+    "quote_ayoub": "Best quality of service and communication! Very professional and supportive, thanks for your time and efforts",
+    "quote_jim": "Exceptional work. Took less time than expected to create a video production automation."
+  },
+  "callForm": {
+    "heading": "Let's Talk?",
+    "description": "We invest heavily at the start of each project, taking on 100% of the risk so you don’t have to (these projects can take weeks or even months). Because of this, we work with only a limited number of companies each month to deliver unmatched results with the highest quality. Take the first step now! Schedule a call so we can start building something amazing together."
+  }
+,
+  "chat": {
+    "welcomeText": "Instant answers to your questions!",
+    "responseTimeText": "Click the button below to start chatting",
+    "initialBotMessage": "Hello, I am Zari, the virtual assistant of Eben AI.\nHow can I help you?",
+    "suggestedQuestions": [
+      "What services do you offer?",
+      "How can I contact support?"
+    ]
   }
 }
