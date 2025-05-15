@@ -7,10 +7,6 @@ import {
   plusSquare,
   robot,
   searchMd,
-  biblein,
-  ericeiraproperty,
-  grupo_das_casas,
-  htailors,
 } from "../assets";
 
 import Button from "../components/Button";
@@ -141,20 +137,20 @@ const Hero = () => {
             <div className="relative bg-n-8 rounded-[1rem]">
               <div className="h-[1.4rem] bg-[#43435C] rounded-t-[0.9rem]" />
 
-              <div className="aspect-[23/14] rounded-b-[0.9rem] overflow-hidden md:aspect-[688/390] lg:aspect-[1024/390]">
+              <div className="aspect-[7/4] rounded-b-[0.9rem] md:aspect-[7/4] lg:aspect-[7/4]">
                 {/* Original mobile: aspect-[33/40] -> New: aspect-[33/32] (or any value less than 40) */}
                 {/* Original md: aspect-[688/490] -> New: md:aspect-[688/390] (or any value less than 490) */}
                 {/* Original lg: aspect-[1024/490] -> New: lg:aspect-[1024/390] (or any value less than 490) */}
                 <img
                   src={robot}
-                  className="w-full h-full object-cover object-top"
+                  className="w-full h-full object-contain object-top rounded-b-[0.9rem]"
                   width={1024}
                   height={490}
                   alt="Robot"
                 />
 
-                <div className="flex items-center h-[3.5rem] px-6 bg-n-8/80 rounded-[1.7rem] absolute left-4 right-4 bottom-5 md:left-1/2 md:right-auto md:bottom-8 md:w-[31rem] md:-translate-x-1/2 text-base">
-                  <img className="w-5 h-5 mr-4" src={loading} alt="" />
+                <div className="flex items-center h-[1.75rem] md:h-[3.5rem] px-3 md:px-6 bg-n-8/80 rounded-[1.7rem] absolute left-4 right-4 bottom-5 md:left-1/2 md:right-auto md:bottom-8 md:w-[31rem] md:-translate-x-1/2 text-sm md:text-base">
+                  <img className="w-2.5 h-2.5 md:w-5 md:h-5 mr-4" src={loading} alt="" />
                   {t("hero.processing")}
                 </div>
 
@@ -230,3 +226,4 @@ const Hero = () => {
 };
 
 export default Hero;
+

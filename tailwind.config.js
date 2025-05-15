@@ -44,7 +44,7 @@ export default {
             },
             backgroundImage: {
                 "radial-gradient": "radial-gradient(var(--tw-gradient-stops))",
-                "conic-gradient": "conic-gradient(from 225deg, #FFC876, #79FFF7, #9F53FF, #FF98E2, #FFC876)",
+                "conic-gradient": "conic-gradient(from 225deg, #0ea5e9, #3b82f6, #4f46e5, #0ea5e9)",
             },
             zIndex: {
                 1: "1",
