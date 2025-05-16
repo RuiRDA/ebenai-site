@@ -10,9 +10,7 @@ import {
   benefitIcon2,
   benefitIcon3,
   benefitImage2,
-  benefitCard1,
-  benefitCard2,
-  benefitCard3,
+  benefitCard1,benefitCard2 ,benefitCard3
 } from "../assets";
 
 const benefits = [
@@ -60,10 +58,12 @@ const Services = () => {
               }}
               key={i}
             >
-              <div className="relative z-2 flex flex-col min-h-[22rem] p-[2.4rem]">
-                <h5 className="h5 mb-5">{t(item.title)}</h5>
-                <p className="body-2 mb-6 text-n-3">{t(item.text)}</p>
-                <div className="flex items-center mt-auto">
+              <div className="relative z-2 flex flex-col h-full min-h-[22rem] p-[2.4rem] justify-between">
+                <div>
+                  <h5 className="h5 mb-5">{t(item.title)}</h5>
+                  <p className="body-2 mb-6 text-n-3">{t(item.text)}</p>
+                </div>
+                <div className="flex items-center">
                   <img
                     src={item.iconUrl}
                     width={48}
