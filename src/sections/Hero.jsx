@@ -124,7 +124,7 @@ const Hero = () => {
               {t("hero.description")}
             </p>
           </div>
-          <Button href="#pricing" white>
+          <Button href="#services" white>
             {t("button.learnMore")}
           </Button>
         </div>

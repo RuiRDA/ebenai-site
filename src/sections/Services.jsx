@@ -17,14 +17,14 @@ const benefits = [
   {
     title: "services.benefits.title_1",
     text: "services.benefits.text_1",
-    backgroundUrl: benefitCard1,
+    backgroundUrl: "https://raw.githubusercontent.com/RuiRDA/ebenai-site/refs/heads/main/src/assets/benefits/card-1.svg",
     iconUrl: benefitIcon3,
     imageUrl: benefitImage2,
   },
   {
     title: "services.benefits.title_2",
     text: "services.benefits.text_2",
-    backgroundUrl: benefitCard2,
+    backgroundUrl: "https://raw.githubusercontent.com/RuiRDA/ebenai-site/refs/heads/main/src/assets/benefits/card-2.svg",
     iconUrl: benefitIcon1,
     imageUrl: benefitImage2,
     light: true,
@@ -32,7 +32,7 @@ const benefits = [
   {
     title: "services.benefits.title_3",
     text: "services.benefits.text_3",
-    backgroundUrl: benefitCard3,
+    backgroundUrl: "https://raw.githubusercontent.com/RuiRDA/ebenai-site/refs/heads/main/src/assets/benefits/card-3.svg",
     iconUrl: benefitIcon2,
     imageUrl: benefitImage2,
   },
@@ -54,7 +54,7 @@ const Services = () => {
             <div
               className="block relative p-0.5 bg-no-repeat bg-[length:100%_100%] md:max-w-[24rem] group"
               style={{
-                backgroundImage: `url(${item.backgroundUrl})`,
+                backgroundImage: `url('${item.backgroundUrl}')`,
               }}
               key={i}
             >

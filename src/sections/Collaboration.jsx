@@ -53,8 +53,8 @@ const collabApps = [
   {
     title: "Airtable file icon",
     icon: airtable,
-    width: 120,
-    height: 120,
+    width: 34,
+    height: 42,
   },
   {
     title: "WhatsApp",
