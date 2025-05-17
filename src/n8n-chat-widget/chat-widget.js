@@ -1,3 +1,5 @@
+import { marked } from 'marked';
+
 // Interactive Chat Widget for n8n
 (function() {
     // Initialize widget only once
@@ -750,7 +752,7 @@
             // Display the message
             const botMessage = document.createElement('div');
             botMessage.className = 'chat-bubble bot-bubble';
-            botMessage.innerHTML = linkifyText(messages[i].text || String(messages[i]));
+            botMessage.innerHTML = marked.parse(linkifyText(messages[i].text || String(messages[i])));
             messagesContainer.appendChild(botMessage);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
             // Delay before next message, unless it's the last one
