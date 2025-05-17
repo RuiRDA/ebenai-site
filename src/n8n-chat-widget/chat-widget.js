@@ -730,6 +730,40 @@
         });
     }
 
+    // Helper to display multiple bot messages with delay and typing indicator
+    /**
+     * Display multiple bot messages sequentially with configurable delays.
+     * @param {Array} messages - Array of message objects or strings.
+     * @param {number} [betweenMessagesDelay=1200] - Delay (ms) between messages.
+     * @param {number} [typingIndicatorDelay=900] - Delay (ms) for typing indicator before first message.
+     */
+    async function displayBotMessagesSequentially(messages, betweenMessagesDelay = 1500, typingIndicatorDelay = 0) {
+        for (let i = 0; i < messages.length; i++) {
+            // Show typing indicator before each message except the first (since it's already shown)
+            if (i > 0) {
+                const typing = createTypingIndicator();
+                messagesContainer.appendChild(typing);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                await new Promise(res => setTimeout(res, typingIndicatorDelay));
+                messagesContainer.removeChild(typing);
+            }
+            // Display the message
+            const botMessage = document.createElement('div');
+            botMessage.className = 'chat-bubble bot-bubble';
+            botMessage.innerHTML = linkifyText(messages[i].text || String(messages[i]));
+            messagesContainer.appendChild(botMessage);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            // Delay before next message, unless it's the last one
+            if (i < messages.length - 1) {
+                const typing = createTypingIndicator();
+                messagesContainer.appendChild(typing);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                await new Promise(res => setTimeout(res, betweenMessagesDelay));
+                messagesContainer.removeChild(typing);
+            }
+        }
+    }
+
     // NEW FUNCTION to directly start chat
     async function initiateChatSession() {
         chatBody.classList.add('active'); // Show chat body
@@ -836,16 +870,32 @@
             
             const responseData = await response.json();
             
-            // Remove typing indicator
-            messagesContainer.removeChild(typingIndicator);
+            // // Alert the full JSON response from the webhook
+            // alert(JSON.stringify(responseData, null, 2));
             
-            // Display bot response with clickable links
-            const botMessage = document.createElement('div');
-            botMessage.className = 'chat-bubble bot-bubble';
-            const responseText = Array.isArray(responseData) ? responseData[0].output : responseData.output;
-            botMessage.innerHTML = linkifyText(responseText);
-            messagesContainer.appendChild(botMessage);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+            // Remove the initial typing indicator
+            messagesContainer.removeChild(typingIndicator);
+
+            // Determine if response contains multiple messages
+            let messagesArray = null;
+            if (Array.isArray(responseData) && responseData[0]?.output?.messages && Array.isArray(responseData[0].output.messages)) {
+                messagesArray = responseData[0].output.messages;
+            } else if (responseData?.output?.messages && Array.isArray(responseData.output.messages)) {
+                messagesArray = responseData.output.messages;
+            }
+
+            if (messagesArray && messagesArray.length > 0) {
+                await displayBotMessagesSequentially(messagesArray);
+            } else {
+                // Fallback: display single message as before
+                const botMessage = document.createElement('div');
+                botMessage.className = 'chat-bubble bot-bubble';
+                const responseText = Array.isArray(responseData) ? responseData[0].output : responseData.output;
+                botMessage.innerHTML = linkifyText(responseText);
+                messagesContainer.appendChild(botMessage);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            }
         } catch (error) {
             console.error('Message submission error:', error);
             
