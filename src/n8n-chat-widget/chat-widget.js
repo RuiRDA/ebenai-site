@@ -13,6 +13,14 @@ import { marked } from "marked";
     "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap";
   document.head.appendChild(fontElement);
 
+  // --- START: Scroll Behavior Configuration ---
+  const SCROLL_THRESHOLD = 20; // Pixels from bottom to be considered "at the bottom"
+  const NEW_MESSAGE_INDICATOR_DURATION = 3000; // Milliseconds the new message indicator is visible
+  // --- END: Scroll Behavior Configuration ---
+
+  let scrollToBottomIndicator;
+  let scrollToBottomIndicatorTimeout;
+
   // Apply widget styles with completely different design approach
   const widgetStyles = document.createElement("style");
   widgetStyles.textContent = `
@@ -39,7 +47,7 @@ import { marked } from "marked";
         .chat-assist-widget .chat-window {
             position: fixed;
             bottom: 90px;
-            z-index: 1000;
+            z-index: 1000; /* High z-index for overlay */
             width: 400px;
             height: 580px;
             background: var(--chat-color-surface);
@@ -54,48 +62,101 @@ import { marked } from "marked";
             transform: translateY(20px) scale(0.95);
         }
 
-        /* Responsive styles for mobile */
-        @media (max-width: 600px) {
+        /* Responsive styles for mobile - FULL SCREEN */
+        @media (max-width: 768px) { /* Updated breakpoint */
             .chat-assist-widget .chat-window {
-                width: 98vw;
-                max-width: 98vw;
-                min-width: 0;
-                left: 1vw !important;
-                right: 1vw !important;
-                height: 90vh;
-                max-height: 95vh;
-                border-radius: 16px;
+                width: 100vw;
+                height: 100vh; /* Full viewport height */
+                top: 0;
+                left: 0;
+                right: auto; /* Override side-specific positioning */
+                bottom: auto; /* Override bottom positioning */
+                border-radius: 0; /* Full screen, no rounded corners */
+                max-width: none; /* Ensure it can go full width */
+                max-height: none; /* Ensure it can go full height */
+                /* The existing transform transition for visibility will apply */
             }
+
             .chat-assist-widget .chat-header-logo {
-                width: 44px;
-                height: 44px;
+                width: 40px;
+                height: 40px;
             }
             .chat-assist-widget .chat-header-title {
-                font-size: 14px;
+                font-size: 16px; /* Adjusted for mobile */
             }
+
+            /* Launcher styles for mobile - making it wide */
             .chat-assist-widget .chat-launcher {
                 right: 16px !important;
                 left: 16px !important;
                 bottom: 16px !important;
-                max-width: 95vw;
-                width: auto;
+                max-width: calc(100vw - 32px);
+                width: auto; /* Stretches due to left and right */
                 font-size: 14px;
+                justify-content: center; /* Center content in wide button */
+                height: 50px;
+                padding: 0 15px;
             }
+             /* No need for .chat-launcher.left-side specific left/right here as it's full width */
+
+
             .chat-assist-widget .chat-body,
             .chat-assist-widget .chat-messages {
-                padding: 10px !important;
+                padding: 12px; /* Adjusted padding for full screen */
+            }
+
+            .chat-assist-widget .scroll-to-bottom-indicator {
+                bottom: 10px; /* Adjust if input area is larger */
+            }
+
+            .chat-assist-widget .chat-textarea {
+                font-size: 15px;
+                min-height: 44px; /* Slightly taller min-height */
+            }
+            .chat-assist-widget .chat-submit {
+                width: 44px;
+                height: 44px;
+            }
+            .chat-assist-widget .chat-footer {
+                padding: 8px;
+            }
+            .chat-assist-widget .chat-footer-link {
+                font-size: 11px;
             }
         }
 
-        /* Extra small device scaling */
-        @media (max-width: 400px), (max-height: 600px) {
-            .chat-assist-widget .chat-window {
-                transform: scale(0.85) !important;
+        /* Extra small device scaling - Removed scaling for .chat-window */
+        @media (max-width: 400px), (max-height: 700px) { /* Adjusted height breakpoint slightly */
+            /* .chat-window scaling removed for fullscreen mobile */
+
+            .chat-assist-widget .chat-launcher { /* Launcher scaling can remain */
+                transform: scale(0.9) !important;
+                /* transform-origin depends on its actual position which is now centered/wide */
+                transform-origin: bottom center !important;
+            }
+             /* If launcher is full width, its transform origin might be center */
+            .chat-assist-widget .chat-launcher.right-side { /* Fallback if not full width */
                 transform-origin: bottom right !important;
             }
-            .chat-assist-widget .chat-launcher {
-                transform: scale(0.85) !important;
-                transform-origin: bottom right !important;
+            .chat-assist-widget .chat-launcher.left-side { /* Fallback if not full width */
+                transform-origin: bottom left !important;
+            }
+
+
+            /* Further adjustments for very small screens */
+            .chat-assist-widget .chat-header-logo {
+                width: 36px;
+                height: 36px;
+            }
+            .chat-assist-widget .chat-header-title {
+                font-size: 15px;
+            }
+            .chat-assist-widget .chat-body,
+            .chat-assist-widget .chat-messages {
+                padding: 10px;
+            }
+            .chat-assist-widget .chat-textarea {
+                font-size: 14px;
             }
         }
 
@@ -120,7 +181,8 @@ import { marked } from "marked";
             gap: 12px;
             background: linear-gradient(135deg, var(--chat-color-primary) 0%, var(--chat-color-secondary) 100%);
             color: white;
-            position: relative;
+            position: relative; /* Keep for close button positioning */
+            flex-shrink: 0; /* Prevent header from shrinking */
         }
 
         .chat-assist-widget .chat-header-logo {
@@ -136,6 +198,8 @@ import { marked } from "marked";
             font-size: 16px;
             font-weight: 600;
             color: white;
+            flex-grow: 1; /* Allow title to take available space */
+            margin-right: 30px; /* Space for close button */
         }
 
         .chat-assist-widget .chat-close-btn {
@@ -214,11 +278,11 @@ import { marked } from "marked";
         }
 
         .chat-assist-widget .chat-body {
-            display: none;
+            display: none; /* Initially hidden, shown by .active */
             flex-direction: column;
-            flex: 1;
-            min-height: 0; /* Allow shrinking and proper flex calculation */
-            overflow: hidden; /* Ensure children are contained within chat-body's flex allocation */
+            flex: 1; /* Takes remaining space in chat-window */
+            min-height: 0; /* Crucial for flex shrinking */
+            overflow: hidden; /* Contains children like messages and controls */
         }
 
         .chat-assist-widget .chat-body.active {
@@ -226,14 +290,54 @@ import { marked } from "marked";
         }
 
         .chat-assist-widget .chat-messages {
-            flex: 1;
-            overflow-y: auto;
+            flex: 1; /* Takes most space in chat-body */
+            overflow-y: auto; /* Allows scrolling for messages */
             padding: 20px;
-            background: #202133;
+            background: #202133; /* Darker background for messages area */
             display: flex;
             flex-direction: column;
             gap: 12px;
+            position: relative; /* For scroll-to-bottom indicator */
         }
+
+        /* --- START: New Message Indicator CSS --- */
+        .chat-assist-widget .scroll-to-bottom-indicator {
+            position: absolute;
+            bottom: 15px; 
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--chat-color-primary);
+            color: white;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: var(--chat-shadow-md);
+            z-index: 10; /* Above messages */
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, transform 0.2s ease-in-out;
+            pointer-events: none;
+        }
+
+        .chat-assist-widget .scroll-to-bottom-indicator.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .chat-assist-widget .scroll-to-bottom-indicator:hover {
+            transform: translateX(-50%) scale(1.1);
+        }
+        
+        .chat-assist-widget .scroll-to-bottom-indicator svg {
+            width: 18px;
+            height: 18px;
+            stroke: white;
+            stroke-width: 2.5;
+        }
+        /* --- END: New Message Indicator CSS --- */
 
         .chat-assist-widget .chat-messages::-webkit-scrollbar {
             width: 6px;
@@ -244,7 +348,7 @@ import { marked } from "marked";
         }
 
         .chat-assist-widget .chat-messages::-webkit-scrollbar-thumb {
-            background-color: rgba(16, 185, 129, 0.3);
+            background-color: rgba(16, 185, 129, 0.3); /* Using primary color with alpha */
             border-radius: var(--chat-radius-full);
         }
 
@@ -256,7 +360,7 @@ import { marked } from "marked";
             font-size: 14px;
             line-height: 1.6;
             position: relative;
-            white-space: pre-line; /* This preserves line breaks */
+            white-space: pre-line;
         }
 
     .chat-assist-widget .chat-bubble p {
@@ -268,14 +372,13 @@ import { marked } from "marked";
     .chat-assist-widget .chat-bubble ol {
         margin-top: 0;
         margin-bottom: 0;
-        padding-left: 0px; /* Or your preferred padding for lists */
+        padding-left: 0px; 
     }
 
     .chat-assist-widget .chat-bubble li {
-        margin-bottom: 0.0em; /* Optional: small space between list items */
+        margin-bottom: 0.0em; 
     }
 
-    /* If you use headings in markdown */
     .chat-assist-widget .chat-bubble h1,
     .chat-assist-widget .chat-bubble h2,
     .chat-assist-widget .chat-bubble h3,
@@ -283,10 +386,9 @@ import { marked } from "marked";
     .chat-assist-widget .chat-bubble h5,
     .chat-assist-widget .chat-bubble h6 {
         margin-top: 0;
-        margin-bottom: 0.0em; /* Optional: small space after headings */
+        margin-bottom: 0.0em;
     }
 
-    /* To handle cases where a paragraph might be the only child or the last child */
     .chat-assist-widget .chat-bubble p:first-child {
         margin-top: 0;
     }
@@ -302,9 +404,6 @@ import { marked } from "marked";
         margin-bottom: 0;
     }
 
-
-
-
         .chat-assist-widget .chat-bubble.user-bubble {
             background: linear-gradient(135deg, var(--chat-color-primary) 0%, var(--chat-color-secondary) 100%);
             color: white;
@@ -314,7 +413,7 @@ import { marked } from "marked";
         }
 
         .chat-assist-widget .chat-bubble.bot-bubble {
-            background: #23243a;
+            background: #23243a; /* Slightly different from surface for contrast */
             color: var(--chat-color-text);
             align-self: flex-start;
             border-bottom-left-radius: 4px;
@@ -331,7 +430,7 @@ import { marked } from "marked";
             background: #23243a;
             border-radius: var(--chat-radius-md);
             border-bottom-left-radius: 4px;
-            max-width: 80px;
+            max-width: 80px; /* Fit the 3 dots comfortably */
             align-self: flex-start;
             box-shadow: var(--chat-shadow-sm);
             border: 1px solid var(--chat-color-border);
@@ -340,7 +439,7 @@ import { marked } from "marked";
         .chat-assist-widget .typing-dot {
             width: 8px;
             height: 8px;
-            background: var(--chat-color-primary);
+            background: var(--chat-color-primary); /* Use primary color for dots */
             border-radius: var(--chat-radius-full);
             opacity: 1;
             animation: typingAnimation 1.4s infinite ease-in-out;
@@ -369,10 +468,12 @@ import { marked } from "marked";
 
         .chat-assist-widget .chat-controls {
             padding: 16px;
-            background: var(--chat-color-surface);
+            background: var(--chat-color-surface); /* Match window background */
             border-top: 1px solid var(--chat-color-light);
             display: flex;
             gap: 10px;
+            align-items: flex-end; /* Align items to bottom for multi-line text area */
+            flex-shrink: 0; /* Prevent controls from shrinking */
         }
 
         .chat-assist-widget .chat-textarea {
@@ -380,21 +481,22 @@ import { marked } from "marked";
             padding: 14px 16px;
             border: 1px solid var(--chat-color-light);
             border-radius: var(--chat-radius-md);
-            background: var(--chat-color-surface);
+            background: var(--chat-color-surface); /* Consistent background */
             color: var(--chat-color-text);
             resize: none;
             font-family: inherit;
             font-size: 14px;
             line-height: 1.5;
-            max-height: 120px;
-            min-height: 48px;
+            max-height: 120px; /* Max height before scrolling within textarea */
+            min-height: 48px; /* Default single line height */
             transition: var(--chat-transition);
+            overflow-y: auto; /* Scroll if content exceeds max-height */
         }
 
         .chat-assist-widget .chat-textarea:focus {
             outline: none;
             border-color: var(--chat-color-primary);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.2); /* Adjusted glow color */
         }
 
         .chat-assist-widget .chat-textarea::placeholder {
@@ -407,7 +509,7 @@ import { marked } from "marked";
             border: none;
             border-radius: var(--chat-radius-md);
             width: 48px;
-            height: 48px;
+            height: 48px; /* Match min-height of textarea for alignment */
             cursor: pointer;
             transition: var(--chat-transition);
             display: flex;
@@ -437,7 +539,7 @@ import { marked } from "marked";
             border: none;
             cursor: pointer;
             box-shadow: var(--chat-shadow-md);
-            z-index: 999;
+            z-index: 999; /* Below chat window */
             transition: var(--chat-transition);
             display: flex;
             align-items: center;
@@ -474,6 +576,7 @@ import { marked } from "marked";
             text-align: center;
             background: var(--chat-color-surface);
             border-top: 1px solid var(--chat-color-light);
+            flex-shrink: 0; /* Prevent footer from shrinking */
         }
 
         .chat-assist-widget .chat-footer-link {
@@ -493,20 +596,20 @@ import { marked } from "marked";
             display: flex;
             flex-direction: column;
             gap: 8px;
-            margin: 12px 0;
-            align-self: flex-start;
+            margin: 12px 0; /* Spacing around questions */
+            align-self: flex-start; /* Align to the start of message flow */
             max-width: 85%;
-            margin-top: auto; /* Push suggested questions to the bottom */
+            margin-top: auto; /* Push to bottom if messages are few initially */
         }
 
         .chat-assist-widget .suggested-question-btn {
-            background: #202133;
+            background: #202133; /* Darker, distinct from bot bubble */
             border: 1px solid var(--chat-color-primary);
             border-radius: var(--chat-radius-md);
             padding: 10px 14px;
             text-align: left;
             font-size: 13px;
-            color: var(--chat-color-primary);
+            color: var(--chat-color-primary); /* Primary color text */
             cursor: pointer;
             transition: var(--chat-transition);
             font-family: inherit;
@@ -514,7 +617,7 @@ import { marked } from "marked";
         }
 
         .chat-assist-widget .suggested-question-btn:hover {
-            background: #23243a;
+            background: #23243a; /* Match bot bubble bg on hover */
             border-color: var(--chat-color-secondary);
         }
 
@@ -530,6 +633,7 @@ import { marked } from "marked";
             text-decoration: underline;
         }
 
+        /* User Registration styles remain unchanged */
         .chat-assist-widget .user-registration {
             position: absolute;
             top: 50%;
@@ -541,158 +645,53 @@ import { marked } from "marked";
             max-width: 320px;
             display: none;
         }
-
-        .chat-assist-widget .user-registration.active {
-            display: block;
-        }
-
-        .chat-assist-widget .registration-title {
-            font-size: 18px;
-            font-weight: 600;
-            color: var(--chat-color-text);
-            margin-bottom: 16px;
-            line-height: 1.3;
-        }
-
-        .chat-assist-widget .registration-form {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .chat-assist-widget .form-field {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-            text-align: left;
-        }
-
-        .chat-assist-widget .form-label {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--chat-color-text);
-        }
-
-        .chat-assist-widget .form-input {
-            padding: 12px 14px;
-            border: 1px solid var(--chat-color-border);
-            border-radius: var(--chat-radius-md);
-            font-family: inherit;
-            font-size: 14px;
-            transition: var(--chat-transition);
-        }
-
-        .chat-assist-widget .form-input:focus {
-            outline: none;
-            border-color: var(--chat-color-primary);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
-        }
-
-        .chat-assist-widget .form-input.error {
-            border-color: #ef4444;
-        }
-
-        .chat-assist-widget .error-text {
-            font-size: 12px;
-            color: #ef4444;
-            margin-top: 2px;
-        }
-
-        .chat-assist-widget .submit-registration {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            padding: 14px 20px;
-            background: linear-gradient(135deg, var(--chat-color-primary) 0%, var(--chat-color-secondary) 100%);
-            color: white;
-            border: none;
-            border-radius: var(--chat-radius-md);
-            cursor: pointer;
-            font-size: 15px;
-            transition: var(--chat-transition);
-            font-weight: 600;
-            font-family: inherit;
-            box-shadow: var(--chat-shadow-md);
-        }
-
-        .chat-assist-widget .submit-registration:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--chat-shadow-lg);
-        }
-
-        .chat-assist-widget .submit-registration:disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .chat-assist-widget .user-registration.active { display: block; }
+        .chat-assist-widget .registration-title { font-size: 18px; font-weight: 600; color: var(--chat-color-text); margin-bottom: 16px; line-height: 1.3; }
+        .chat-assist-widget .registration-form { display: flex; flex-direction: column; gap: 12px; margin-bottom: 16px; }
+        .chat-assist-widget .form-field { display: flex; flex-direction: column; gap: 4px; text-align: left; }
+        .chat-assist-widget .form-label { font-size: 14px; font-weight: 500; color: var(--chat-color-text); }
+        .chat-assist-widget .form-input { padding: 12px 14px; border: 1px solid var(--chat-color-border); border-radius: var(--chat-radius-md); font-family: inherit; font-size: 14px; transition: var(--chat-transition); }
+        .chat-assist-widget .form-input:focus { outline: none; border-color: var(--chat-color-primary); box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2); }
+        .chat-assist-widget .form-input.error { border-color: #ef4444; }
+        .chat-assist-widget .error-text { font-size: 12px; color: #ef4444; margin-top: 2px; }
+        .chat-assist-widget .submit-registration { display: flex; align-items: center; justify-content: center; width: 100%; padding: 14px 20px; background: linear-gradient(135deg, var(--chat-color-primary) 0%, var(--chat-color-secondary) 100%); color: white; border: none; border-radius: var(--chat-radius-md); cursor: pointer; font-size: 15px; transition: var(--chat-transition); font-weight: 600; font-family: inherit; box-shadow: var(--chat-shadow-md); }
+        .chat-assist-widget .submit-registration:hover { transform: translateY(-2px); box-shadow: var(--chat-shadow-lg); }
+        .chat-assist-widget .submit-registration:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
     `;
   document.head.appendChild(widgetStyles);
 
   // Default configuration
   const defaultSettings = {
-    webhook: {
-      url: "",
-      route: "",
-    },
+    webhook: { url: "", route: "" },
     branding: {
-      logo: "",
-      name: "",
-      welcomeText: "", // This will no longer be directly used for the main welcome screen
-      initialBotMessage: "Hi there! How can I help you today?", // New default initial message
-      responseTimeText: "", // This will no longer be directly used
-      poweredBy: {
-        text: "Powered by Eben AI",
-        link: "https://ebenaisolutions.pt/",
-      },
+      logo: "", name: "", welcomeText: "",
+      initialBotMessage: "Hi there! How can I help you today?",
+      responseTimeText: "",
+      poweredBy: { text: "Powered by Eben AI", link: "https://ebenaisolutions.pt/" },
     },
     style: {
-      primaryColor: "#10b981", // Green
-      secondaryColor: "#059669", // Darker green
-      position: "right",
-      backgroundColor: "#ffffff",
-      fontColor: "#1f2937",
+      primaryColor: "#10b981", secondaryColor: "#059669", position: "right",
+      backgroundColor: "#ffffff", fontColor: "#1f2937",
     },
-    suggestedQuestions: [], // Default empty array for suggested questions
+    suggestedQuestions: [],
   };
 
   // Merge user settings with defaults
   const settings = window.ChatWidgetConfig
     ? {
-        webhook: {
-          ...defaultSettings.webhook,
-          ...window.ChatWidgetConfig.webhook,
-        },
+        webhook: { ...defaultSettings.webhook, ...window.ChatWidgetConfig.webhook },
         branding: {
-          ...defaultSettings.branding,
-          ...window.ChatWidgetConfig.branding,
-          welcomeText:
-            window.ChatWidgetConfig.branding?.welcomeText ||
-            defaultSettings.branding.welcomeText,
-          initialBotMessage:
-            window.ChatWidgetConfig.branding?.initialBotMessage ||
-            defaultSettings.branding.initialBotMessage,
-          responseTimeText:
-            window.ChatWidgetConfig.branding?.responseTimeText ||
-            defaultSettings.branding.responseTimeText,
+          ...defaultSettings.branding, ...window.ChatWidgetConfig.branding,
+          welcomeText: window.ChatWidgetConfig.branding?.welcomeText || defaultSettings.branding.welcomeText,
+          initialBotMessage: window.ChatWidgetConfig.branding?.initialBotMessage || defaultSettings.branding.initialBotMessage,
+          responseTimeText: window.ChatWidgetConfig.branding?.responseTimeText || defaultSettings.branding.responseTimeText,
         },
         style: {
-          ...defaultSettings.style,
-          ...window.ChatWidgetConfig.style,
-          // Force green colors if user provided purple
-          primaryColor:
-            window.ChatWidgetConfig.style?.primaryColor === "#854fff"
-              ? "#10b981"
-              : window.ChatWidgetConfig.style?.primaryColor || "#10b981",
-          secondaryColor:
-            window.ChatWidgetConfig.style?.secondaryColor === "#6b3fd4"
-              ? "#059669"
-              : window.ChatWidgetConfig.style?.secondaryColor || "#059669",
+          ...defaultSettings.style, ...window.ChatWidgetConfig.style,
+          primaryColor: window.ChatWidgetConfig.style?.primaryColor === "#854fff" ? "#10b981" : window.ChatWidgetConfig.style?.primaryColor || "#10b981",
+          secondaryColor: window.ChatWidgetConfig.style?.secondaryColor === "#6b3fd4" ? "#059669" : window.ChatWidgetConfig.style?.secondaryColor || "#059669",
         },
-        suggestedQuestions:
-          window.ChatWidgetConfig.suggestedQuestions ||
-          defaultSettings.suggestedQuestions,
+        suggestedQuestions: window.ChatWidgetConfig.suggestedQuestions || defaultSettings.suggestedQuestions,
       }
     : defaultSettings;
 
@@ -705,46 +704,41 @@ import { marked } from "marked";
   widgetRoot.className = "chat-assist-widget";
 
   // Apply custom colors
-  widgetRoot.style.setProperty(
-    "--chat-widget-primary",
-    settings.style.primaryColor
-  );
-  widgetRoot.style.setProperty(
-    "--chat-widget-secondary",
-    settings.style.secondaryColor
-  );
-  widgetRoot.style.setProperty(
-    "--chat-widget-tertiary",
-    settings.style.secondaryColor
-  );
-  widgetRoot.style.setProperty(
-    "--chat-widget-surface",
-    settings.style.backgroundColor
-  );
+  widgetRoot.style.setProperty("--chat-widget-primary", settings.style.primaryColor);
+  widgetRoot.style.setProperty("--chat-widget-secondary", settings.style.secondaryColor);
+  widgetRoot.style.setProperty("--chat-widget-tertiary", settings.style.secondaryColor); // Assuming tertiary is same as secondary
+  widgetRoot.style.setProperty("--chat-widget-surface", settings.style.backgroundColor);
   widgetRoot.style.setProperty("--chat-widget-text", settings.style.fontColor);
+  // Additional color variables derived or fixed, ensure they match the new dark theme if needed
+  // For the new theme provided in the CSS:
+  // --chat-color-light: #23243a (border/light bg element)
+  // --chat-color-surface: #181829 (main bg)
+  // --chat-color-text: #F3F4F6 (main text)
+  // --chat-color-text-light: #b6bad5 (placeholder/subtle text)
+  // --chat-color-border: #23243a (borders)
+  // If settings.style.backgroundColor or fontColor are meant to override these, ensure it's logical.
+  // The provided CSS uses these fixed dark theme colors unless overridden by primary/secondary.
+  // For now, we assume the CSS variable defaults are the dark theme, and primary/secondary are configurable.
 
   // Create chat panel
   const chatWindow = document.createElement("div");
-  chatWindow.className = `chat-window ${
-    settings.style.position === "left" ? "left-side" : "right-side"
-  }`;
+  chatWindow.className = `chat-window ${settings.style.position === "left" ? "left-side" : "right-side"}`;
 
-  // Create welcome screen with header
-  const welcomeScreenHTML = `
+  // Create header (welcome screen merged into main chat window)
+  const headerHTML = `
         <div class="chat-header">
-            <img class="chat-header-logo" src="${settings.branding.logo}" alt="${settings.branding.name}">
-            <span class="chat-header-title">${settings.branding.name}</span>
-            <button class="chat-close-btn">×</button>
-        </div>
-    `; // chat-welcome div removed
+            <img class="chat-header-logo" src="${settings.branding.logo}" alt="${settings.branding.name || 'Chat Bot'}">
+            <span class="chat-header-title">${settings.branding.name || 'Chat Assistant'}</span>
+            <button class="chat-close-btn" aria-label="Close chat">×</button>
+        </div>`;
 
-  // Create chat interface without duplicating the header
+  // Create chat interface (body, messages, controls, footer)
   const chatInterfaceHTML = `
         <div class="chat-body">
             <div class="chat-messages"></div>
             <div class="chat-controls">
-                <textarea class="chat-textarea" placeholder="Introduza a sua mensagem..." rows="1"></textarea>
-                <button class="chat-submit">
+                <textarea class="chat-textarea" placeholder="Introduza a sua mensagem..." rows="1" aria-label="Message input"></textarea>
+                <button class="chat-submit" aria-label="Send message">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M22 2L11 13"></path>
                         <path d="M22 2l-7 20-4-9-9-4 20-7z"></path>
@@ -752,18 +746,16 @@ import { marked } from "marked";
                 </button>
             </div>
             <div class="chat-footer">
-                <a class="chat-footer-link" href="${settings.branding.poweredBy.link}" target="_blank">${settings.branding.poweredBy.text}</a>
+                <a class="chat-footer-link" href="${settings.branding.poweredBy.link}" target="_blank" rel="noopener noreferrer">${settings.branding.poweredBy.text}</a>
             </div>
-        </div>
-    `;
+        </div>`;
 
-  chatWindow.innerHTML = welcomeScreenHTML + chatInterfaceHTML;
+  chatWindow.innerHTML = headerHTML + chatInterfaceHTML; // Combine header and chat interface
 
   // Create toggle button
   const launchButton = document.createElement("button");
-  launchButton.className = `chat-launcher ${
-    settings.style.position === "left" ? "left-side" : "right-side"
-  }`;
+  launchButton.className = `chat-launcher ${settings.style.position === "left" ? "left-side" : "right-side"}`;
+  launchButton.setAttribute("aria-label", "Open chat");
   launchButton.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
@@ -776,14 +768,12 @@ import { marked } from "marked";
   document.body.appendChild(widgetRoot);
 
   // Get DOM elements
-  // const startChatButton = chatWindow.querySelector('.chat-start-btn'); // Removed
   const chatBody = chatWindow.querySelector(".chat-body");
   const messagesContainer = chatWindow.querySelector(".chat-messages");
   const messageTextarea = chatWindow.querySelector(".chat-textarea");
   const sendButton = chatWindow.querySelector(".chat-submit");
+  const closeButton = chatWindow.querySelector(".chat-close-btn");
 
-  // const chatWelcome = chatWindow.querySelector('.chat-welcome'); // Removed
-  // Registration form elements removed
 
   // Helper function to generate unique session ID
   function createSessionId() {
@@ -797,91 +787,113 @@ import { marked } from "marked";
     indicator.innerHTML = `
             <div class="typing-dot"></div>
             <div class="typing-dot"></div>
-            <div class="typing-dot"></div>
-        `;
+            <div class="typing-dot"></div>`;
     return indicator;
   }
 
   // Function to convert URLs in text to clickable links
   function linkifyText(text) {
-    // URL pattern that matches http, https, ftp links
-    const urlPattern =
-      /(\b(https?|ftp):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gim;
-
-    // Convert URLs to HTML links
+    const urlPattern = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gim;
     return text.replace(urlPattern, function (url) {
       return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="chat-link">${url}</a>`;
     });
   }
 
-  // Helper to display multiple bot messages with delay and typing indicator
-  /**
-   * Display multiple bot messages sequentially with configurable delays.
-   * @param {Array} messages - Array of message objects or strings.
-   * @param {number} [betweenMessagesDelay=2000] - Delay (ms) between messages.
-   * @param {number} [typingIndicatorDelay=0] - Delay (ms) for typing indicator before first message.
-   */
+  // --- START: Scroll Helper Functions ---
+  function isScrolledToBottom(element, threshold = SCROLL_THRESHOLD) {
+    return element.scrollHeight - element.scrollTop - element.clientHeight < threshold;
+  }
+
+  function scrollToBottom(element) {
+    element.scrollTop = element.scrollHeight;
+  }
+
+  function getOrCreateScrollToBottomIndicator() {
+    if (!scrollToBottomIndicator) {
+      scrollToBottomIndicator = document.createElement('div');
+      scrollToBottomIndicator.className = 'scroll-to-bottom-indicator';
+      scrollToBottomIndicator.innerHTML = `<svg viewBox="0 0 24 24" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>`;
+      scrollToBottomIndicator.addEventListener('click', () => {
+        scrollToBottom(messagesContainer);
+        hideScrollToBottomIndicator();
+      });
+      messagesContainer.appendChild(scrollToBottomIndicator);
+    }
+    return scrollToBottomIndicator;
+  }
+
+  function showScrollToBottomIndicator() {
+    const indicator = getOrCreateScrollToBottomIndicator();
+    indicator.classList.add('visible');
+    clearTimeout(scrollToBottomIndicatorTimeout);
+    scrollToBottomIndicatorTimeout = setTimeout(() => {
+      hideScrollToBottomIndicator();
+    }, NEW_MESSAGE_INDICATOR_DURATION);
+  }
+
+  function hideScrollToBottomIndicator() {
+    if (scrollToBottomIndicator) {
+      scrollToBottomIndicator.classList.remove('visible');
+    }
+    clearTimeout(scrollToBottomIndicatorTimeout);
+  }
+  // --- END: Scroll Helper Functions ---
+
   async function displayBotMessagesSequentially(
     messages,
     betweenMessagesDelay = 2000,
-    typingIndicatorDelay = 0
+    initialUserIsAtBottom
   ) {
+    let currentUserIsAtBottom = initialUserIsAtBottom;
+
     for (let i = 0; i < messages.length; i++) {
-      // Show typing indicator before each message except the first (since it's already shown)
+      let localTypingIndicator;
       if (i > 0) {
-        const typing = createTypingIndicator();
-        messagesContainer.appendChild(typing);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        await new Promise((res) => setTimeout(res, typingIndicatorDelay));
-        messagesContainer.removeChild(typing);
+        currentUserIsAtBottom = isScrolledToBottom(messagesContainer, SCROLL_THRESHOLD);
+        localTypingIndicator = createTypingIndicator();
+        messagesContainer.appendChild(localTypingIndicator);
+        if (currentUserIsAtBottom) {
+          scrollToBottom(messagesContainer);
+        }
+        await new Promise((res) => setTimeout(res, betweenMessagesDelay));
+        if (localTypingIndicator && messagesContainer.contains(localTypingIndicator)) {
+          messagesContainer.removeChild(localTypingIndicator);
+        }
+        currentUserIsAtBottom = isScrolledToBottom(messagesContainer, SCROLL_THRESHOLD);
       }
-      // Display the message
+
       const botMessage = document.createElement("div");
       botMessage.className = "chat-bubble bot-bubble";
-
-      // MODIFICATION HERE: Added .trim() to the output of marked.parse()
-      let rawHtml = marked.parse(
-        linkifyText((messages[i].text || String(messages[i])).trim())
-      );
-
-      console.log(rawHtml.trim());
-      // MODIFICAÇÃO AQUI: Remover <ul> e <li>, mantendo o conteúdo
-      let finalHtml = rawHtml.replace(/<\/?ul[^>]*>/gi, ""); // Remove <ul> e </ul>, incluindo possíveis atributos
-      finalHtml = finalHtml.replace(/<li>/gi, "• "); // Substitui <li> por um bullet point e espaço
-      finalHtml = finalHtml.replace(/<\/li>/gi, "<br>"); // Substitui </li> por <br> para nova linha
-      console.log(finalHtml.trim());
+      let rawHtml = marked.parse(linkifyText((messages[i].text || String(messages[i])).trim()));
+      let finalHtml = rawHtml.replace(/<\/?ul[^>]*>/gi, "");
+      finalHtml = finalHtml.replace(/<li>/gi, "• ");
+      finalHtml = finalHtml.replace(/<\/li>/gi, "<br>");
       botMessage.innerHTML = finalHtml.trim();
-      
-
       messagesContainer.appendChild(botMessage);
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
-      // Delay before next message, unless it's the last one
-      if (i < messages.length - 1) {
-        const typing = createTypingIndicator();
-        messagesContainer.appendChild(typing);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        await new Promise((res) => setTimeout(res, betweenMessagesDelay));
-        messagesContainer.removeChild(typing);
+
+      if (currentUserIsAtBottom) {
+        scrollToBottom(messagesContainer);
+      } else {
+        showScrollToBottomIndicator();
       }
     }
   }
 
-  // NEW FUNCTION to directly start chat
   async function initiateChatSession() {
-    chatBody.classList.add("active"); // Show chat body
-    conversationId = createSessionId();
+    chatBody.classList.add("active"); // Show chat messages area and controls
+    if (!conversationId) { // Only create new session if one doesn't exist
+        conversationId = createSessionId();
+    }
 
-    // Display initial local bot message
+
     if (settings.branding.initialBotMessage) {
       const botMessageElement = document.createElement("div");
       botMessageElement.className = "chat-bubble bot-bubble";
-      botMessageElement.innerHTML = linkifyText(
-        settings.branding.initialBotMessage
-      );
+      botMessageElement.innerHTML = linkifyText(settings.branding.initialBotMessage);
       messagesContainer.appendChild(botMessageElement);
+      scrollToBottom(messagesContainer);
     }
 
-    // Add sample questions if configured
     if (
       settings.suggestedQuestions &&
       Array.isArray(settings.suggestedQuestions) &&
@@ -889,7 +901,6 @@ import { marked } from "marked";
     ) {
       const suggestedQuestionsContainer = document.createElement("div");
       suggestedQuestionsContainer.className = "suggested-questions";
-
       settings.suggestedQuestions.forEach((question) => {
         const questionButton = document.createElement("button");
         questionButton.className = "suggested-question-btn";
@@ -897,162 +908,131 @@ import { marked } from "marked";
         questionButton.addEventListener("click", () => {
           submitMessage(question);
           if (suggestedQuestionsContainer.parentNode) {
-            suggestedQuestionsContainer.parentNode.removeChild(
-              suggestedQuestionsContainer
-            );
+            suggestedQuestionsContainer.parentNode.removeChild(suggestedQuestionsContainer);
           }
         });
         suggestedQuestionsContainer.appendChild(questionButton);
       });
       messagesContainer.appendChild(suggestedQuestionsContainer);
+      scrollToBottom(messagesContainer);
     }
 
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
-
-    // Generic user info for session initialization
     const genericEmail = "guest-" + conversationId + "@example.com";
     const genericName = "Guest";
-
-    // Attempt to load/initialize session with the backend (does not block UI)
-    const sessionData = [
-      {
-        action: "loadPreviousSession",
-        sessionId: conversationId,
-        route: settings.webhook.route,
-        metadata: {
-          userId: genericEmail,
-          userName: genericName,
-        },
-      },
-    ];
+    const sessionData = [{
+      action: "loadPreviousSession", sessionId: conversationId,
+      route: settings.webhook.route,
+      metadata: { userId: genericEmail, userName: genericName },
+    }];
 
     try {
       await fetch(settings.webhook.url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
+        method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify(sessionData),
       });
-      // console.log('Session initialized with backend.');
     } catch (error) {
       console.error("Chat session initialization with webhook failed:", error);
-      // No intrusive error message here, as the chat is already locally functional
     }
   }
 
-  // Send a message to the webhook
   async function submitMessage(messageText) {
-    if (isWaitingForResponse) return;
-
+    if (isWaitingForResponse || !messageText.trim()) return;
     isWaitingForResponse = true;
 
-    // Use generic user info
+    // Remove suggested questions if they exist
+    const existingSuggestedQuestions = messagesContainer.querySelector('.suggested-questions');
+    if (existingSuggestedQuestions) {
+        existingSuggestedQuestions.remove();
+    }
+
     const genericEmail = "guest-" + conversationId + "@example.com";
     const genericName = "Guest";
-
     const requestData = {
-      action: "sendMessage",
-      sessionId: conversationId,
-      route: settings.webhook.route,
-      chatInput: messageText,
-      metadata: {
-        userId: genericEmail,
-        userName: genericName,
-      },
+      action: "sendMessage", sessionId: conversationId, route: settings.webhook.route,
+      chatInput: messageText, metadata: { userId: genericEmail, userName: genericName },
     };
 
-    // Display user message
     const userMessage = document.createElement("div");
     userMessage.className = "chat-bubble user-bubble";
     userMessage.textContent = messageText;
     messagesContainer.appendChild(userMessage);
+    scrollToBottom(messagesContainer);
 
-    // Show typing indicator
     const typingIndicator = createTypingIndicator();
     messagesContainer.appendChild(typingIndicator);
-    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    scrollToBottom(messagesContainer);
 
     try {
       const response = await fetch(settings.webhook.url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestData),
       });
-
       const responseData = await response.json();
 
-      // // Alert the full JSON response from the webhook
-      // alert(JSON.stringify(responseData, null, 2));
-
-      // Remove the initial typing indicator
-      messagesContainer.removeChild(typingIndicator);
-
-      // Determine if response contains multiple messages
+      if (typingIndicator && messagesContainer.contains(typingIndicator)) {
+        messagesContainer.removeChild(typingIndicator);
+      }
+      
+      const userIsAtBottom = isScrolledToBottom(messagesContainer, SCROLL_THRESHOLD);
       let messagesArray = null;
-      if (
-        Array.isArray(responseData) &&
-        responseData[0]?.output?.messages &&
-        Array.isArray(responseData[0].output.messages)
-      ) {
+      if (Array.isArray(responseData) && responseData[0]?.output?.messages && Array.isArray(responseData[0].output.messages)) {
         messagesArray = responseData[0].output.messages;
-      } else if (
-        responseData?.output?.messages &&
-        Array.isArray(responseData.output.messages)
-      ) {
+      } else if (responseData?.output?.messages && Array.isArray(responseData.output.messages)) {
         messagesArray = responseData.output.messages;
       }
 
       if (messagesArray && messagesArray.length > 0) {
-        await displayBotMessagesSequentially(messagesArray);
+        await displayBotMessagesSequentially(messagesArray, 2000, userIsAtBottom);
       } else {
-        // Fallback: display single message as before
         const botMessage = document.createElement("div");
         botMessage.className = "chat-bubble bot-bubble";
-        const responseText = Array.isArray(responseData)
-          ? responseData[0].output
-          : responseData.output;
-        botMessage.innerHTML = linkifyText(responseText);
+        const responseText = Array.isArray(responseData) ? responseData[0].output : responseData.output;
+        let rawHtml = marked.parse(linkifyText(String(responseText).trim()));
+        let finalHtml = rawHtml.replace(/<\/?ul[^>]*>/gi, "");
+        finalHtml = finalHtml.replace(/<li>/gi, "• ");
+        finalHtml = finalHtml.replace(/<\/li>/gi, "<br>");
+        botMessage.innerHTML = finalHtml.trim();
         messagesContainer.appendChild(botMessage);
-        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        if (userIsAtBottom) {
+          scrollToBottom(messagesContainer);
+        } else {
+          showScrollToBottomIndicator();
+        }
       }
     } catch (error) {
       console.error("Message submission error:", error);
-
-      // Remove typing indicator
-      messagesContainer.removeChild(typingIndicator);
-
-      // Show error message
+      if (typingIndicator && messagesContainer.contains(typingIndicator)) {
+        messagesContainer.removeChild(typingIndicator);
+      }
+      const userIsAtBottom = isScrolledToBottom(messagesContainer, SCROLL_THRESHOLD);
       const errorMessage = document.createElement("div");
       errorMessage.className = "chat-bubble bot-bubble";
-      errorMessage.textContent =
-        "Sorry, I couldn't send your message. Please try again.";
+      errorMessage.textContent = "Sorry, I couldn't send your message. Please try again.";
       messagesContainer.appendChild(errorMessage);
-      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      if (userIsAtBottom) {
+        scrollToBottom(messagesContainer);
+      } else {
+        showScrollToBottomIndicator();
+      }
     } finally {
       isWaitingForResponse = false;
+      messageTextarea.focus(); // Keep focus on textarea
     }
   }
 
-  // Auto-resize textarea as user types
   function autoResizeTextarea() {
-    messageTextarea.style.height = "auto";
-    messageTextarea.style.height =
-      (messageTextarea.scrollHeight > 120
-        ? 120
-        : messageTextarea.scrollHeight) + "px";
+    messageTextarea.style.height = "auto"; // Reset height
+    let scrollHeight = messageTextarea.scrollHeight;
+    const maxHeight = parseInt(getComputedStyle(messageTextarea).maxHeight, 10) || 120;
+    messageTextarea.style.height = (scrollHeight > maxHeight ? maxHeight : scrollHeight) + "px";
   }
-
-  // Event listeners
-  // startChatButton.addEventListener('click', initiateChatSession); // Removed
-  // registrationForm.addEventListener('submit', handleRegistration); // Removed
 
   sendButton.addEventListener("click", () => {
     const messageText = messageTextarea.value.trim();
-    if (messageText && !isWaitingForResponse) {
+    if (messageText) { // No need to check isWaitingForResponse here, submitMessage handles it
       submitMessage(messageText);
       messageTextarea.value = "";
-      messageTextarea.style.height = "auto";
+      autoResizeTextarea();
     }
   });
 
@@ -1062,10 +1042,10 @@ import { marked } from "marked";
     if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       const messageText = messageTextarea.value.trim();
-      if (messageText && !isWaitingForResponse) {
+      if (messageText) {
         submitMessage(messageText);
         messageTextarea.value = "";
-        messageTextarea.style.height = "auto";
+        autoResizeTextarea();
       }
     }
   });
@@ -1073,18 +1053,50 @@ import { marked } from "marked";
   launchButton.addEventListener("click", () => {
     const becomingVisible = !chatWindow.classList.contains("visible");
     chatWindow.classList.toggle("visible");
+    launchButton.setAttribute("aria-expanded", becomingVisible.toString());
 
-    if (becomingVisible && !conversationId) {
-      // If opening for the first time this "page load"
-      initiateChatSession();
+    if (becomingVisible) {
+      if (!conversationId || messagesContainer.children.length === 0) { // Start session if no ID or no messages
+        // Clear any old messages if re-opening without a session
+        while (messagesContainer.firstChild) {
+            messagesContainer.removeChild(messagesContainer.firstChild);
+        }
+        // Re-add scroll indicator if it was removed
+        if (scrollToBottomIndicator && !messagesContainer.contains(scrollToBottomIndicator)) {
+            messagesContainer.appendChild(scrollToBottomIndicator);
+        }
+        initiateChatSession();
+      }
+      messageTextarea.focus(); // Focus input when chat opens
+      // Scroll lock for mobile
+      if (window.innerWidth <= 768) {
+        document.body.style.overflow = "hidden";
+      }
+    } else {
+      // Remove scroll lock if it was applied
+      if (document.body.style.overflow === "hidden") {
+         document.body.style.overflow = "";
+      }
     }
   });
 
-  // Close button functionality
-  const closeButtons = chatWindow.querySelectorAll(".chat-close-btn");
-  closeButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      chatWindow.classList.remove("visible");
-    });
+  closeButton.addEventListener("click", () => {
+    chatWindow.classList.remove("visible");
+    launchButton.setAttribute("aria-expanded", "false");
+    // Remove scroll lock if it was applied
+    if (document.body.style.overflow === "hidden") {
+        document.body.style.overflow = "";
+    }
   });
+
+  // --- START: Event listener for scroll on messages container ---
+  messagesContainer.addEventListener('scroll', () => {
+    if (scrollToBottomIndicator && scrollToBottomIndicator.classList.contains('visible')) {
+      if (isScrolledToBottom(messagesContainer, SCROLL_THRESHOLD + 5)) {
+        hideScrollToBottomIndicator();
+      }
+    }
+  });
+  // --- END: Event listener for scroll on messages container ---
+
 })();
