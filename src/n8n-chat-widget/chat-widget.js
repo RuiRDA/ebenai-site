@@ -1,4 +1,5 @@
 import { marked } from "marked";
+import { createDebugButton } from "./debug-button.js";
 
 // Interactive Chat Widget for n8n
 (function () {
@@ -302,8 +303,8 @@ import { marked } from "marked";
 
         /* --- START: New Message Indicator CSS --- */
         .chat-assist-widget .scroll-to-bottom-indicator {
-            position: absolute;
-            bottom: 15px; 
+            position: fixed;
+            bottom: 130px;
             left: 50%;
             transform: translateX(-50%);
             background-color: var(--chat-color-primary);
@@ -664,14 +665,22 @@ import { marked } from "marked";
   const defaultSettings = {
     webhook: { url: "", route: "" },
     branding: {
-      logo: "", name: "", welcomeText: "",
+      logo: "",
+      name: "",
+      welcomeText: "",
       initialBotMessage: "Hi there! How can I help you today?",
       responseTimeText: "",
-      poweredBy: { text: "Powered by Eben AI", link: "https://ebenaisolutions.pt/" },
+      poweredBy: {
+        text: "Powered by Eben AI",
+        link: "https://ebenaisolutions.pt/",
+      },
     },
     style: {
-      primaryColor: "#10b981", secondaryColor: "#059669", position: "right",
-      backgroundColor: "#ffffff", fontColor: "#1f2937",
+      primaryColor: "#10b981",
+      secondaryColor: "#059669",
+      position: "right",
+      backgroundColor: "#ffffff",
+      fontColor: "#1f2937",
     },
     suggestedQuestions: [],
   };
@@ -679,19 +688,38 @@ import { marked } from "marked";
   // Merge user settings with defaults
   const settings = window.ChatWidgetConfig
     ? {
-        webhook: { ...defaultSettings.webhook, ...window.ChatWidgetConfig.webhook },
+        webhook: {
+          ...defaultSettings.webhook,
+          ...window.ChatWidgetConfig.webhook,
+        },
         branding: {
-          ...defaultSettings.branding, ...window.ChatWidgetConfig.branding,
-          welcomeText: window.ChatWidgetConfig.branding?.welcomeText || defaultSettings.branding.welcomeText,
-          initialBotMessage: window.ChatWidgetConfig.branding?.initialBotMessage || defaultSettings.branding.initialBotMessage,
-          responseTimeText: window.ChatWidgetConfig.branding?.responseTimeText || defaultSettings.branding.responseTimeText,
+          ...defaultSettings.branding,
+          ...window.ChatWidgetConfig.branding,
+          welcomeText:
+            window.ChatWidgetConfig.branding?.welcomeText ||
+            defaultSettings.branding.welcomeText,
+          initialBotMessage:
+            window.ChatWidgetConfig.branding?.initialBotMessage ||
+            defaultSettings.branding.initialBotMessage,
+          responseTimeText:
+            window.ChatWidgetConfig.branding?.responseTimeText ||
+            defaultSettings.branding.responseTimeText,
         },
         style: {
-          ...defaultSettings.style, ...window.ChatWidgetConfig.style,
-          primaryColor: window.ChatWidgetConfig.style?.primaryColor === "#854fff" ? "#10b981" : window.ChatWidgetConfig.style?.primaryColor || "#10b981",
-          secondaryColor: window.ChatWidgetConfig.style?.secondaryColor === "#6b3fd4" ? "#059669" : window.ChatWidgetConfig.style?.secondaryColor || "#059669",
+          ...defaultSettings.style,
+          ...window.ChatWidgetConfig.style,
+          primaryColor:
+            window.ChatWidgetConfig.style?.primaryColor === "#854fff"
+              ? "#10b981"
+              : window.ChatWidgetConfig.style?.primaryColor || "#10b981",
+          secondaryColor:
+            window.ChatWidgetConfig.style?.secondaryColor === "#6b3fd4"
+              ? "#059669"
+              : window.ChatWidgetConfig.style?.secondaryColor || "#059669",
         },
-        suggestedQuestions: window.ChatWidgetConfig.suggestedQuestions || defaultSettings.suggestedQuestions,
+        suggestedQuestions:
+          window.ChatWidgetConfig.suggestedQuestions ||
+          defaultSettings.suggestedQuestions,
       }
     : defaultSettings;
 
@@ -704,10 +732,22 @@ import { marked } from "marked";
   widgetRoot.className = "chat-assist-widget";
 
   // Apply custom colors
-  widgetRoot.style.setProperty("--chat-widget-primary", settings.style.primaryColor);
-  widgetRoot.style.setProperty("--chat-widget-secondary", settings.style.secondaryColor);
-  widgetRoot.style.setProperty("--chat-widget-tertiary", settings.style.secondaryColor); // Assuming tertiary is same as secondary
-  widgetRoot.style.setProperty("--chat-widget-surface", settings.style.backgroundColor);
+  widgetRoot.style.setProperty(
+    "--chat-widget-primary",
+    settings.style.primaryColor
+  );
+  widgetRoot.style.setProperty(
+    "--chat-widget-secondary",
+    settings.style.secondaryColor
+  );
+  widgetRoot.style.setProperty(
+    "--chat-widget-tertiary",
+    settings.style.secondaryColor
+  ); // Assuming tertiary is same as secondary
+  widgetRoot.style.setProperty(
+    "--chat-widget-surface",
+    settings.style.backgroundColor
+  );
   widgetRoot.style.setProperty("--chat-widget-text", settings.style.fontColor);
   // Additional color variables derived or fixed, ensure they match the new dark theme if needed
   // For the new theme provided in the CSS:
@@ -722,13 +762,19 @@ import { marked } from "marked";
 
   // Create chat panel
   const chatWindow = document.createElement("div");
-  chatWindow.className = `chat-window ${settings.style.position === "left" ? "left-side" : "right-side"}`;
+  chatWindow.className = `chat-window ${
+    settings.style.position === "left" ? "left-side" : "right-side"
+  }`;
 
   // Create header (welcome screen merged into main chat window)
   const headerHTML = `
         <div class="chat-header">
-            <img class="chat-header-logo" src="${settings.branding.logo}" alt="${settings.branding.name || 'Chat Bot'}">
-            <span class="chat-header-title">${settings.branding.name || 'Chat Assistant'}</span>
+            <img class="chat-header-logo" src="${
+              settings.branding.logo
+            }" alt="${settings.branding.name || "Chat Bot"}">
+            <span class="chat-header-title">${
+              settings.branding.name || "Chat Assistant"
+            }</span>
             <button class="chat-close-btn" aria-label="Close chat">×</button>
         </div>`;
 
@@ -754,7 +800,9 @@ import { marked } from "marked";
 
   // Create toggle button
   const launchButton = document.createElement("button");
-  launchButton.className = `chat-launcher ${settings.style.position === "left" ? "left-side" : "right-side"}`;
+  launchButton.className = `chat-launcher ${
+    settings.style.position === "left" ? "left-side" : "right-side"
+  }`;
   launchButton.setAttribute("aria-label", "Open chat");
   launchButton.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -774,6 +822,15 @@ import { marked } from "marked";
   const sendButton = chatWindow.querySelector(".chat-submit");
   const closeButton = chatWindow.querySelector(".chat-close-btn");
 
+  const chatControls = chatWindow.querySelector(".chat-controls");
+  if (chatControls) {
+    // Create and append debug button
+    const debugButton = createDebugButton(
+      messagesContainer,
+      displayBotMessagesSequentially
+    );
+    chatControls.appendChild(debugButton);
+  }
 
   // Helper function to generate unique session ID
   function createSessionId() {
@@ -793,7 +850,8 @@ import { marked } from "marked";
 
   // Function to convert URLs in text to clickable links
   function linkifyText(text) {
-    const urlPattern = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gim;
+    const urlPattern =
+      /(\b(https?|ftp):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gim;
     return text.replace(urlPattern, function (url) {
       return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="chat-link">${url}</a>`;
     });
@@ -801,7 +859,10 @@ import { marked } from "marked";
 
   // --- START: Scroll Helper Functions ---
   function isScrolledToBottom(element, threshold = SCROLL_THRESHOLD) {
-    return element.scrollHeight - element.scrollTop - element.clientHeight < threshold;
+    return (
+      element.scrollHeight - element.scrollTop - element.clientHeight <
+      threshold
+    );
   }
 
   function scrollToBottom(element) {
@@ -810,10 +871,10 @@ import { marked } from "marked";
 
   function getOrCreateScrollToBottomIndicator() {
     if (!scrollToBottomIndicator) {
-      scrollToBottomIndicator = document.createElement('div');
-      scrollToBottomIndicator.className = 'scroll-to-bottom-indicator';
+      scrollToBottomIndicator = document.createElement("div");
+      scrollToBottomIndicator.className = "scroll-to-bottom-indicator";
       scrollToBottomIndicator.innerHTML = `<svg viewBox="0 0 24 24" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>`;
-      scrollToBottomIndicator.addEventListener('click', () => {
+      scrollToBottomIndicator.addEventListener("click", () => {
         scrollToBottom(messagesContainer);
         hideScrollToBottomIndicator();
       });
@@ -824,7 +885,7 @@ import { marked } from "marked";
 
   function showScrollToBottomIndicator() {
     const indicator = getOrCreateScrollToBottomIndicator();
-    indicator.classList.add('visible');
+    indicator.classList.add("visible");
     clearTimeout(scrollToBottomIndicatorTimeout);
     scrollToBottomIndicatorTimeout = setTimeout(() => {
       hideScrollToBottomIndicator();
@@ -833,7 +894,7 @@ import { marked } from "marked";
 
   function hideScrollToBottomIndicator() {
     if (scrollToBottomIndicator) {
-      scrollToBottomIndicator.classList.remove('visible');
+      scrollToBottomIndicator.classList.remove("visible");
     }
     clearTimeout(scrollToBottomIndicatorTimeout);
   }
@@ -849,22 +910,33 @@ import { marked } from "marked";
     for (let i = 0; i < messages.length; i++) {
       let localTypingIndicator;
       if (i > 0) {
-        currentUserIsAtBottom = isScrolledToBottom(messagesContainer, SCROLL_THRESHOLD);
+        currentUserIsAtBottom = isScrolledToBottom(
+          messagesContainer,
+          SCROLL_THRESHOLD
+        );
         localTypingIndicator = createTypingIndicator();
         messagesContainer.appendChild(localTypingIndicator);
         if (currentUserIsAtBottom) {
           scrollToBottom(messagesContainer);
         }
         await new Promise((res) => setTimeout(res, betweenMessagesDelay));
-        if (localTypingIndicator && messagesContainer.contains(localTypingIndicator)) {
+        if (
+          localTypingIndicator &&
+          messagesContainer.contains(localTypingIndicator)
+        ) {
           messagesContainer.removeChild(localTypingIndicator);
         }
-        currentUserIsAtBottom = isScrolledToBottom(messagesContainer, SCROLL_THRESHOLD);
+        currentUserIsAtBottom = isScrolledToBottom(
+          messagesContainer,
+          SCROLL_THRESHOLD
+        );
       }
 
       const botMessage = document.createElement("div");
       botMessage.className = "chat-bubble bot-bubble";
-      let rawHtml = marked.parse(linkifyText((messages[i].text || String(messages[i])).trim()));
+      let rawHtml = marked.parse(
+        linkifyText((messages[i].text || String(messages[i])).trim())
+      );
       let finalHtml = rawHtml.replace(/<\/?ul[^>]*>/gi, "");
       finalHtml = finalHtml.replace(/<li>/gi, "• ");
       finalHtml = finalHtml.replace(/<\/li>/gi, "<br>");
@@ -881,15 +953,17 @@ import { marked } from "marked";
 
   async function initiateChatSession() {
     chatBody.classList.add("active"); // Show chat messages area and controls
-    if (!conversationId) { // Only create new session if one doesn't exist
-        conversationId = createSessionId();
+    if (!conversationId) {
+      // Only create new session if one doesn't exist
+      conversationId = createSessionId();
     }
-
 
     if (settings.branding.initialBotMessage) {
       const botMessageElement = document.createElement("div");
       botMessageElement.className = "chat-bubble bot-bubble";
-      botMessageElement.innerHTML = linkifyText(settings.branding.initialBotMessage);
+      botMessageElement.innerHTML = linkifyText(
+        settings.branding.initialBotMessage
+      );
       messagesContainer.appendChild(botMessageElement);
       scrollToBottom(messagesContainer);
     }
@@ -908,7 +982,9 @@ import { marked } from "marked";
         questionButton.addEventListener("click", () => {
           submitMessage(question);
           if (suggestedQuestionsContainer.parentNode) {
-            suggestedQuestionsContainer.parentNode.removeChild(suggestedQuestionsContainer);
+            suggestedQuestionsContainer.parentNode.removeChild(
+              suggestedQuestionsContainer
+            );
           }
         });
         suggestedQuestionsContainer.appendChild(questionButton);
@@ -919,15 +995,19 @@ import { marked } from "marked";
 
     const genericEmail = "guest-" + conversationId + "@example.com";
     const genericName = "Guest";
-    const sessionData = [{
-      action: "loadPreviousSession", sessionId: conversationId,
-      route: settings.webhook.route,
-      metadata: { userId: genericEmail, userName: genericName },
-    }];
+    const sessionData = [
+      {
+        action: "loadPreviousSession",
+        sessionId: conversationId,
+        route: settings.webhook.route,
+        metadata: { userId: genericEmail, userName: genericName },
+      },
+    ];
 
     try {
       await fetch(settings.webhook.url, {
-        method: "POST", headers: { "Content-Type": "application/json" },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(sessionData),
       });
     } catch (error) {
@@ -940,16 +1020,21 @@ import { marked } from "marked";
     isWaitingForResponse = true;
 
     // Remove suggested questions if they exist
-    const existingSuggestedQuestions = messagesContainer.querySelector('.suggested-questions');
+    const existingSuggestedQuestions = messagesContainer.querySelector(
+      ".suggested-questions"
+    );
     if (existingSuggestedQuestions) {
-        existingSuggestedQuestions.remove();
+      existingSuggestedQuestions.remove();
     }
 
     const genericEmail = "guest-" + conversationId + "@example.com";
     const genericName = "Guest";
     const requestData = {
-      action: "sendMessage", sessionId: conversationId, route: settings.webhook.route,
-      chatInput: messageText, metadata: { userId: genericEmail, userName: genericName },
+      action: "sendMessage",
+      sessionId: conversationId,
+      route: settings.webhook.route,
+      chatInput: messageText,
+      metadata: { userId: genericEmail, userName: genericName },
     };
 
     const userMessage = document.createElement("div");
@@ -964,7 +1049,8 @@ import { marked } from "marked";
 
     try {
       const response = await fetch(settings.webhook.url, {
-        method: "POST", headers: { "Content-Type": "application/json" },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(requestData),
       });
       const responseData = await response.json();
@@ -972,21 +1058,37 @@ import { marked } from "marked";
       if (typingIndicator && messagesContainer.contains(typingIndicator)) {
         messagesContainer.removeChild(typingIndicator);
       }
-      
-      const userIsAtBottom = isScrolledToBottom(messagesContainer, SCROLL_THRESHOLD);
+
+      const userIsAtBottom = isScrolledToBottom(
+        messagesContainer,
+        SCROLL_THRESHOLD
+      );
       let messagesArray = null;
-      if (Array.isArray(responseData) && responseData[0]?.output?.messages && Array.isArray(responseData[0].output.messages)) {
+      if (
+        Array.isArray(responseData) &&
+        responseData[0]?.output?.messages &&
+        Array.isArray(responseData[0].output.messages)
+      ) {
         messagesArray = responseData[0].output.messages;
-      } else if (responseData?.output?.messages && Array.isArray(responseData.output.messages)) {
+      } else if (
+        responseData?.output?.messages &&
+        Array.isArray(responseData.output.messages)
+      ) {
         messagesArray = responseData.output.messages;
       }
 
       if (messagesArray && messagesArray.length > 0) {
-        await displayBotMessagesSequentially(messagesArray, 2000, userIsAtBottom);
+        await displayBotMessagesSequentially(
+          messagesArray,
+          2000,
+          userIsAtBottom
+        );
       } else {
         const botMessage = document.createElement("div");
         botMessage.className = "chat-bubble bot-bubble";
-        const responseText = Array.isArray(responseData) ? responseData[0].output : responseData.output;
+        const responseText = Array.isArray(responseData)
+          ? responseData[0].output
+          : responseData.output;
         let rawHtml = marked.parse(linkifyText(String(responseText).trim()));
         let finalHtml = rawHtml.replace(/<\/?ul[^>]*>/gi, "");
         finalHtml = finalHtml.replace(/<li>/gi, "• ");
@@ -1004,10 +1106,14 @@ import { marked } from "marked";
       if (typingIndicator && messagesContainer.contains(typingIndicator)) {
         messagesContainer.removeChild(typingIndicator);
       }
-      const userIsAtBottom = isScrolledToBottom(messagesContainer, SCROLL_THRESHOLD);
+      const userIsAtBottom = isScrolledToBottom(
+        messagesContainer,
+        SCROLL_THRESHOLD
+      );
       const errorMessage = document.createElement("div");
       errorMessage.className = "chat-bubble bot-bubble";
-      errorMessage.textContent = "Sorry, I couldn't send your message. Please try again.";
+      errorMessage.textContent =
+        "Sorry, I couldn't send your message. Please try again.";
       messagesContainer.appendChild(errorMessage);
       if (userIsAtBottom) {
         scrollToBottom(messagesContainer);
@@ -1023,13 +1129,16 @@ import { marked } from "marked";
   function autoResizeTextarea() {
     messageTextarea.style.height = "auto"; // Reset height
     let scrollHeight = messageTextarea.scrollHeight;
-    const maxHeight = parseInt(getComputedStyle(messageTextarea).maxHeight, 10) || 120;
-    messageTextarea.style.height = (scrollHeight > maxHeight ? maxHeight : scrollHeight) + "px";
+    const maxHeight =
+      parseInt(getComputedStyle(messageTextarea).maxHeight, 10) || 120;
+    messageTextarea.style.height =
+      (scrollHeight > maxHeight ? maxHeight : scrollHeight) + "px";
   }
 
   sendButton.addEventListener("click", () => {
     const messageText = messageTextarea.value.trim();
-    if (messageText) { // No need to check isWaitingForResponse here, submitMessage handles it
+    if (messageText) {
+      // No need to check isWaitingForResponse here, submitMessage handles it
       submitMessage(messageText);
       messageTextarea.value = "";
       autoResizeTextarea();
@@ -1056,14 +1165,18 @@ import { marked } from "marked";
     launchButton.setAttribute("aria-expanded", becomingVisible.toString());
 
     if (becomingVisible) {
-      if (!conversationId || messagesContainer.children.length === 0) { // Start session if no ID or no messages
+      if (!conversationId || messagesContainer.children.length === 0) {
+        // Start session if no ID or no messages
         // Clear any old messages if re-opening without a session
         while (messagesContainer.firstChild) {
-            messagesContainer.removeChild(messagesContainer.firstChild);
+          messagesContainer.removeChild(messagesContainer.firstChild);
         }
         // Re-add scroll indicator if it was removed
-        if (scrollToBottomIndicator && !messagesContainer.contains(scrollToBottomIndicator)) {
-            messagesContainer.appendChild(scrollToBottomIndicator);
+        if (
+          scrollToBottomIndicator &&
+          !messagesContainer.contains(scrollToBottomIndicator)
+        ) {
+          messagesContainer.appendChild(scrollToBottomIndicator);
         }
         initiateChatSession();
       }
@@ -1075,7 +1188,7 @@ import { marked } from "marked";
     } else {
       // Remove scroll lock if it was applied
       if (document.body.style.overflow === "hidden") {
-         document.body.style.overflow = "";
+        document.body.style.overflow = "";
       }
     }
   });
@@ -1085,18 +1198,20 @@ import { marked } from "marked";
     launchButton.setAttribute("aria-expanded", "false");
     // Remove scroll lock if it was applied
     if (document.body.style.overflow === "hidden") {
-        document.body.style.overflow = "";
+      document.body.style.overflow = "";
     }
   });
 
   // --- START: Event listener for scroll on messages container ---
-  messagesContainer.addEventListener('scroll', () => {
-    if (scrollToBottomIndicator && scrollToBottomIndicator.classList.contains('visible')) {
+  messagesContainer.addEventListener("scroll", () => {
+    if (
+      scrollToBottomIndicator &&
+      scrollToBottomIndicator.classList.contains("visible")
+    ) {
       if (isScrolledToBottom(messagesContainer, SCROLL_THRESHOLD + 5)) {
         hideScrollToBottomIndicator();
       }
     }
   });
   // --- END: Event listener for scroll on messages container ---
-
 })();
