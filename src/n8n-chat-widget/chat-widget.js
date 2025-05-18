@@ -1,20 +1,21 @@
-import { marked } from 'marked';
+import { marked } from "marked";
 
 // Interactive Chat Widget for n8n
-(function() {
-    // Initialize widget only once
-    if (window.N8nChatWidgetLoaded) return;
-    window.N8nChatWidgetLoaded = true;
+(function () {
+  // Initialize widget only once
+  if (window.N8nChatWidgetLoaded) return;
+  window.N8nChatWidgetLoaded = true;
 
-    // Load font resource - using Poppins for a fresh look
-    const fontElement = document.createElement('link');
-    fontElement.rel = 'stylesheet';
-    fontElement.href = 'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap';
-    document.head.appendChild(fontElement);
+  // Load font resource - using Poppins for a fresh look
+  const fontElement = document.createElement("link");
+  fontElement.rel = "stylesheet";
+  fontElement.href =
+    "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap";
+  document.head.appendChild(fontElement);
 
-    // Apply widget styles with completely different design approach
-    const widgetStyles = document.createElement('style');
-    widgetStyles.textContent = `
+  // Apply widget styles with completely different design approach
+  const widgetStyles = document.createElement("style");
+  widgetStyles.textContent = `
         .chat-assist-widget {
             --chat-color-primary: var(--chat-widget-primary, #0284C7);
             --chat-color-secondary: var(--chat-widget-secondary, #0284C7);
@@ -258,6 +259,52 @@ import { marked } from 'marked';
             white-space: pre-line; /* This preserves line breaks */
         }
 
+    .chat-assist-widget .chat-bubble p {
+        margin-top: 0;
+        margin-bottom: 0;
+    }
+
+    .chat-assist-widget .chat-bubble ul,
+    .chat-assist-widget .chat-bubble ol {
+        margin-top: 0;
+        margin-bottom: 0;
+        padding-left: 0px; /* Or your preferred padding for lists */
+    }
+
+    .chat-assist-widget .chat-bubble li {
+        margin-bottom: 0.0em; /* Optional: small space between list items */
+    }
+
+    /* If you use headings in markdown */
+    .chat-assist-widget .chat-bubble h1,
+    .chat-assist-widget .chat-bubble h2,
+    .chat-assist-widget .chat-bubble h3,
+    .chat-assist-widget .chat-bubble h4,
+    .chat-assist-widget .chat-bubble h5,
+    .chat-assist-widget .chat-bubble h6 {
+        margin-top: 0;
+        margin-bottom: 0.0em; /* Optional: small space after headings */
+    }
+
+    /* To handle cases where a paragraph might be the only child or the last child */
+    .chat-assist-widget .chat-bubble p:first-child {
+        margin-top: 0;
+    }
+    .chat-assist-widget .chat-bubble p:last-child {
+        margin-bottom: 0;
+    }
+    .chat-assist-widget .chat-bubble ul:first-child,
+    .chat-assist-widget .chat-bubble ol:first-child {
+        margin-top: 0;
+    }
+    .chat-assist-widget .chat-bubble ul:last-child,
+    .chat-assist-widget .chat-bubble ol:last-child {
+        margin-bottom: 0;
+    }
+
+
+
+
         .chat-assist-widget .chat-bubble.user-bubble {
             background: linear-gradient(135deg, var(--chat-color-primary) 0%, var(--chat-color-secondary) 100%);
             color: white;
@@ -275,7 +322,7 @@ import { marked } from 'marked';
             border: 1px solid var(--chat-color-border);
         }
 
-        /* Typing animation */
+       /* Typing animation */
         .chat-assist-widget .typing-indicator {
             display: flex;
             align-items: center;
@@ -581,77 +628,109 @@ import { marked } from 'marked';
             transform: none;
         }
     `;
-    document.head.appendChild(widgetStyles);
+  document.head.appendChild(widgetStyles);
 
-    // Default configuration
-    const defaultSettings = {
+  // Default configuration
+  const defaultSettings = {
+    webhook: {
+      url: "",
+      route: "",
+    },
+    branding: {
+      logo: "",
+      name: "",
+      welcomeText: "", // This will no longer be directly used for the main welcome screen
+      initialBotMessage: "Hi there! How can I help you today?", // New default initial message
+      responseTimeText: "", // This will no longer be directly used
+      poweredBy: {
+        text: "Powered by Eben AI",
+        link: "https://ebenaisolutions.pt/",
+      },
+    },
+    style: {
+      primaryColor: "#10b981", // Green
+      secondaryColor: "#059669", // Darker green
+      position: "right",
+      backgroundColor: "#ffffff",
+      fontColor: "#1f2937",
+    },
+    suggestedQuestions: [], // Default empty array for suggested questions
+  };
+
+  // Merge user settings with defaults
+  const settings = window.ChatWidgetConfig
+    ? {
         webhook: {
-            url: '',
-            route: ''
+          ...defaultSettings.webhook,
+          ...window.ChatWidgetConfig.webhook,
         },
         branding: {
-            logo: '',
-            name: '',
-            welcomeText: '', // This will no longer be directly used for the main welcome screen
-            initialBotMessage: 'Hi there! How can I help you today?', // New default initial message
-            responseTimeText: '', // This will no longer be directly used
-            poweredBy: {
-                text: 'Powered by Eben AI',
-                link: 'https://ebenaisolutions.pt/'
-            }
+          ...defaultSettings.branding,
+          ...window.ChatWidgetConfig.branding,
+          welcomeText:
+            window.ChatWidgetConfig.branding?.welcomeText ||
+            defaultSettings.branding.welcomeText,
+          initialBotMessage:
+            window.ChatWidgetConfig.branding?.initialBotMessage ||
+            defaultSettings.branding.initialBotMessage,
+          responseTimeText:
+            window.ChatWidgetConfig.branding?.responseTimeText ||
+            defaultSettings.branding.responseTimeText,
         },
         style: {
-            primaryColor: '#10b981', // Green
-            secondaryColor: '#059669', // Darker green
-            position: 'right',
-            backgroundColor: '#ffffff',
-            fontColor: '#1f2937'
+          ...defaultSettings.style,
+          ...window.ChatWidgetConfig.style,
+          // Force green colors if user provided purple
+          primaryColor:
+            window.ChatWidgetConfig.style?.primaryColor === "#854fff"
+              ? "#10b981"
+              : window.ChatWidgetConfig.style?.primaryColor || "#10b981",
+          secondaryColor:
+            window.ChatWidgetConfig.style?.secondaryColor === "#6b3fd4"
+              ? "#059669"
+              : window.ChatWidgetConfig.style?.secondaryColor || "#059669",
         },
-        suggestedQuestions: [] // Default empty array for suggested questions
-    };
+        suggestedQuestions:
+          window.ChatWidgetConfig.suggestedQuestions ||
+          defaultSettings.suggestedQuestions,
+      }
+    : defaultSettings;
 
-    // Merge user settings with defaults
-    const settings = window.ChatWidgetConfig ?
-        {
-            webhook: { ...defaultSettings.webhook, ...window.ChatWidgetConfig.webhook },
-            branding: {
-                ...defaultSettings.branding,
-                ...window.ChatWidgetConfig.branding,
-                welcomeText: window.ChatWidgetConfig.branding?.welcomeText || defaultSettings.branding.welcomeText,
-                initialBotMessage: window.ChatWidgetConfig.branding?.initialBotMessage || defaultSettings.branding.initialBotMessage,
-                responseTimeText: window.ChatWidgetConfig.branding?.responseTimeText || defaultSettings.branding.responseTimeText,
-            },
-            style: {
-                ...defaultSettings.style,
-                ...window.ChatWidgetConfig.style,
-                // Force green colors if user provided purple
-                primaryColor: window.ChatWidgetConfig.style?.primaryColor === '#854fff' ? '#10b981' : (window.ChatWidgetConfig.style?.primaryColor || '#10b981'),
-                secondaryColor: window.ChatWidgetConfig.style?.secondaryColor === '#6b3fd4' ? '#059669' : (window.ChatWidgetConfig.style?.secondaryColor || '#059669')
-            },
-            suggestedQuestions: window.ChatWidgetConfig.suggestedQuestions || defaultSettings.suggestedQuestions
-        } : defaultSettings;
+  // Session tracking
+  let conversationId = "";
+  let isWaitingForResponse = false;
 
-    // Session tracking
-    let conversationId = '';
-    let isWaitingForResponse = false;
+  // Create widget DOM structure
+  const widgetRoot = document.createElement("div");
+  widgetRoot.className = "chat-assist-widget";
 
-    // Create widget DOM structure
-    const widgetRoot = document.createElement('div');
-    widgetRoot.className = 'chat-assist-widget';
-    
-    // Apply custom colors
-    widgetRoot.style.setProperty('--chat-widget-primary', settings.style.primaryColor);
-    widgetRoot.style.setProperty('--chat-widget-secondary', settings.style.secondaryColor);
-    widgetRoot.style.setProperty('--chat-widget-tertiary', settings.style.secondaryColor);
-    widgetRoot.style.setProperty('--chat-widget-surface', settings.style.backgroundColor);
-    widgetRoot.style.setProperty('--chat-widget-text', settings.style.fontColor);
+  // Apply custom colors
+  widgetRoot.style.setProperty(
+    "--chat-widget-primary",
+    settings.style.primaryColor
+  );
+  widgetRoot.style.setProperty(
+    "--chat-widget-secondary",
+    settings.style.secondaryColor
+  );
+  widgetRoot.style.setProperty(
+    "--chat-widget-tertiary",
+    settings.style.secondaryColor
+  );
+  widgetRoot.style.setProperty(
+    "--chat-widget-surface",
+    settings.style.backgroundColor
+  );
+  widgetRoot.style.setProperty("--chat-widget-text", settings.style.fontColor);
 
-    // Create chat panel
-    const chatWindow = document.createElement('div');
-    chatWindow.className = `chat-window ${settings.style.position === 'left' ? 'left-side' : 'right-side'}`;
-    
-    // Create welcome screen with header
-    const welcomeScreenHTML = `
+  // Create chat panel
+  const chatWindow = document.createElement("div");
+  chatWindow.className = `chat-window ${
+    settings.style.position === "left" ? "left-side" : "right-side"
+  }`;
+
+  // Create welcome screen with header
+  const welcomeScreenHTML = `
         <div class="chat-header">
             <img class="chat-header-logo" src="${settings.branding.logo}" alt="${settings.branding.name}">
             <span class="chat-header-title">${settings.branding.name}</span>
@@ -659,8 +738,8 @@ import { marked } from 'marked';
         </div>
     `; // chat-welcome div removed
 
-    // Create chat interface without duplicating the header
-    const chatInterfaceHTML = `
+  // Create chat interface without duplicating the header
+  const chatInterfaceHTML = `
         <div class="chat-body">
             <div class="chat-messages"></div>
             <div class="chat-controls">
@@ -677,291 +756,335 @@ import { marked } from 'marked';
             </div>
         </div>
     `;
-    
-    chatWindow.innerHTML = welcomeScreenHTML + chatInterfaceHTML;
-    
-    // Create toggle button
-    const launchButton = document.createElement('button');
-    launchButton.className = `chat-launcher ${settings.style.position === 'left' ? 'left-side' : 'right-side'}`;
-    launchButton.innerHTML = `
+
+  chatWindow.innerHTML = welcomeScreenHTML + chatInterfaceHTML;
+
+  // Create toggle button
+  const launchButton = document.createElement("button");
+  launchButton.className = `chat-launcher ${
+    settings.style.position === "left" ? "left-side" : "right-side"
+  }`;
+  launchButton.innerHTML = `
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
         </svg>
         <span class="chat-launcher-text">Precisa de Ajuda?</span>`;
-    
-    // Add elements to DOM
-    widgetRoot.appendChild(chatWindow);
-    widgetRoot.appendChild(launchButton);
-    document.body.appendChild(widgetRoot);
 
-    // Get DOM elements
-    // const startChatButton = chatWindow.querySelector('.chat-start-btn'); // Removed
-    const chatBody = chatWindow.querySelector('.chat-body');
-    const messagesContainer = chatWindow.querySelector('.chat-messages');
-    const messageTextarea = chatWindow.querySelector('.chat-textarea');
-    const sendButton = chatWindow.querySelector('.chat-submit');
-    
-    // const chatWelcome = chatWindow.querySelector('.chat-welcome'); // Removed
-    // Registration form elements removed
+  // Add elements to DOM
+  widgetRoot.appendChild(chatWindow);
+  widgetRoot.appendChild(launchButton);
+  document.body.appendChild(widgetRoot);
 
-    // Helper function to generate unique session ID
-    function createSessionId() {
-        return crypto.randomUUID();
-    }
+  // Get DOM elements
+  // const startChatButton = chatWindow.querySelector('.chat-start-btn'); // Removed
+  const chatBody = chatWindow.querySelector(".chat-body");
+  const messagesContainer = chatWindow.querySelector(".chat-messages");
+  const messageTextarea = chatWindow.querySelector(".chat-textarea");
+  const sendButton = chatWindow.querySelector(".chat-submit");
 
-    // Create typing indicator element
-    function createTypingIndicator() {
-        const indicator = document.createElement('div');
-        indicator.className = 'typing-indicator';
-        indicator.innerHTML = `
+  // const chatWelcome = chatWindow.querySelector('.chat-welcome'); // Removed
+  // Registration form elements removed
+
+  // Helper function to generate unique session ID
+  function createSessionId() {
+    return crypto.randomUUID();
+  }
+
+  // Create typing indicator element
+  function createTypingIndicator() {
+    const indicator = document.createElement("div");
+    indicator.className = "typing-indicator";
+    indicator.innerHTML = `
             <div class="typing-dot"></div>
             <div class="typing-dot"></div>
             <div class="typing-dot"></div>
         `;
-        return indicator;
-    }
+    return indicator;
+  }
 
-    // Function to convert URLs in text to clickable links
-    function linkifyText(text) {
-        // URL pattern that matches http, https, ftp links
-        const urlPattern = /(\b(https?|ftp):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gim;
-        
-        // Convert URLs to HTML links
-        return text.replace(urlPattern, function(url) {
-            return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="chat-link">${url}</a>`;
-        });
-    }
+  // Function to convert URLs in text to clickable links
+  function linkifyText(text) {
+    // URL pattern that matches http, https, ftp links
+    const urlPattern =
+      /(\b(https?|ftp):\/\/[-A-Z0-9+&@#/%?=~_|!:,.;]*[-A-Z0-9+&@#/%=~_|])/gim;
 
-    // Helper to display multiple bot messages with delay and typing indicator
-    /**
-     * Display multiple bot messages sequentially with configurable delays.
-     * @param {Array} messages - Array of message objects or strings.
-     * @param {number} [betweenMessagesDelay=1200] - Delay (ms) between messages.
-     * @param {number} [typingIndicatorDelay=900] - Delay (ms) for typing indicator before first message.
-     */
-    async function displayBotMessagesSequentially(messages, betweenMessagesDelay = 1500, typingIndicatorDelay = 0) {
-        for (let i = 0; i < messages.length; i++) {
-            // Show typing indicator before each message except the first (since it's already shown)
-            if (i > 0) {
-                const typing = createTypingIndicator();
-                messagesContainer.appendChild(typing);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                await new Promise(res => setTimeout(res, typingIndicatorDelay));
-                messagesContainer.removeChild(typing);
-            }
-            // Display the message
-            const botMessage = document.createElement('div');
-            botMessage.className = 'chat-bubble bot-bubble';
-            botMessage.innerHTML = marked.parse(linkifyText(messages[i].text || String(messages[i])));
-            messagesContainer.appendChild(botMessage);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            // Delay before next message, unless it's the last one
-            if (i < messages.length - 1) {
-                const typing = createTypingIndicator();
-                messagesContainer.appendChild(typing);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                await new Promise(res => setTimeout(res, betweenMessagesDelay));
-                messagesContainer.removeChild(typing);
-            }
-        }
-    }
+    // Convert URLs to HTML links
+    return text.replace(urlPattern, function (url) {
+      return `<a href="${url}" target="_blank" rel="noopener noreferrer" class="chat-link">${url}</a>`;
+    });
+  }
 
-    // NEW FUNCTION to directly start chat
-    async function initiateChatSession() {
-        chatBody.classList.add('active'); // Show chat body
-        conversationId = createSessionId();
-
-        // Display initial local bot message
-        if (settings.branding.initialBotMessage) {
-            const botMessageElement = document.createElement('div');
-            botMessageElement.className = 'chat-bubble bot-bubble';
-            botMessageElement.innerHTML = linkifyText(settings.branding.initialBotMessage);
-            messagesContainer.appendChild(botMessageElement);
-        }
-        
-        // Add sample questions if configured
-        if (settings.suggestedQuestions && Array.isArray(settings.suggestedQuestions) && settings.suggestedQuestions.length > 0) {
-            const suggestedQuestionsContainer = document.createElement('div');
-            suggestedQuestionsContainer.className = 'suggested-questions';
-            
-            settings.suggestedQuestions.forEach(question => {
-                const questionButton = document.createElement('button');
-                questionButton.className = 'suggested-question-btn';
-                questionButton.textContent = question;
-                questionButton.addEventListener('click', () => {
-                    submitMessage(question);
-                    if (suggestedQuestionsContainer.parentNode) {
-                        suggestedQuestionsContainer.parentNode.removeChild(suggestedQuestionsContainer);
-                    }
-                });
-                suggestedQuestionsContainer.appendChild(questionButton);
-            });
-            messagesContainer.appendChild(suggestedQuestionsContainer);
-        }
-        
+  // Helper to display multiple bot messages with delay and typing indicator
+  /**
+   * Display multiple bot messages sequentially with configurable delays.
+   * @param {Array} messages - Array of message objects or strings.
+   * @param {number} [betweenMessagesDelay=2000] - Delay (ms) between messages.
+   * @param {number} [typingIndicatorDelay=0] - Delay (ms) for typing indicator before first message.
+   */
+  async function displayBotMessagesSequentially(
+    messages,
+    betweenMessagesDelay = 2000,
+    typingIndicatorDelay = 0
+  ) {
+    for (let i = 0; i < messages.length; i++) {
+      // Show typing indicator before each message except the first (since it's already shown)
+      if (i > 0) {
+        const typing = createTypingIndicator();
+        messagesContainer.appendChild(typing);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        await new Promise((res) => setTimeout(res, typingIndicatorDelay));
+        messagesContainer.removeChild(typing);
+      }
+      // Display the message
+      const botMessage = document.createElement("div");
+      botMessage.className = "chat-bubble bot-bubble";
 
-        // Generic user info for session initialization
-        const genericEmail = "guest-" + conversationId + "@example.com";
-        const genericName = "Guest";
+      // MODIFICATION HERE: Added .trim() to the output of marked.parse()
+      let rawHtml = marked.parse(
+        linkifyText((messages[i].text || String(messages[i])).trim())
+      );
 
-        // Attempt to load/initialize session with the backend (does not block UI)
-        const sessionData = [{
-            action: "loadPreviousSession",
-            sessionId: conversationId,
-            route: settings.webhook.route,
-            metadata: {
-                userId: genericEmail,
-                userName: genericName
-            }
-        }];
+      console.log(rawHtml.trim());
+      // MODIFICAÇÃO AQUI: Remover <ul> e <li>, mantendo o conteúdo
+      let finalHtml = rawHtml.replace(/<\/?ul[^>]*>/gi, ""); // Remove <ul> e </ul>, incluindo possíveis atributos
+      finalHtml = finalHtml.replace(/<li>/gi, "• "); // Substitui <li> por um bullet point e espaço
+      finalHtml = finalHtml.replace(/<\/li>/gi, "<br>"); // Substitui </li> por <br> para nova linha
+      console.log(finalHtml.trim());
+      botMessage.innerHTML = finalHtml.trim();
+      
 
-        try {
-            await fetch(settings.webhook.url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(sessionData)
-            });
-            // console.log('Session initialized with backend.');
-        } catch (error) {
-            console.error('Chat session initialization with webhook failed:', error);
-            // No intrusive error message here, as the chat is already locally functional
-        }
-    }
-
-    // Send a message to the webhook
-    async function submitMessage(messageText) {
-        if (isWaitingForResponse) return;
-        
-        isWaitingForResponse = true;
-        
-        // Use generic user info
-        const genericEmail = "guest-" + conversationId + "@example.com";
-        const genericName = "Guest";
-        
-        const requestData = {
-            action: "sendMessage",
-            sessionId: conversationId,
-            route: settings.webhook.route,
-            chatInput: messageText,
-            metadata: {
-                userId: genericEmail,
-                userName: genericName
-            }
-        };
-
-        // Display user message
-        const userMessage = document.createElement('div');
-        userMessage.className = 'chat-bubble user-bubble';
-        userMessage.textContent = messageText;
-        messagesContainer.appendChild(userMessage);
-        
-        // Show typing indicator
-        const typingIndicator = createTypingIndicator();
-        messagesContainer.appendChild(typingIndicator);
+      messagesContainer.appendChild(botMessage);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      // Delay before next message, unless it's the last one
+      if (i < messages.length - 1) {
+        const typing = createTypingIndicator();
+        messagesContainer.appendChild(typing);
         messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        await new Promise((res) => setTimeout(res, betweenMessagesDelay));
+        messagesContainer.removeChild(typing);
+      }
+    }
+  }
 
-        try {
-            const response = await fetch(settings.webhook.url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(requestData)
-            });
-            
-            const responseData = await response.json();
-            
-            // // Alert the full JSON response from the webhook
-            // alert(JSON.stringify(responseData, null, 2));
-            
+  // NEW FUNCTION to directly start chat
+  async function initiateChatSession() {
+    chatBody.classList.add("active"); // Show chat body
+    conversationId = createSessionId();
 
-            // Remove the initial typing indicator
-            messagesContainer.removeChild(typingIndicator);
-
-            // Determine if response contains multiple messages
-            let messagesArray = null;
-            if (Array.isArray(responseData) && responseData[0]?.output?.messages && Array.isArray(responseData[0].output.messages)) {
-                messagesArray = responseData[0].output.messages;
-            } else if (responseData?.output?.messages && Array.isArray(responseData.output.messages)) {
-                messagesArray = responseData.output.messages;
-            }
-
-            if (messagesArray && messagesArray.length > 0) {
-                await displayBotMessagesSequentially(messagesArray);
-            } else {
-                // Fallback: display single message as before
-                const botMessage = document.createElement('div');
-                botMessage.className = 'chat-bubble bot-bubble';
-                const responseText = Array.isArray(responseData) ? responseData[0].output : responseData.output;
-                botMessage.innerHTML = linkifyText(responseText);
-                messagesContainer.appendChild(botMessage);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-            }
-        } catch (error) {
-            console.error('Message submission error:', error);
-            
-            // Remove typing indicator
-            messagesContainer.removeChild(typingIndicator);
-            
-            // Show error message
-            const errorMessage = document.createElement('div');
-            errorMessage.className = 'chat-bubble bot-bubble';
-            errorMessage.textContent = "Sorry, I couldn't send your message. Please try again.";
-            messagesContainer.appendChild(errorMessage);
-            messagesContainer.scrollTop = messagesContainer.scrollHeight;
-        } finally {
-            isWaitingForResponse = false;
-        }
+    // Display initial local bot message
+    if (settings.branding.initialBotMessage) {
+      const botMessageElement = document.createElement("div");
+      botMessageElement.className = "chat-bubble bot-bubble";
+      botMessageElement.innerHTML = linkifyText(
+        settings.branding.initialBotMessage
+      );
+      messagesContainer.appendChild(botMessageElement);
     }
 
-    // Auto-resize textarea as user types
-    function autoResizeTextarea() {
-        messageTextarea.style.height = 'auto';
-        messageTextarea.style.height = (messageTextarea.scrollHeight > 120 ? 120 : messageTextarea.scrollHeight) + 'px';
-    }
+    // Add sample questions if configured
+    if (
+      settings.suggestedQuestions &&
+      Array.isArray(settings.suggestedQuestions) &&
+      settings.suggestedQuestions.length > 0
+    ) {
+      const suggestedQuestionsContainer = document.createElement("div");
+      suggestedQuestionsContainer.className = "suggested-questions";
 
-    // Event listeners
-    // startChatButton.addEventListener('click', initiateChatSession); // Removed
-    // registrationForm.addEventListener('submit', handleRegistration); // Removed
-    
-    sendButton.addEventListener('click', () => {
-        const messageText = messageTextarea.value.trim();
-        if (messageText && !isWaitingForResponse) {
-            submitMessage(messageText);
-            messageTextarea.value = '';
-            messageTextarea.style.height = 'auto';
-        }
-    });
-    
-    messageTextarea.addEventListener('input', autoResizeTextarea);
-    
-    messageTextarea.addEventListener('keypress', (event) => {
-        if (event.key === 'Enter' && !event.shiftKey) {
-            event.preventDefault();
-            const messageText = messageTextarea.value.trim();
-            if (messageText && !isWaitingForResponse) {
-                submitMessage(messageText);
-                messageTextarea.value = '';
-                messageTextarea.style.height = 'auto';
-            }
-        }
-    });
-    
-    launchButton.addEventListener('click', () => {
-        const becomingVisible = !chatWindow.classList.contains('visible');
-        chatWindow.classList.toggle('visible');
-        
-        if (becomingVisible && !conversationId) { // If opening for the first time this "page load"
-            initiateChatSession();
-        }
-    });
-
-    // Close button functionality
-    const closeButtons = chatWindow.querySelectorAll('.chat-close-btn');
-    closeButtons.forEach(button => {
-        button.addEventListener('click', () => {
-            chatWindow.classList.remove('visible');
+      settings.suggestedQuestions.forEach((question) => {
+        const questionButton = document.createElement("button");
+        questionButton.className = "suggested-question-btn";
+        questionButton.textContent = question;
+        questionButton.addEventListener("click", () => {
+          submitMessage(question);
+          if (suggestedQuestionsContainer.parentNode) {
+            suggestedQuestionsContainer.parentNode.removeChild(
+              suggestedQuestionsContainer
+            );
+          }
         });
+        suggestedQuestionsContainer.appendChild(questionButton);
+      });
+      messagesContainer.appendChild(suggestedQuestionsContainer);
+    }
+
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    // Generic user info for session initialization
+    const genericEmail = "guest-" + conversationId + "@example.com";
+    const genericName = "Guest";
+
+    // Attempt to load/initialize session with the backend (does not block UI)
+    const sessionData = [
+      {
+        action: "loadPreviousSession",
+        sessionId: conversationId,
+        route: settings.webhook.route,
+        metadata: {
+          userId: genericEmail,
+          userName: genericName,
+        },
+      },
+    ];
+
+    try {
+      await fetch(settings.webhook.url, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(sessionData),
+      });
+      // console.log('Session initialized with backend.');
+    } catch (error) {
+      console.error("Chat session initialization with webhook failed:", error);
+      // No intrusive error message here, as the chat is already locally functional
+    }
+  }
+
+  // Send a message to the webhook
+  async function submitMessage(messageText) {
+    if (isWaitingForResponse) return;
+
+    isWaitingForResponse = true;
+
+    // Use generic user info
+    const genericEmail = "guest-" + conversationId + "@example.com";
+    const genericName = "Guest";
+
+    const requestData = {
+      action: "sendMessage",
+      sessionId: conversationId,
+      route: settings.webhook.route,
+      chatInput: messageText,
+      metadata: {
+        userId: genericEmail,
+        userName: genericName,
+      },
+    };
+
+    // Display user message
+    const userMessage = document.createElement("div");
+    userMessage.className = "chat-bubble user-bubble";
+    userMessage.textContent = messageText;
+    messagesContainer.appendChild(userMessage);
+
+    // Show typing indicator
+    const typingIndicator = createTypingIndicator();
+    messagesContainer.appendChild(typingIndicator);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+
+    try {
+      const response = await fetch(settings.webhook.url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestData),
+      });
+
+      const responseData = await response.json();
+
+      // // Alert the full JSON response from the webhook
+      // alert(JSON.stringify(responseData, null, 2));
+
+      // Remove the initial typing indicator
+      messagesContainer.removeChild(typingIndicator);
+
+      // Determine if response contains multiple messages
+      let messagesArray = null;
+      if (
+        Array.isArray(responseData) &&
+        responseData[0]?.output?.messages &&
+        Array.isArray(responseData[0].output.messages)
+      ) {
+        messagesArray = responseData[0].output.messages;
+      } else if (
+        responseData?.output?.messages &&
+        Array.isArray(responseData.output.messages)
+      ) {
+        messagesArray = responseData.output.messages;
+      }
+
+      if (messagesArray && messagesArray.length > 0) {
+        await displayBotMessagesSequentially(messagesArray);
+      } else {
+        // Fallback: display single message as before
+        const botMessage = document.createElement("div");
+        botMessage.className = "chat-bubble bot-bubble";
+        const responseText = Array.isArray(responseData)
+          ? responseData[0].output
+          : responseData.output;
+        botMessage.innerHTML = linkifyText(responseText);
+        messagesContainer.appendChild(botMessage);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+    } catch (error) {
+      console.error("Message submission error:", error);
+
+      // Remove typing indicator
+      messagesContainer.removeChild(typingIndicator);
+
+      // Show error message
+      const errorMessage = document.createElement("div");
+      errorMessage.className = "chat-bubble bot-bubble";
+      errorMessage.textContent =
+        "Sorry, I couldn't send your message. Please try again.";
+      messagesContainer.appendChild(errorMessage);
+      messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    } finally {
+      isWaitingForResponse = false;
+    }
+  }
+
+  // Auto-resize textarea as user types
+  function autoResizeTextarea() {
+    messageTextarea.style.height = "auto";
+    messageTextarea.style.height =
+      (messageTextarea.scrollHeight > 120
+        ? 120
+        : messageTextarea.scrollHeight) + "px";
+  }
+
+  // Event listeners
+  // startChatButton.addEventListener('click', initiateChatSession); // Removed
+  // registrationForm.addEventListener('submit', handleRegistration); // Removed
+
+  sendButton.addEventListener("click", () => {
+    const messageText = messageTextarea.value.trim();
+    if (messageText && !isWaitingForResponse) {
+      submitMessage(messageText);
+      messageTextarea.value = "";
+      messageTextarea.style.height = "auto";
+    }
+  });
+
+  messageTextarea.addEventListener("input", autoResizeTextarea);
+
+  messageTextarea.addEventListener("keypress", (event) => {
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
+      const messageText = messageTextarea.value.trim();
+      if (messageText && !isWaitingForResponse) {
+        submitMessage(messageText);
+        messageTextarea.value = "";
+        messageTextarea.style.height = "auto";
+      }
+    }
+  });
+
+  launchButton.addEventListener("click", () => {
+    const becomingVisible = !chatWindow.classList.contains("visible");
+    chatWindow.classList.toggle("visible");
+
+    if (becomingVisible && !conversationId) {
+      // If opening for the first time this "page load"
+      initiateChatSession();
+    }
+  });
+
+  // Close button functionality
+  const closeButtons = chatWindow.querySelectorAll(".chat-close-btn");
+  closeButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      chatWindow.classList.remove("visible");
     });
+  });
 })();
