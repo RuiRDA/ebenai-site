@@ -16,7 +16,6 @@ import { createDebugButton } from "./debug-button.js";
 
   // --- START: Scroll Behavior Configuration ---
   const SCROLL_THRESHOLD = 20; // Pixels from bottom to be considered "at the bottom"
-  const NEW_MESSAGE_INDICATOR_DURATION = 3000; // Milliseconds the new message indicator is visible
   // --- END: Scroll Behavior Configuration ---
 
   let scrollToBottomIndicator;
@@ -822,16 +821,17 @@ import { createDebugButton } from "./debug-button.js";
   const sendButton = chatWindow.querySelector(".chat-submit");
   const closeButton = chatWindow.querySelector(".chat-close-btn");
 
-  const chatControls = chatWindow.querySelector(".chat-controls");
-  if (chatControls) {
-    // Create and append debug button
-    const debugButton = createDebugButton(
-      messagesContainer,
-      displayBotMessagesSequentially
-    );
-    chatControls.appendChild(debugButton);
+  if (import.meta.env.DEV) {
+    const chatControls = chatWindow.querySelector(".chat-controls");
+    if (chatControls) {
+      // Create and append debug button
+      const debugButton = createDebugButton(
+        messagesContainer,
+        displayBotMessagesSequentially
+      );
+      chatControls.appendChild(debugButton);
+    }
   }
-
   // Helper function to generate unique session ID
   function createSessionId() {
     return crypto.randomUUID();
@@ -887,16 +887,12 @@ import { createDebugButton } from "./debug-button.js";
     const indicator = getOrCreateScrollToBottomIndicator();
     indicator.classList.add("visible");
     clearTimeout(scrollToBottomIndicatorTimeout);
-    scrollToBottomIndicatorTimeout = setTimeout(() => {
-      hideScrollToBottomIndicator();
-    }, NEW_MESSAGE_INDICATOR_DURATION);
   }
 
   function hideScrollToBottomIndicator() {
     if (scrollToBottomIndicator) {
       scrollToBottomIndicator.classList.remove("visible");
     }
-    clearTimeout(scrollToBottomIndicatorTimeout);
   }
   // --- END: Scroll Helper Functions ---
 
