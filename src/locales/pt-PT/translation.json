@@ -3,7 +3,7 @@
     "home": "Início",
     "services": "Serviços",
     "about": "Sobre",
-    "contact": "Contato",
+    "contact": "Contacto",
     "terms": "Termos"
   },
   "button": {
@@ -28,8 +28,8 @@
     }
   },
   "hero": {
-    "title": "Otimize os resultados do seu negócio com a ",
-    "description": "Faça mais vendas no piloto automático e converta mais leads para o seu negócio com um super funcionário digital que nunca dorme, não tira férias e não reclama!",
+    "title": "Conheça o seu funcionário digital na",
+    "description": "Automatize os processos do seu negócio e ganhe tempo com um super funcionário digital que nunca dorme, não tira férias e não reclama!",
     "processing": "AI em Processamento...",
     "clientsServed": "Clientes atendidos",
     "companiesUsing": "Negócios que já usam os sistemas da Eben AI Solutions",
@@ -78,8 +78,8 @@
     "heading": "O que os nossos clientes dizem sobre a Eben AI Solutions",
     "quote_keith": "Fico feliz em recomendar fortemente! Recebi exatamente o que pedi e mais. Comunicação extremamente clara e estou muito satisfeito com tudo. Com certeza voltarei a contratar!",
     "quote_rui_c_santos": "Recomendo fortemente para qualquer projeto que exija habilidades técnicas e forte colaboração.",
-    "quote_christophers": "Demos a eles um desafio difícil e eles foram além para fazer o projeto funcionar. Tivemos que extrair dados de vários sites para uma folha de cálculo com milhares de linhas — e funcionou perfeitamente! Com certeza voltarei a contratar para futuros projetos. Se você precisa de scraping web, são os melhores!",
-    "quote_omar": "A Eben AI entregou trabalho de alta qualidade rapidamente e superou minhas expectativas. Comunicação e profissionalismo excelentes do início ao fim. Altamente recomendado — obrigado!",
+    "quote_christophers": "Demos-lhes um desafio difícil e eles foram além para fazer o projeto funcionar. Tiveram que extrair dados de vários sites para uma folha de cálculo com milhares de linhas — e funcionou perfeitamente! Com certeza voltarei a contratar para futuros projetos. Se você precisa de scraping web, são os melhores!",
+    "quote_omar": "A Eben AI entregou trabalho de alta qualidade rapidamente e superou as minhas expectativas. Comunicação e profissionalismo excelentes do início ao fim. Altamente recomendado — obrigado!",
     "quote_ayoub": "Melhor qualidade de serviço e comunicação! Muito profissional e prestativo, obrigado pelo tempo e esforço.",
     "quote_rodrigo_damas": "Excelente serviço! Sempre super rápido a responder e pronto a ajudar. Recomendo e muito!",
     "quote_dinis_assis": "Muito bom, rápido e sempre disponível.",
@@ -87,13 +87,13 @@
   },
   "callForm": {
     "heading": "Vamos Conversar?",
-    "description": "Investimos fortemente no início de cada projeto, assumindo 100% do risco para que você não precise (esses projetos podem levar semanas ou até meses). Por causa disso, trabalhamos com apenas um número reduzido de empresas em cada mês, para entregar resultados incomparáveis e com a máxima qualidade. Dê o primeiro passo agora! Agende uma call para começarmos a construir algo incrível juntos."
+    "description": "Investimos fortemente no início de cada projeto, assumindo 100% do risco para que você não precise (estes projetos podem levar semanas ou até meses). Por causa disso, trabalhamos com apenas um número reduzido de empresas em cada mês, para entregar resultados incomparáveis e com a máxima qualidade. Dê o primeiro passo agora! Agende uma call para começarmos a construir algo incrível juntos."
   }
 ,
   "chat": {
     "welcomeText": "Respostas instantâneas às suas perguntas!",
     "responseTimeText": "Clique no botão abaixo para começar a conversar",
-    "initialBotMessage": "Olá, eu sou a Zari, a assistente virtual da Eben AI.\nComo lhe posso ajudar?",
+    "initialBotMessage": "Olá, eu sou a Zari, a assistente virtual da Eben AI.\nComo posso ajudar?",
     "suggestedQuestions": [
       "Que serviços oferecem?",
       "Como posso contactar o suporte?"

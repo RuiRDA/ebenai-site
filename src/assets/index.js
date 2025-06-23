@@ -103,4 +103,4 @@ export { default as disc02 } from './disc-02.svg';
 export { default as chromecast } from './chrome-cast.svg';
 export { default as sliders04 } from './sliders-04.svg';
 export { default as loading } from './loading.png';
-export { default as background } from './background.jpg';
+export { default as background } from './hero/hero-back-2-original.png';
