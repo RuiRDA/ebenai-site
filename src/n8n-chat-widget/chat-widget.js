@@ -989,26 +989,26 @@ import { createDebugButton } from "./debug-button.js";
       scrollToBottom(messagesContainer);
     }
 
-    const genericEmail = "guest-" + conversationId + "@example.com";
-    const genericName = "Guest";
-    const sessionData = [
-      {
-        action: "loadPreviousSession",
-        sessionId: conversationId,
-        route: settings.webhook.route,
-        metadata: { userId: genericEmail, userName: genericName },
-      },
-    ];
+    // const genericEmail = "guest-" + conversationId + "@example.com";
+    // const genericName = "Guest";
+    // const sessionData = [
+    //   {
+    //     action: "loadPreviousSession",
+    //     sessionId: conversationId,
+    //     route: settings.webhook.route,
+    //     metadata: { userId: genericEmail, userName: genericName },
+    //   },
+    // ];
 
-    try {
-      await fetch(settings.webhook.url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(sessionData),
-      });
-    } catch (error) {
-      console.error("Chat session initialization with webhook failed:", error);
-    }
+    // try {
+    //   await fetch(settings.webhook.url, {
+    //     method: "POST",
+    //     headers: { "Content-Type": "application/json" },
+    //     body: JSON.stringify(sessionData),
+    //   });
+    // } catch (error) {
+    //   console.error("Chat session initialization with webhook failed:", error);
+    // }
   }
 
   async function submitMessage(messageText) {
