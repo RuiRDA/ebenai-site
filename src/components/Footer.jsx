@@ -8,6 +8,7 @@ import {
   ebenai,
 } from "../assets";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 const socials = [
   {
@@ -39,11 +40,11 @@ const socials = [
 
 // Navigation keys for i18n
 const footerNavLinks = [
-  { key: "navigation.home", url: "#hero" },
-  { key: "navigation.services", url: "#services" },
-  { key: "navigation.about", url: "#sobre" },
-  { key: "navigation.contact", url: "#contato" },
-  { key: "navigation.terms", url: "#termos" },
+  { key: "navigation.home", url: "/" },
+  { key: "navigation.services", url: "/#services" },
+  { key: "navigation.about", url: "/#sobre" },
+  { key: "navigation.contact", url: "/#contato" },
+  { key: "navigation.terms", url: "/terms" },
 ];
 
 const Footer = () => {
@@ -56,9 +57,9 @@ const Footer = () => {
         <div className="flex sm:justify-between justify-center items-start gap-10 max-sm:flex-col">
           {/* Company Info with Logo */}
           <div className="text-center sm:text-left max-w-sm">
-            <a
+            <Link
               className="flex items-center justify-center sm:justify-start w-auto mb-4"
-              href="#hero"
+              to="/"
             >
               <img
                 src={ebenai}
@@ -70,7 +71,7 @@ const Footer = () => {
               <span className="font-bold text-xl text-white hidden sm:inline">
                 Eben AI Solutions
               </span>
-            </a>
+            </Link>
             <p className="caption text-n-4 mb-2">
               {t("footer.emailUs")}:{" "}
               <a
@@ -95,12 +96,12 @@ const Footer = () => {
           <ul className="flex gap-5 flex-wrap justify-center">
             {footerNavLinks.map((item, i) => (
               <li key={i}>
-                <a
-                  href={item.url}
+                <Link
+                  to={item.url}
                   className="caption text-n-4 hover:text-white transition-colors"
                 >
                   {t(item.key)}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>

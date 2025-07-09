@@ -98,5 +98,46 @@
       "What services do you offer?",
       "How can I contact support?"
     ]
+  },
+  "terms": {
+    "title": "Terms and Conditions",
+    "lastUpdated": "Last updated: July 9, 2025",
+    "introduction": "Welcome to Eben AI Solutions. These Terms and Conditions govern your use of our website and services. By accessing or using our service, you agree to be bound by these terms.",
+    "useOfService": {
+      "title": "Use of Service",
+      "content": "You agree to use our services for lawful purposes only and in a way that does not infringe the rights of, restrict or inhibit anyone else's use and enjoyment of the website. Prohibited behavior includes harassing or causing distress or inconvenience to any other user, transmitting obscene or offensive content or disrupting the normal flow of dialogue within our website."
+    },
+    "intellectualProperty": {
+      "title": "Intellectual Property",
+      "content": "All content included on the website, such as text, graphics, logos, images, as well as the compilation thereof, and any software used on the site, is the property of Eben AI Solutions or its suppliers and protected by copyright and other intellectual property laws."
+    },
+    "limitationOfLiability": {
+      "title": "Limitation of Liability",
+      "content": "In no event shall Eben AI Solutions, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the service."
+    },
+    "governingLaw": {
+      "title": "Governing Law",
+      "content": "These Terms shall be governed and construed in accordance with the laws of Portugal, without regard to its conflict of law provisions."
+    },
+    "privacyPolicy": {
+      "title": "Privacy Policy",
+      "introduction": "Your privacy is important to us. It is Eben AI Solutions' policy to respect your privacy regarding any information we may collect from you across our website.",
+      "informationWeCollect": {
+        "title": "Information We Collect",
+        "content": "We only ask for personal information when we truly need it to provide a service to you. We collect it by fair and lawful means, with your knowledge and consent. We also let you know why we’re collecting it and how it will be used. We may collect information like your name, email address, and phone number when you fill out a contact form or subscribe to our newsletter."
+      },
+      "howWeUseYourInformation": {
+        "title": "How We Use Your Information",
+        "content": "We use the information we collect to provide, maintain, and improve our services, to communicate with you, to offer customer support, and to send you marketing communications if you have opted in."
+      },
+      "dataSecurity": {
+        "title": "Data Security",
+        "content": "We take the security of your data seriously and use appropriate technical and organizational measures to protect it against unauthorized or unlawful processing and against accidental loss, destruction, or damage."
+      },
+      "yourRights": {
+        "title": "Your Rights",
+        "content": "You have the right to access, correct, or delete your personal information. You can also object to the processing of your personal data. If you wish to exercise any of these rights, please contact us."
+      }
+    }
   }
 }
