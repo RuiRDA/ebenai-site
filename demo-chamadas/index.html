@@ -319,6 +319,73 @@
             .features h2 {
                 font-size: 32px;
             }
+
+            /* Vapi Widget Mobile Optimization */
+            vapi-widget {
+                --vapi-widget-width: 100vw !important;
+                --vapi-widget-height: 100vh !important;
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                z-index: 9999 !important;
+                width: 100vw !important;
+                height: 100vh !important;
+                max-width: none !important;
+                margin: 0 !important;
+            }
+
+            /* Hide other content on mobile when widget is active */
+            body.widget-active .container,
+            body.widget-active .particles,
+            body.widget-active header,
+            body.widget-active footer {
+                display: none !important;
+            }
+
+            /* Mobile-specific widget button styling */
+            vapi-widget .vapi-widget-button {
+                width: 60px !important;
+                height: 60px !important;
+                bottom: 20px !important;
+                right: 20px !important;
+            }
+
+            /* Full screen modal for mobile */
+            vapi-widget .vapi-widget-modal {
+                width: 100vw !important;
+                height: 100vh !important;
+                max-width: none !important;
+                margin: 0 !important;
+                top: 0 !important;
+                left: 0 !important;
+            }
+        }
+
+        /* Additional mobile optimizations */
+        @media (max-width: 480px) {
+            .hero {
+                padding: 60px 15px;
+            }
+
+            .demo-section {
+                padding: 40px 15px;
+            }
+
+            .features {
+                padding: 40px 15px;
+            }
+
+            /* Vapi Widget small screen optimization */
+            vapi-widget {
+                --vapi-widget-font-size: 14px !important;
+            }
+
+            vapi-widget .vapi-widget-button {
+                width: 50px !important;
+                height: 50px !important;
+                bottom: 15px !important;
+                right: 15px !important;
+            }
         }
     </style>
 </head>
