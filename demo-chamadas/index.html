@@ -327,11 +327,32 @@
                 position: fixed !important;
                 top: 0 !important;
                 left: 0 !important;
+                right: 0 !important;
+                bottom: 0 !important;
                 z-index: 9999 !important;
                 width: 100vw !important;
                 height: 100vh !important;
                 max-width: none !important;
+                max-height: none !important;
                 margin: 0 !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+            }
+
+            /* Force full screen coverage */
+            vapi-widget * {
+                box-sizing: border-box !important;
+            }
+
+            vapi-widget .vapi-widget-container,
+            vapi-widget .vapi-widget-modal,
+            vapi-widget .vapi-widget-content {
+                width: 100% !important;
+                height: 100% !important;
+                max-width: none !important;
+                max-height: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
             }
 
             /* Hide other content on mobile when widget is active */
