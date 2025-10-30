@@ -320,15 +320,15 @@
                 font-size: 32px;
             }
 
-            /* Target the specific opened widget structure */
-            div[style*="position: fixed"][style*="z-index: 9999"][style*="bottom: 1.5rem"] {
+            /* Only target opened widget - leave button in default position */
+            div[style*="position: fixed"][style*="z-index: 9999"][style*="bottom: 1.5rem"]:has(> div[style*="width: 28rem"]) {
                 position: fixed !important;
-                top: 0 !important;
+                top: 2rem !important; /* Leave space for browser UI */
                 left: 0 !important;
                 right: 0 !important;
-                bottom: 0 !important;
+                bottom: 2rem !important; /* Leave space for browser UI */
                 width: 100vw !important;
-                height: 100vh !important;
+                height: calc(100vh - 4rem) !important; /* Account for top and bottom spacing */
                 z-index: 9999 !important;
                 margin: 0 !important;
                 padding: 0 !important;
@@ -338,20 +338,20 @@
                 -webkit-transform: none !important;
             }
 
-            /* Target the widget container inside the fixed positioned div */
-            div[style*="position: fixed"][style*="z-index: 9999"][style*="bottom: 1.5rem"] > div[style*="width: 28rem"] {
+            /* Target the widget container inside the opened widget */
+            div[style*="position: fixed"][style*="z-index: 9999"][style*="bottom: 1.5rem"]:has(> div[style*="width: 28rem"]) > div[style*="width: 28rem"] {
                 width: 100vw !important;
-                height: 100vh !important;
+                height: calc(100vh - 4rem) !important;
                 max-width: 100vw !important;
-                max-height: 100vh !important;
+                max-height: calc(100vh - 4rem) !important;
                 border-radius: 0 !important;
                 margin: 0 !important;
                 padding: 0 !important;
                 box-sizing: border-box !important;
             }
 
-            /* Adjust inner content for full screen */
-            div[style*="position: fixed"][style*="z-index: 9999"][style*="bottom: 1.5rem"] .vapi-conversation-area {
+            /* Adjust inner content for full screen with spacing */
+            div[style*="position: fixed"][style*="z-index: 9999"][style*="bottom: 1.5rem"]:has(> div[style*="width: 28rem"]) .vapi-conversation-area {
                 flex: 1 !important;
                 padding: 1rem !important;
                 overflow-y: auto !important;
@@ -361,9 +361,21 @@
             }
 
             /* Prevent horizontal overflow on body when widget is open */
-            body:has(div[style*="position: fixed"][style*="z-index: 9999"][style*="bottom: 1.5rem"]) {
+            body:has(div[style*="position: fixed"][style*="z-index: 9999"][style*="bottom: 1.5rem"]:has(> div[style*="width: 28rem"])) {
                 overflow-x: hidden !important;
                 overflow-y: hidden !important;
+            }
+
+            /* Ensure button stays in default position - don't affect single button divs */
+            div[style*="position: fixed"][style*="z-index: 9999"][style*="bottom: 1.5rem"]:not(:has(> div[style*="width: 28rem"])) {
+                /* Keep default button positioning */
+                position: fixed !important;
+                bottom: 1.5rem !important;
+                right: 1.5rem !important;
+                top: auto !important;
+                left: auto !important;
+                width: auto !important;
+                height: auto !important;
             }
 
             /* Hide other content on mobile when widget is active */
