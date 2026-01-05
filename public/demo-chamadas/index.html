@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eben AI Solutions - Demonstração de IA de Voz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0a0a0a 100%);
+            min-height: 100vh;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* Animated background particles */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, #3C62E6 0%, transparent 70%);
+            border-radius: 50%;
+            animation: float 20s infinite ease-in-out;
+            opacity: 0.1;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(100px, -100px) scale(1.2); }
+            50% { transform: translate(-100px, 100px) scale(0.8); }
+            75% { transform: translate(150px, 50px) scale(1.1); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        header {
+            padding: 30px 0;
+            border-bottom: 1px solid rgba(60, 98, 230, 0.2);
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3C62E6, #5a7ef7);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+
+
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 56px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ffffff 0%, #3C62E6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 20px;
+            color: #b0b0b0;
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.6;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #3C62E6, #5a7ef7);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 16px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 30px rgba(60, 98, 230, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(60, 98, 230, 0.5);
+        }
+
+        /* Demo Section */
+        .demo-section {
+            padding: 60px 20px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .demo-card {
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid rgba(60, 98, 230, 0.3);
+            border-radius: 20px;
+            padding: 50px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .demo-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(60, 98, 230, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .demo-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .demo-title {
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .demo-subtitle {
+            font-size: 16px;
+            color: #b0b0b0;
+            text-align: center;
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .demo-instructions {
+            background: rgba(60, 98, 230, 0.1);
+            border-left: 4px solid #3C62E6;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+
+        .demo-instructions h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            color: #3C62E6;
+        }
+
+        .demo-instructions ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .demo-instructions li {
+            padding: 8px 0;
+            padding-left: 30px;
+            position: relative;
+            color: #d0d0d0;
+            font-size: 14px;
+        }
+
+        .demo-instructions li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #3C62E6;
+            font-weight: bold;
+        }
+
+        /* Features Grid */
+        .features {
+            padding: 60px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .features h2 {
+            font-size: 40px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: rgba(26, 26, 46, 0.4);
+            border: 1px solid rgba(60, 98, 230, 0.2);
+            border-radius: 15px;
+            padding: 30px;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(60, 98, 230, 0.5);
+            box-shadow: 0 15px 40px rgba(60, 98, 230, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+
+        .feature-card p {
+            color: #b0b0b0;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Footer */
+        footer {
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(60, 98, 230, 0.2);
+            margin-top: 80px;
+            background: rgba(10, 10, 10, 0.8);
+        }
+
+        footer p {
+            color: #808080;
+            font-size: 14px;
+        }
+
+        footer a {
+            color: #3C62E6;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .demo-card {
+                padding: 30px 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .features h2 {
+                font-size: 32px;
+            }
+
+            /* Only target opened widget - leave button in default position */
+            div[style*="position: fixed"][style*="z-index: 9999"][style*="bottom: 1.5rem"]:has(> div[style*="width: 28rem"]) {
+                position: fixed !important;
+                top: 2rem !important; /* Leave space for browser UI */
+                left: 0 !important;
+                right: 0 !important;
+                bottom: 2rem !important; /* Leave space for browser UI */
+                width: 100vw !important;
+                height: calc(100vh - 4rem) !important; /* Account for top and bottom spacing */
+                z-index: 9999 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
+                transform: none !important;
+                -webkit-transform: none !important;
+            }
+
+            /* Target the widget container inside the opened widget */
+            div[style*="position: fixed"][style*="z-index: 9999"][style*="bottom: 1.5rem"]:has(> div[style*="width: 28rem"]) > div[style*="width: 28rem"] {
+                width: 100vw !important;
+                height: calc(100vh - 4rem) !important;
+                max-width: 100vw !important;
+                max-height: calc(100vh - 4rem) !important;
+                border-radius: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+            }
+
+            /* Adjust inner content for full screen with spacing */
+            div[style*="position: fixed"][style*="z-index: 9999"][style*="bottom: 1.5rem"]:has(> div[style*="width: 28rem"]) .vapi-conversation-area {
+                flex: 1 !important;
+                padding: 1rem !important;
+                overflow-y: auto !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+            }
+
+            /* Prevent horizontal overflow on body when widget is open */
+            body:has(div[style*="position: fixed"][style*="z-index: 9999"][style*="bottom: 1.5rem"]:has(> div[style*="width: 28rem"])) {
+                overflow-x: hidden !important;
+                overflow-y: hidden !important;
+            }
+
+            /* Ensure button stays in default position - don't affect single button divs */
+            div[style*="position: fixed"][style*="z-index: 9999"][style*="bottom: 1.5rem"]:not(:has(> div[style*="width: 28rem"])) {
+                /* Keep default button positioning */
+                position: fixed !important;
+                bottom: 1.5rem !important;
+                right: 1.5rem !important;
+                top: auto !important;
+                left: auto !important;
+                width: auto !important;
+                height: auto !important;
+            }
+
+            /* Hide other content on mobile when widget is active */
+            body.widget-active .container,
+            body.widget-active .particles,
+            body.widget-active header,
+            body.widget-active footer {
+                display: none !important;
+            }
+
+            /* Mobile-specific widget button styling */
+            vapi-widget .vapi-widget-button {
+                width: 60px !important;
+                height: 60px !important;
+                bottom: 20px !important;
+                right: 20px !important;
+            }
+
+            /* Full screen modal for mobile */
+            vapi-widget .vapi-widget-modal {
+                width: 100vw !important;
+                height: 100vh !important;
+                max-width: none !important;
+                margin: 0 !important;
+                top: 0 !important;
+                left: 0 !important;
+            }
+        }
+
+        /* Additional mobile optimizations */
+        @media (max-width: 480px) {
+            .hero {
+                padding: 60px 15px;
+            }
+
+            .demo-section {
+                padding: 40px 15px;
+            }
+
+            .features {
+                padding: 40px 15px;
+            }
+
+            /* Vapi Widget small screen optimization */
+            vapi-widget {
+                --vapi-widget-font-size: 14px !important;
+            }
+
+            vapi-widget .vapi-widget-button {
+                width: 50px !important;
+                height: 50px !important;
+                bottom: 15px !important;
+                right: 15px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background Particles -->
+    <div class="particles" id="particles"></div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">
+                <span>Eben AI Solutions</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section class="hero">
+            <h1>Experimente o Futuro da<br>Comunicação com IA</h1>
+            <p>Teste gratuitamente a nossa tecnologia de voz com inteligência artificial. Converse naturalmente e descubra como podemos transformar o seu negócio.</p>
+        </section>
+
+        <!-- Demo Section -->
+        <section class="demo-section">
+            <div class="demo-card">
+                <div class="demo-content">
+                    <h2 class="demo-title">🎙️ Demonstração Interativa</h2>
+                    <p class="demo-subtitle">Clique no botão abaixo para iniciar uma conversa com o nosso assistente de IA por voz.</p>
+                    
+                    <div class="demo-instructions">
+                        <h3>Como Utilizar:</h3>
+                        <ul>
+                            <li>Clique no botão "Começar" para iniciar a chamada</li>
+                            <li>Permita o acesso ao microfone quando solicitado</li>
+                            <li>Fale naturalmente com o assistente</li>
+                            <li>Teste diferentes tipos de perguntas e solicitações</li>
+                            <li>Termine a chamada quando desejar</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <h2>Porquê Escolher a Nossa Tecnologia?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🚀</div>
+                    <h3>Resposta Instantânea</h3>
+                    <p>IA de última geração que responde em tempo real, proporcionando conversas fluidas e naturais.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌍</div>
+                    <h3>Multilingue</h3>
+                    <p>Suporte para múltiplos idiomas, permitindo comunicação global sem barreiras.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>Seguro & Privado</h3>
+                    <p>Todas as conversas são encriptadas e protegidas seguindo os mais altos padrões de segurança.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚙️</div>
+                    <h3>Totalmente Personalizável</h3>
+                    <p>Adapte a IA às necessidades específicas do seu negócio com configurações flexíveis.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Analytics Avançados</h3>
+                    <p>Obtenha insights detalhados sobre as interações e melhore continuamente o serviço.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤝</div>
+                    <h3>Suporte Dedicado</h3>
+                    <p>Equipa especializada sempre disponível para garantir o seu sucesso.</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Eben AI Solutions. Todos os direitos reservados.</p>
+        <p>Visite <a href="https://ebenaisolutions.pt/" target="_blank">ebenaisolutions.pt</a> para saber mais.</p>
+    </footer>
+
+    <!-- Vapi Widget -->
+    <vapi-widget
+  public-key="f9bef6e1-3134-4a1d-ad8f-b7098f65b51e"
+  assistant-id="b8fd93c8-c25b-4b6f-8063-31b0bfd827e4"
+        mode="voice"
+        theme="dark"
+        base-bg-color="#000000"
+        accent-color="#3C62E6"
+        cta-button-color="#000000"
+        cta-button-text-color="#ffffff"
+        border-radius="large"
+        size="full"
+        position="bottom-right"
+        title="Experimente falar com a IA"
+        start-button-text="Começar"
+        end-button-text="Terminar Chamada"
+        chat-first-message="Olá! Como posso ajudá-lo hoje?"
+        chat-placeholder="Digite a sua mensagem..."
+        voice-show-transcript="true"
+        consent-required="false"
+    ></vapi-widget>
+    <script src="https://unpkg.com/@vapi-ai/client-sdk-react/dist/embed/widget.umd.js" async type="text/javascript"></script>
+
+    <!-- Particle Animation Script -->
+    <script>
+        // Create animated particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                const size = Math.random() * 100 + 50;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        createParticles();
+    </script>
+</body>
+</html>

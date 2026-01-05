@@ -5,10 +5,11 @@ export { default as zari } from './arts_and_logos/Zari-eben-ai.png';
 
 // Clients
 
-export { default as ericeiraproperty } from './clients/logo-ericeiraproperty.svg';
+
 export { default as grupo_das_casas } from './clients/Logo-grupo-das-casas.png';
-export { default as htailors } from './clients/htailors.png';
+export {default as maree } from './clients/maree_logo.png'
 export { default as biblein } from './clients/bible-in-logo-white.png';
+export { default as remax_negocios } from './clients/Logo_remax_negocios_transparent.webp'
 
 // Hero Section
 export { default as curve } from './hero/curve.png';

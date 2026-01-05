@@ -1,10 +1,14 @@
 import {
+  biblein,
   curve,
   file02,
+  grupo_das_casas,
   heroBackground,
   homeSmile,
   loading,
+  maree,
   plusSquare,
+  remax_negocios,
   robot,
   searchMd,
 } from "../assets";
@@ -150,7 +154,11 @@ const Hero = () => {
                 />
 
                 <div className="flex items-center h-[1.75rem] md:h-[3.5rem] px-3 md:px-6 bg-n-8/80 rounded-[1.7rem] absolute left-4 right-4 bottom-5 md:left-1/2 md:right-auto md:bottom-8 md:w-[31rem] md:-translate-x-1/2 text-sm md:text-base">
-                  <img className="w-2.5 h-2.5 md:w-5 md:h-5 mr-4" src={loading} alt="" />
+                  <img
+                    className="w-2.5 h-2.5 md:w-5 md:h-5 mr-4"
+                    src={loading}
+                    alt=""
+                  />
                   {t("hero.processing")}
                 </div>
 
@@ -197,25 +205,25 @@ const Hero = () => {
           <BackgroundCircles parallaxRef={parallaxRef} />
         </div>
 
-        {/* <div className="hidden relative z-10 mt-20 lg:block">
+        <div className="hidden relative z-10 mt-20 lg:block">
           <h5 className="tagline mb-6 text-center text-white/50">
             {t("hero.companiesUsing")}
           </h5>
           <ul className="flex">
-            <li className="flex items-center justify-center flex-1 h-[8.5rem]">
+            {/* <li className="flex items-center justify-center flex-1 h-[8.5rem]">
               <img src={biblein} width={134} height={28} alt="" />
+            </li> */}
+            <li className="flex items-center justify-center flex-1 h-[8.5rem]">
+              <img src={maree} width={134} height={28} alt="" />
             </li>
             <li className="flex items-center justify-center flex-1 h-[8.5rem]">
-              <img src={ericeiraproperty} width={134} height={28} alt="" />
+              <img src={remax_negocios} width={134} height={28} alt="" />
             </li>
             <li className="flex items-center justify-center flex-1 h-[8.5rem]">
               <img src={grupo_das_casas} width={134} height={28} alt="" />
             </li>
-            <li className="flex items-center justify-center flex-1 h-[8.5rem]">
-              <img src={htailors} width={134} height={28} alt="" />
-            </li>
           </ul>
-        </div> */}
+        </div>
       </div>
 
       <div className="hidden absolute top-[55.25rem] left-10 right-10 h-0.25 bg-n-6 pointer-events-none xl:block" />
@@ -226,4 +234,3 @@ const Hero = () => {
 };
 
 export default Hero;
-
