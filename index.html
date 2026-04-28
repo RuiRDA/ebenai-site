@@ -15,14 +15,16 @@
     <script type="module" src="/src/main.jsx"></script>
 
     <!-- Widget Configuration -->
-    <script>
+    <script type="module">
+      import zariAvatarUrl from "/src/assets/arts_and_logos/Zari-eben-ai.png";
+
       window.ChatWidgetConfig = {
         webhook: {
           url: "https://n8n.eben-ai-one.ebenaisolutions.pt/webhook/b149e594-8932-4f57-a548-d6eb011fbd4b/chat",
           route: "general",
         },
         branding: {
-          logo: "https://raw.githubusercontent.com/RuiRDA/ebenai-site/refs/heads/main/src/assets/arts_and_logos/Zari-eben-ai.png",
+          logo: zariAvatarUrl,
           name: "Zari - Eben AI Solutions",
           welcomeText: "Respostas instantâneas às suas perguntas!",
           responseTimeText: "Clique no botão abaixo para começar a conversar",
