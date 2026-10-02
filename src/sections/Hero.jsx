@@ -141,15 +141,15 @@ const Hero = () => {
             <div className="relative bg-n-8 rounded-[1rem]">
               <div className="h-[1.4rem] bg-[#43435C] rounded-t-[0.9rem]" />
 
-               <div className="aspect-[3/2] rounded-b-[0.9rem] md:aspect-[3/2] lg:aspect-[3/2]">
-                 {/* Adjusted for robots.jpg: 1536x1024 (3:2 aspect ratio) */}
-                 <img
-                   src={robot}
-                   className="w-full h-full object-contain object-top rounded-b-[0.9rem]"
-                   width={1536}
-                   height={1024}
-                   alt="Robot"
-                 />
+              <div className="aspect-[3/2] rounded-b-[0.9rem] md:aspect-[3/2] lg:aspect-[3/2]">
+                {/* Adjusted for robots.jpg: 1536x1024 (3:2 aspect ratio) */}
+                <img
+                  src={robot}
+                  className="w-full h-full object-contain object-top rounded-b-[0.9rem]"
+                  width={1536}
+                  height={1024}
+                  alt="Robot"
+                />
 
                 <div className="flex items-center h-[1.75rem] md:h-[3.5rem] px-3 md:px-6 bg-n-8/80 rounded-[1.7rem] absolute left-4 right-4 bottom-5 md:left-1/2 md:right-auto md:bottom-8 md:w-[31rem] md:-translate-x-1/2 text-sm md:text-base">
                   <img
@@ -203,14 +203,14 @@ const Hero = () => {
           <BackgroundCircles parallaxRef={parallaxRef} />
         </div>
 
-        <div className="hidden relative z-10 mt-20 lg:block">
+        {/* <div className="hidden relative z-10 mt-20 lg:block">
           <h5 className="tagline mb-6 text-center text-white/50">
             {t("hero.companiesUsing")}
           </h5>
           <ul className="flex">
-            {/* <li className="flex items-center justify-center flex-1 h-[8.5rem]">
+            <li className="flex items-center justify-center flex-1 h-[8.5rem]">
               <img src={biblein} width={134} height={28} alt="" />
-            </li> */}
+            </li>
             <li className="flex items-center justify-center flex-1 h-[8.5rem]">
               <img src={maree} width={134} height={28} alt="" />
             </li>
@@ -221,7 +221,7 @@ const Hero = () => {
               <img src={grupo_das_casas} width={134} height={28} alt="" />
             </li>
           </ul>
-        </div>
+        </div> */}
       </div>
 
       <div className="hidden absolute top-[55.25rem] left-10 right-10 h-0.25 bg-n-6 pointer-events-none xl:block" />
