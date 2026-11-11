@@ -29,7 +29,7 @@ export { default as protopie } from './collaboration/protopie.png';
 export { default as raindrop } from './collaboration/raindrop.png';
 export { default as slack } from './collaboration/slack.png';
 
-export { default as chatGPT } from './collaboration/ChatGPT_logo.svg';
+export { default as chatGPT } from './collaboration/ChatGPT_Logo.svg';
 export { default as gmail } from './collaboration/Gmail.svg';
 export { default as google_drive } from './collaboration/Google_Drive.svg';
 export { default as instagram_logo } from './collaboration/Instagram.svg';
