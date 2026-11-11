@@ -17,14 +17,14 @@ const benefits = [
   {
     title: "services.benefits.title_1",
     text: "services.benefits.text_1",
-    backgroundUrl: "https://raw.githubusercontent.com/RuiRDA/ebenai-site/refs/heads/main/src/assets/benefits/card-1.svg",
+    backgroundUrl: benefitCard1,
     iconUrl: benefitIcon3,
     imageUrl: benefitImage2,
   },
   {
     title: "services.benefits.title_2",
     text: "services.benefits.text_2",
-    backgroundUrl: "https://raw.githubusercontent.com/RuiRDA/ebenai-site/refs/heads/main/src/assets/benefits/card-2.svg",
+    backgroundUrl: benefitCard2,
     iconUrl: benefitIcon1,
     imageUrl: benefitImage2,
     light: true,
@@ -32,7 +32,7 @@ const benefits = [
   {
     title: "services.benefits.title_3",
     text: "services.benefits.text_3",
-    backgroundUrl: "https://raw.githubusercontent.com/RuiRDA/ebenai-site/refs/heads/main/src/assets/benefits/card-3.svg",
+    backgroundUrl: benefitCard3,
     iconUrl: benefitIcon2,
     imageUrl: benefitImage2,
   },
