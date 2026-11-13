@@ -1,0 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap');
+
+.eb-site{--navy:#071538;--blue:#0752ce;--cyan:#05c5ec;--muted:#415071;--border:#dce7f6;--shadow:0 8px 20px rgba(11,53,124,.08);font-family:'DM Sans',Arial,sans-serif;background:#fff;color:var(--navy);overflow:hidden;font-size:16px;line-height:1.45}
+.eb-site *, .eb-site *::before, .eb-site *::after{box-sizing:border-box}
+.eb-site a{color:inherit;text-decoration:none}
+.eb-site button{font:inherit}
+.eb-site a:focus-visible,.eb-site button:focus-visible{outline:3px solid #03c8ed;outline-offset:4px}
+.eb-shell{width:min(100% - 112px,1180px);margin-inline:auto}
+.eb-header{height:76px;position:relative;z-index:20;background:rgba(255,255,255,.75)}
+.eb-header-inner{height:100%;display:flex;justify-content:space-between;align-items:center;gap:20px}
+.eb-brand{display:inline-flex;align-items:center;flex:none;gap:7px;font-weight:800;font-size:22px;line-height:.91;letter-spacing:-.8px}
+.eb-brand img{width:61px;height:61px;object-fit:contain}
+.eb-nav{display:flex;align-items:center;gap:35px;font-size:13px;font-weight:700}
+.eb-nav>a:not(.eb-button):hover{color:#0768cd}
+.eb-button{display:inline-flex;gap:10px;justify-content:center;align-items:center;min-height:47px;padding:11px 20px;border:1px solid #0a55cc;border-radius:12px;color:#fff!important;background:linear-gradient(110deg,#0757d3,#0849bf);box-shadow:0 3px 6px rgba(3,48,136,.07);font-size:13px;font-weight:700;white-space:nowrap;transition:transform .2s,box-shadow .2s}
+.eb-button:hover{transform:translateY(-2px);box-shadow:0 8px 18px rgba(3,70,171,.19)}
+.eb-button-small{min-height:40px;border-radius:11px;padding:9px 17px}
+.eb-button-outline{color:var(--navy)!important;background:transparent;border-color:#7cabe4;box-shadow:none}
+.eb-button-white{color:#091b45!important;background:#fff;border-color:#fff;box-shadow:0 5px 12px rgba(2,33,90,.16)}
+.eb-menu-toggle{display:none;background:none;border:0;cursor:pointer}
+.eb-hero{position:relative;margin-top:-76px;padding-top:76px;background:radial-gradient(ellipse 51% 75% at 75% 45%,#d0f3ff 0,#e6f6ff 42%,transparent 83%),linear-gradient(115deg,#fff 35%,#f4faff 73%,#e4f5ff 100%);min-height:410px}
+.eb-hero:before{position:absolute;content:"";z-index:1;bottom:-4px;left:-3%;width:41%;height:75px;background:#fff;clip-path:ellipse(70% 83% at 22% 105%)}
+.eb-hero-ambient{position:absolute;right:-10%;bottom:-32px;width:64%;height:210px;background:linear-gradient(100deg,transparent 0,#8cdeff55 42%,#29afff6e 100%);border-radius:60% 0 0 0;filter:blur(13px)}
+.eb-hero-grid{position:relative;display:grid;grid-template-columns:1.08fr 1fr;align-items:center;min-height:355px;z-index:2}
+.eb-hero-copy{position:relative;z-index:3;padding:25px 0 45px}
+.eb-hero h1{font-size:clamp(39px,4.65vw,64px);line-height:1.08;letter-spacing:-2.4px;font-weight:800;max-width:680px;margin:0 0 13px}
+.eb-hero p{font-size:clamp(16px,1.7vw,20px);line-height:1.43;margin:0 0 24px;letter-spacing:-.35px}
+.eb-hero-actions{display:flex;flex-wrap:wrap;gap:16px}
+.eb-hero-art{position:relative;height:345px;display:flex;justify-content:center;align-items:center}
+.eb-crystal{position:relative;width:min(100%,510px);height:390px;overflow:visible;filter:drop-shadow(0 14px 24px rgba(0,136,223,.18));animation:ebFloat 6s ease-in-out infinite}
+.eb-wave{position:absolute;right:-35%;width:95%;height:160px;border-radius:55% 0 0 0;transform:rotate(-23deg);background:linear-gradient(90deg,transparent,#4cb9ff3b)}
+.eb-wave-one{top:65px}
+.eb-wave-two{top:167px;background:linear-gradient(90deg,transparent,#1499ff41)}
+@keyframes ebFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.eb-section{padding:45px 0}
+.eb-heading{font-size:clamp(25px,2.75vw,34px);font-weight:800;line-height:1.2;text-align:center;letter-spacing:-1px;margin:0 0 37px}
+.eb-heading:after{display:block;content:"";height:4px;width:61px;background:#08c7ee;border-radius:10px;margin:12px auto 0}
+.eb-services{padding-top:9px;padding-bottom:35px}
+.eb-service-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.eb-service-card{min-height:126px;position:relative;border:1px solid #e3ebf8;border-radius:16px;padding:18px 22px 42px;background:linear-gradient(145deg,#fff,#fafcff);box-shadow:var(--shadow);transition:transform .2s,box-shadow .2s}
+.eb-service-card:hover{transform:translateY(-3px);box-shadow:0 12px 24px rgba(11,53,124,.13)}
+.eb-service-top{display:flex;align-items:center;gap:17px}
+.eb-service-card h3{font-size:17px;line-height:1.25;letter-spacing:-.4px;font-weight:800;margin:0}
+.eb-icon-tile,.eb-step-icon{display:grid;place-items:center;flex:none;border-radius:14px;color:#0082c9;background:linear-gradient(130deg,#effaff,#c8eaff);width:64px;height:64px}
+.eb-service-description{font-size:13px;margin:18px 0 0;color:var(--muted)}
+.eb-card-arrow{position:absolute;bottom:15px;right:18px;border:0;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#c9f0ff;color:#0862d2;cursor:pointer;transition:transform .2s}
+.eb-card-arrow:hover{transform:translateX(3px)}
+.eb-process{background:linear-gradient(110deg,#e7f3ff,#f0f8ff 50%,#e3f3ff);padding-top:22px;padding-bottom:29px}
+.eb-process .eb-heading{margin-bottom:27px}
+.eb-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;margin:auto;max-width:870px}
+.eb-step{display:flex;align-items:center;flex-direction:column;position:relative;text-align:center}
+.eb-step:not(:last-child):after{content:"";position:absolute;top:53px;left:calc(50% + 48px);width:calc(100% - 70px);height:2px;background:#b4e1fd}
+.eb-step-count{background:linear-gradient(125deg,#06deda,#0376cd);border-radius:50%;color:#fff;font-size:15px;font-weight:800;display:grid;place-items:center;width:32px;height:32px;margin-bottom:-3px;z-index:1}
+.eb-step-icon{width:64px;height:64px;margin-bottom:7px}
+.eb-step h3{font-size:15px;letter-spacing:-.25px;margin:0;font-weight:800}
+.eb-testimonials{padding-top:30px;padding-bottom:35px}
+.eb-testimonials .eb-heading{margin-bottom:28px}
+.eb-testimonial-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.eb-testimonial{margin:0;border:1px solid #e1e8f3;border-radius:15px;padding:15px 23px 18px;background:#fbfcff;min-height:160px;display:flex;flex-direction:column}
+.eb-quote-mark{height:20px;font-family:Georgia,serif;font-size:48px;color:#02bbdf;line-height:1}
+.eb-testimonial p{font-size:15px;line-height:1.25;flex:1;margin:13px 0}
+.eb-testimonial footer{display:flex;align-items:center;gap:11px;font-size:15px}
+.eb-avatar{height:35px;width:35px;display:grid;place-items:center;border-radius:50%;background:linear-gradient(135deg,#d7f4ff,#91cdeb);font-size:12px;color:#0a458d;font-weight:800}
+.eb-cta{position:relative;overflow:hidden;display:flex;justify-content:space-between;align-items:center;gap:25px;min-height:112px;border-radius:20px;padding:20px 55px;color:#fff;background:linear-gradient(112deg,#0755cb 0%,#0759c9 48%,#009ce7 100%)}
+.eb-cta:before,.eb-cta:after{content:"";position:absolute;pointer-events:none;border-radius:50%;transform:rotate(-20deg);background:#31bdff2b}
+.eb-cta:before{width:800px;height:150px;left:35%;top:30%}
+.eb-cta:after{width:600px;height:120px;left:50%;top:75%;background:#81efff26}
+.eb-cta>*{position:relative;z-index:1}
+.eb-cta h2{font-size:32px;line-height:1.15;font-weight:800;letter-spacing:-1px;margin:0 0 6px}
+.eb-cta p{font-size:15px;margin:0}
+.eb-faq{padding-top:29px;padding-bottom:40px}
+.eb-faq .eb-heading{margin-bottom:15px}
+.eb-faq-list{max-width:1050px;margin:auto}
+.eb-faq-item{border-bottom:1px solid #d6e0ed}
+.eb-faq-item button{width:100%;background:transparent;border:0;color:var(--navy);padding:12px 12px;cursor:pointer;text-align:left;display:flex;justify-content:space-between;align-items:center;gap:20px;font-size:15px}
+.eb-faq-item button:hover{color:#0a68c7}
+.eb-faq-item button span{display:flex;transition:transform .2s}
+.eb-rotated{transform:rotate(180deg)}
+.eb-faq-answer{padding:0 45px 18px 12px;font-size:14px;line-height:1.6;color:var(--muted)}
+.eb-booking{padding:55px 0 75px;background:#eef8ff}
+.eb-booking-subtitle{text-align:center;margin:-15px 0 26px;color:var(--muted)}
+.eb-booking-widget{max-width:900px;margin:auto;background:#fff;border:1px solid #dceafa;border-radius:20px;padding:18px;min-height:500px;box-shadow:var(--shadow)}
+.eb-footer{padding:30px 0;background:#071538;color:#fff}
+.eb-footer-inner{display:flex;justify-content:space-between;align-items:center;gap:35px}
+.eb-footer-inner>div{display:flex;flex-direction:column;gap:7px;font-size:13px;color:#d7e3f4}
+.eb-footer-inner>div>a:hover{color:#6bd9ff}
+.eb-footer .eb-brand{color:#fff}
+@media(max-width:950px){.eb-shell{width:min(100% - 56px,1180px)}.eb-nav{gap:16px}.eb-hero h1{font-size:clamp(35px,4.8vw,54px)}.eb-hero-art{height:320px}.eb-service-card{padding:16px 14px 41px}.eb-service-top{gap:10px}.eb-service-card h3{font-size:15px}.eb-icon-tile{height:53px;width:53px}.eb-cta{padding:22px 30px}}
+@media(max-width:700px){.eb-shell{width:min(100% - 36px,540px)}.eb-header{height:70px}.eb-brand{font-size:17px}.eb-brand img{height:52px;width:52px}.eb-menu-toggle{display:block;color:#071538;padding:8px}.eb-nav{display:none;position:absolute;top:69px;left:0;right:0;padding:24px 22px;background:#fff;box-shadow:0 16px 22px #082d5817;flex-direction:column;align-items:stretch;gap:22px;font-size:16px}.eb-nav-open{display:flex}.eb-nav .eb-button{width:100%}.eb-hero{margin-top:-70px;padding-top:70px}.eb-hero-grid{grid-template-columns:1fr}.eb-hero-copy{padding:30px 0 0;text-align:center}.eb-hero h1{font-size:clamp(35px,8.1vw,52px);letter-spacing:-1.7px}.eb-hero p{font-size:16px}.eb-hero-actions{justify-content:center;gap:10px}.eb-hero-actions .eb-button{min-height:45px;font-size:12px;padding:10px 12px}.eb-hero-art{height:285px;margin-top:-5px}.eb-crystal{height:315px;width:min(100%,425px)}.eb-section{padding:35px 0}.eb-services{padding-top:15px}.eb-service-grid,.eb-testimonial-grid{grid-template-columns:1fr;gap:13px}.eb-service-card{min-height:100px;padding:16px 18px 25px}.eb-service-card h3{font-size:17px}.eb-card-arrow{bottom:10px}.eb-steps{gap:8px}.eb-step:not(:last-child):after{top:50px;left:calc(50% + 37px);width:calc(100% - 46px)}.eb-step-icon{width:53px;height:53px}.eb-step-icon svg{height:31px;width:31px}.eb-step h3{font-size:12px}.eb-testimonial{min-height:120px}.eb-cta{flex-direction:column;align-items:flex-start;border-radius:16px;padding:25px}.eb-cta h2{font-size:27px}.eb-cta .eb-button{width:100%}.eb-footer-inner{flex-direction:column;align-items:flex-start;gap:20px}.eb-booking-widget{padding:8px;min-height:400px}}
+@media(max-width:380px){.eb-hero-actions{flex-direction:column}.eb-hero-actions .eb-button{width:100%}.eb-step-count{width:28px;height:28px}.eb-step h3{font-size:11px}}
+@media(prefers-reduced-motion:reduce){.eb-crystal{animation:none}.eb-site *{scroll-behavior:auto!important;transition:none!important}}
