@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 720" width="720" height="720">
+<title>Ebenai Solutions</title>
+<defs>
+<clipPath id="egg"><path d="M360.4 59.14 L503.46 131.8 L557.09 286.53 L592.81 449.6 L514.92 603.65 L352.34 658.67 L205.39 610.22 L162.9 537.93 L127.26 446.56 L164.65 253.86 L248.83 93.16Z"/></clipPath>
+<clipPath id="out"><path clip-rule="evenodd" d="M0 0H720V720H0ZM360.4 59.14 L503.46 131.8 L557.09 286.53 L592.81 449.6 L514.92 603.65 L352.34 658.67 L205.39 610.22 L162.9 537.93 L127.26 446.56 L164.65 253.86 L248.83 93.16Z"/></clipPath>
+<filter id="soft" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur stdDeviation="1.2"/></filter>
+<linearGradient id="gt1" x1="197" y1="0" x2="306" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#5dd9fb"/><stop offset="1" stop-color="#64dcf9"/></linearGradient>
+<linearGradient id="gt2" x1="167" y1="0" x2="306" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#63dbfb"/><stop offset="1" stop-color="#5cd6f9"/></linearGradient>
+<linearGradient id="gt3" x1="141" y1="0" x2="309" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#47c5f5"/><stop offset="1" stop-color="#3dbcf5"/></linearGradient>
+<linearGradient id="gt4" x1="130" y1="0" x2="259" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#41bff6"/><stop offset="1" stop-color="#39b6f3"/></linearGradient>
+<linearGradient id="gt5" x1="417" y1="0" x2="589" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2c9af0"/><stop offset="1" stop-color="#1d73de"/></linearGradient>
+<linearGradient id="gt6" x1="449" y1="0" x2="564" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2683e8"/><stop offset="1" stop-color="#267ae2"/></linearGradient>
+<linearGradient id="gt7" x1="396" y1="0" x2="552" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#2082e7"/><stop offset="1" stop-color="#2061d5"/></linearGradient>
+<linearGradient id="f1" x1="223.59" y1="113.92" x2="361.91" y2="282.03" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#4fd4fb"/><stop offset="1" stop-color="#339fe0"/></linearGradient>
+<linearGradient id="f2" x1="345.17" y1="71.56" x2="565.5" y2="288.38" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#309cd6"/><stop offset="1" stop-color="#1e54ac"/></linearGradient>
+<linearGradient id="f3" x1="188.86" y1="237.58" x2="376.4" y2="453.48" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#3bb0e7"/><stop offset="1" stop-color="#1e63c0"/></linearGradient>
+<linearGradient id="f4" x1="361.9" y1="416.26" x2="515.1" y2="603.51" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#194ba3"/><stop offset="1" stop-color="#131775"/></linearGradient>
+<linearGradient id="f5" x1="209.35" y1="510.03" x2="307.94" y2="683.96" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1f5db4"/><stop offset="1" stop-color="#173195"/></linearGradient>
+<linearGradient id="gR" x1="0" y1="550" x2="0" y2="586" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#1d3eaf"/><stop offset="1" stop-color="#1234a6"/></linearGradient>
+</defs>
+<g clip-path="url(#egg)">
+<path fill="url(#f1)" stroke="url(#f1)" stroke-width=".6" stroke-linejoin="round" d="M358.39 58.12 363.65 129.35 391.69 209.29 310.59 324.25 163.54 259.58 164.65 253.86 248.83 93.16Z"/>
+<path fill="url(#f2)" stroke="url(#f2)" stroke-width=".6" stroke-linejoin="round" d="M358.39 58.12 360.4 59.14 503.46 131.8 557.09 286.53 559.81 294.17 391.69 209.29 363.65 129.35Z"/>
+<path fill="url(#f3)" stroke="url(#f3)" stroke-width=".6" stroke-linejoin="round" d="M391.69 209.29 559.81 294.17 453.18 371.48 361.63 416.49 261.88 537.14 162.4 536.65 127.26 446.56 163.54 259.58 310.59 324.25Z"/>
+<path fill="url(#f4)" stroke="url(#f4)" stroke-width=".6" stroke-linejoin="round" d="M559.81 294.17 592.81 449.6 514.92 603.65 352.88 658.49 291.05 601.57 261.88 537.14 361.63 416.49 453.18 371.48Z"/>
+<path fill="url(#f5)" stroke="url(#f5)" stroke-width=".6" stroke-linejoin="round" d="M261.88 537.14 291.05 601.57 352.88 658.49 352.34 658.67 205.39 610.22 162.9 537.93 162.4 536.65Z"/>
+<g opacity="0.12" filter="url(#soft)"><g transform="translate(-0.5 8.5)" fill="#1d001b" stroke="#1d001b" stroke-width="12.6">
+<path fill="none" d="M154.35 191.6H276.1"/>
+<path fill="none" d="M150 251.2H256.1L272.7 266.1H275.6"/>
+<path fill="none" d="M120 386.9L278.3 386.07"/>
+<path fill="none" d="M120 449.1L228.3 450.17"/>
+<path fill="none" d="M600 448.7H479.8L447.25 421.36"/>
+<path fill="none" d="M600 504.1H479.3"/>
+<path fill="none" d="M400.68 558.56L562 566.95"/>
+<circle cx="288.9" cy="192.85" r="19.1" stroke="none"/>
+<circle cx="288.4" cy="266.05" r="19.1" stroke="none"/>
+<circle cx="291.1" cy="384.4" r="19.1" stroke="none"/>
+<circle cx="434.8" cy="418.4" r="19.1" stroke="none"/>
+<circle cx="241.1" cy="450.3" r="19.1" stroke="none"/>
+<circle cx="466.5" cy="503.8" r="19.1" stroke="none"/>
+<circle cx="387.9" cy="559.1" r="19.1" stroke="none"/>
+</g></g>
+<path fill="none" stroke="url(#gt1)" stroke-width="12.6" d="M154.35 191.6H276.1"/>
+<circle cx="288.9" cy="192.85" r="12.8" fill="none" stroke="url(#gt1)" stroke-width="12.6"/>
+<path fill="none" stroke="url(#gt2)" stroke-width="12.6" d="M150 251.2H256.1L272.7 266.1H275.6"/>
+<circle cx="288.4" cy="266.05" r="12.8" fill="none" stroke="url(#gt2)" stroke-width="12.6"/>
+<path fill="none" stroke="url(#gt3)" stroke-width="12.6" d="M120 386.9L278.3 386.07"/>
+<circle cx="291.1" cy="384.4" r="12.8" fill="none" stroke="url(#gt3)" stroke-width="12.6"/>
+<path fill="none" stroke="url(#gt4)" stroke-width="12.6" d="M120 449.1L228.3 450.17"/>
+<circle cx="241.1" cy="450.3" r="12.8" fill="none" stroke="url(#gt4)" stroke-width="12.6"/>
+<path fill="none" stroke="url(#gt5)" stroke-width="12.6" d="M600 448.7H479.8L447.25 421.36"/>
+<circle cx="434.8" cy="418.4" r="12.8" fill="none" stroke="url(#gt5)" stroke-width="12.6"/>
+<path fill="none" stroke="url(#gt6)" stroke-width="12.6" d="M600 504.1H479.3"/>
+<circle cx="466.5" cy="503.8" r="12.8" fill="none" stroke="url(#gt6)" stroke-width="12.6"/>
+</g>
+<path fill="none" stroke="url(#gt7)" stroke-width="12.6" d="M400.68 558.56L562 566.95"/>
+<circle cx="387.9" cy="559.1" r="12.8" fill="none" stroke="url(#gt7)" stroke-width="12.6"/>
+<g clip-path="url(#out)">
+<path fill="none" stroke="#5bdbfa" stroke-width="11.8" d="M154.35 191.4H200"/>
+<circle cx="141.9" cy="191" r="12.45" fill="none" stroke="#5bdbfa" stroke-width="11.8"/>
+<circle cx="574.7" cy="568.3" r="12.45" fill="none" stroke="url(#gR)" stroke-width="11.8"/>
+</g>
+</svg>
