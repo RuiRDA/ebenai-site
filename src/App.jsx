@@ -1,36 +1,13 @@
-import { Route, Routes } from 'react-router-dom';
-import Services from "./sections/Services";
-import Collaboration from "./sections/Collaboration";
-import Footer from "./components/Footer";
+import { Route, Routes } from "react-router-dom";
+import LandingPage from "./pages/LandingPage";
+import TermsAndConditions from "./pages/TermsAndConditions";
 import Navbar from "./components/Navbar";
-import Hero from "./sections/Hero";
-import Testimonials from "./sections/Testimonials";
-import FAQ from "./sections/FAQ";
-import CallForm from "./sections/CallForm";
-import TermsAndConditions from './pages/TermsAndConditions';
+import Footer from "./components/Footer";
 
-const Home = () => (
-  <>
-    <Hero />
-    <Services />
-    <Collaboration />
-    <Testimonials />
-    <CallForm />
-    <FAQ />
-  </>
-);
-
-const App = () => {
-  return (
-    <div className="pt-[4.75rem] lg:pt-[5.25rem] overflow-hidden">
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/terms" element={<TermsAndConditions />} />
-      </Routes>
-      <Footer />
-    </div>
-  );
-};
-
-export default App;
+export default function App() {
+  return <Routes>
+    <Route path="/" element={<LandingPage />} />
+    <Route path="/terms" element={<div className="pt-[5rem] min-h-screen"><Navbar /><TermsAndConditions /><Footer /></div>} />
+    <Route path="*" element={<LandingPage />} />
+  </Routes>;
+}
